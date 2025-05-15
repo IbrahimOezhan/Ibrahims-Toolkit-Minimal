@@ -1,0 +1,279 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4289360731929818464
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4289360731929818467}
+  - component: {fileID: 4289360731929818466}
+  m_Layer: 0
+  m_Name: Localization_Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4289360731929818467
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4289360731929818464}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4289360731929818466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4289360731929818464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77bf3dd2afad8894499e6db5f8496c2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dependencies: []
+  isDDOL: 0
+  attemptSetToSystemLanguage: 1
+  currentLanguage: English
+  defaultLanguage: English
+  replaceFont: 1
+  defaultFont: {fileID: 12800000, guid: 3ba2dd325218aa6419e0b64ccc10d86c, type: 3}
+  columnDelimiter: ;
+  textLocalization:
+  - {fileID: 4900000, guid: 8966111583eb3be46811a82764813852, type: 3}
+  audioLocalization: []
+  textLocalizationData:
+  - key: whichVersion
+    value:
+    - Version {0}
+  - key: versionCheck
+    value:
+    - Checking for a new version{0}
+  - key: cont
+    value:
+    - Continue
+  - key: back
+    value:
+    - Back
+  - key: res
+    value:
+    - Resume
+  - key: ok
+    value:
+    - OK
+  - key: yes
+    value:
+    - Yes
+  - key: no
+    value:
+    - No
+  - key: off
+    value:
+    - Off
+  - key: on
+    value:
+    - On
+  - key: confirm
+    value:
+    - Confirm
+  - key: cancel
+    value:
+    - Cancel
+  - key: retry
+    value:
+    - Retry
+  - key: reset
+    value:
+    - Reset
+  - key: default
+    value:
+    - Default
+  - key: random
+    value:
+    - Random
+  - key: custom
+    value:
+    - Custom
+  - key: config
+    value:
+    - Config
+  - key: refresh
+    value:
+    - Refresh
+  - key: give
+    value:
+    - Give Up
+  - key: play
+    value:
+    - Play
+  - key: how
+    value:
+    - How to play
+  - key: cred
+    value:
+    - Credits
+  - key: quit
+    value:
+    - Quit
+  - key: graph
+    value:
+    - Graphics
+  - key: other
+    value:
+    - Other
+  - key: paused
+    value:
+    - Paused
+  - key: main
+    value:
+    - Main Menu
+  - key: died
+    value:
+    - You died
+  - key: again
+    value:
+    - Play again
+  - key: load
+    value:
+    - Loading{0}
+  - key: s_sett
+    value:
+    - Settings
+  - key: s_vol
+    value:
+    - Volume
+  - key: s_vol_master
+    value:
+    - Master
+  - key: s_vol_music
+    value:
+    - Music
+  - key: s_vol_sounds
+    value:
+    - Sounds
+  - key: s_zalgo
+    value:
+    - Zalgo Text
+  - key: s_lang
+    value:
+    - Language
+  - key: s_qual
+    value:
+    - Quality
+  - key: s_verylow
+    value:
+    - Very Low
+  - key: s_low
+    value:
+    - Low
+  - key: s_medium
+    value:
+    - Medium
+  - key: s_high
+    value:
+    - High
+  - key: s_ultra
+    value:
+    - Ultra
+  - key: s_screen
+    value:
+    - Screen-Mode
+  - key: s_screen0
+    value:
+    - Fullscreen
+  - key: s_screen1
+    value:
+    - Exclusive fullscreen
+  - key: s_screen2
+    value:
+    - Maximized window
+  - key: s_screen3
+    value:
+    - Windowed
+  - key: s_vsync
+    value:
+    - V-Sync
+  - key: s_antiFilter
+    value:
+    - Anisotropic filtering
+  - key: s_antiAlias
+    value:
+    - Anti Aliasing
+  - key: s_fps
+    value:
+    - FPS Limit
+  - key: s_renderScale
+    value:
+    - Render Scale
+  - key: s_shadowDistance
+    value:
+    - Shadow Distance
+  - key: s_textureQuality
+    value:
+    - Texture Quality
+  - key: s_upscalingFilter
+    value:
+    - Upscaling Filter
+  - key: s_mouseSens
+    value:
+    - Mouse Sensitivity
+  - key: i_Default
+    value:
+    - E - Interact
+  - key: deathIs
+    value:
+    - The end is inevitable
+  - key: deadScore
+    value:
+    - You completed {0} rooms before {1}
+  - key: deadCeil
+    value:
+    - being crushed by the ceiling
+  - key: deadBall
+    value:
+    - being crushed by a huge boulder
+  - key: deadSpike
+    value:
+    - being impaled on a spike
+  - key: deadDoor
+    value:
+    - being crushed by a stone door
+  - key: sett_stats
+    value:
+    - Stats
+  - key: stats
+    value:
+    - 'Score: {0}[Break]Highscore: {1}'
+  - key: currency
+    value:
+    - 'Currency: {0}'
+  - key: title
+    value:
+    - Tomb Runner
+  - key: class_exiled_dec
+    value:
+    - Decrease Interval
+  - key: class_exiled_inc
+    value:
+    - Increase Chance for Grade {0} Items
+  - key: cost
+    value:
+    - 'Cost: {0}'
+  languages:
+  - name: English
+    sysLanguage: 10
+    used: 1
+    replacementFont: {fileID: 0}
