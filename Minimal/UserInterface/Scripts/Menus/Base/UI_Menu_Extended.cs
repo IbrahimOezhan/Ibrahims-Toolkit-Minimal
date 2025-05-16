@@ -1,12 +1,9 @@
 using Sirenix.OdinInspector;
+using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using System.Collections;
-using UnityEngine.InputSystem;
-using UnityEditor.Experimental.GraphView;
 
 namespace TemplateTools
 {
