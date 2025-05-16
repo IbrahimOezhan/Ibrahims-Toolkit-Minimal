@@ -124,7 +124,7 @@ public class UI_Navigation_Manager : MonoBehaviour
             switch(newType)
             {
                 case InputTypeNavigation.BUTTONS:
-                    if(activeSelectables.Count > 0) activeSelectables[0].Select();
+                    if(activeSelectables.Count > 0) activeSelectables[0]?.Select();
                     break;
                 case InputTypeNavigation.POINT:
                     UI_Selectable.currentlySelected?.DeSelect();

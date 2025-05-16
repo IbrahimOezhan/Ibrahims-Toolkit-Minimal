@@ -6,10 +6,10 @@ namespace TemplateTools
 {
     public class UI_PageView : MonoBehaviour
     {
-        private int currentPage;
-        private int perPage;
+        private int currentPageIndex;
+        private int amountPerPage;
+        private int maxPageIndex;
 
-        [SerializeField] private int maxPage;
         [SerializeField] private UI_Selectable left;
         [SerializeField] private UI_Selectable right;
         [SerializeField] private UI_Localization pageText;
@@ -34,39 +34,38 @@ namespace TemplateTools
             {
                 Destroy(child.gameObject);
             }
-            currentPage += dir;
-            currentPage = Mathf.Clamp(currentPage, 0, maxPage);
-            OnPageChanged?.Invoke(currentPage);
-            OnPageChangedEvent?.Invoke(currentPage);
+            currentPageIndex += dir;
+            currentPageIndex = Mathf.Clamp(currentPageIndex, 0, maxPageIndex);
+            OnPageChanged?.Invoke(currentPageIndex);
+            OnPageChangedEvent?.Invoke(currentPageIndex);
             UpdateUI();
         }
 
-        public int GetCurrentPage()
+        public void SetContentAmount(int amount, int amountPerPage)
         {
-            return currentPage;
-        }
+            this.amountPerPage = amountPerPage;
 
-        public void SetContentAmount(int amount, int contentPerPage)
-        {
-            perPage = contentPerPage;
+            int maxPageIndex = 0;
+            bool notMissing = false;
 
-            int pages = amount / perPage;
+            for(int i = 0; i < amount; i+= amountPerPage)
+            {
+                maxPageIndex++;
+                if(i == amount - 1) notMissing = true;
+            }
 
-            Debug.Log("Am: " + amount + " Per: " + contentPerPage + " Pages: " + pages);
+            if (!notMissing && amount > amountPerPage) maxPageIndex++;
 
-            if (amount % contentPerPage != 0) pages++;
-            pages--;
-
-            currentPage = 0;
-            maxPage = pages;
+            currentPageIndex = 0;
+            this.maxPageIndex = maxPageIndex - 1;
             UpdateUI();
         }
 
         public void UpdateUI()
         {
-            if (pageText != null) pageText.SetParam(new() { (currentPage + 1 + "/" + (maxPage + 1)).ToString() });
-            left.gameObject.SetActive((currentPage != 0));
-            right.gameObject.SetActive(currentPage != maxPage);
+            if (pageText != null) pageText.SetParam(new() { (currentPageIndex + 1 + "/" + (maxPageIndex + 1)).ToString() });
+            left.gameObject.SetActive((currentPageIndex != 0));
+            right.gameObject.SetActive(currentPageIndex != maxPageIndex);
         }
 
         public Transform GetPageContent()
@@ -76,10 +75,15 @@ namespace TemplateTools
 
         public (int, int) GetIndexRange(int maxIndex)
         {
-            int startIndex = perPage * currentPage;
-            int endIndex = Mathf.Clamp(startIndex + perPage, startIndex, maxIndex);
+            int startIndex = amountPerPage * currentPageIndex;
+            int endIndex = Mathf.Clamp(startIndex + amountPerPage, startIndex, maxIndex);
 
             return (startIndex, endIndex);
+        }
+
+        public int GetCurrentPage()
+        {
+            return currentPageIndex;
         }
     }
 }
