@@ -1,6 +1,5 @@
-using System.Collections.Generic;
 using Sirenix.OdinInspector;
-using TemplateTools;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -167,15 +166,29 @@ namespace TemplateTools
                 SetCursor(CursorState.None);
             }
 
-            float screenWidth = Screen.width;
-            float screenHeight = Screen.height;
+            // Get camera rect in screen pixels:
+            float camX = mainCamera.rect.x * Screen.width;
+            float camY = mainCamera.rect.y * Screen.height;
+            float camWidth = mainCamera.rect.width * Screen.width;
+            float camHeight = mainCamera.rect.height * Screen.height;
+
+            // Clamp mouse position to inside camera viewport (optional, if you want cursor only in viewport)
+            float clampedX = Mathf.Clamp(mousePos.x, camX, camX + camWidth);
+            float clampedY = Mathf.Clamp(mousePos.y, camY, camY + camHeight);
+
+            // Calculate mouse position normalized inside camera viewport (0 to 1)
+            float normalizedX = (clampedX - camX) / camWidth;
+            float normalizedY = (clampedY - camY) / camHeight;
+
+            // Map normalized position to canvas local coordinates (assuming pivot at center)
             float canvasWidth = canvas.rect.width;
             float canvasHeight = canvas.rect.height;
 
-            float mappedX = Number_Utilities.Map(mousePos.x, 0, screenWidth, -(canvasWidth / 2), (canvasWidth / 2));
-            float mappedY = Number_Utilities.Map(mousePos.y, 0, screenHeight, -(canvasHeight / 2), (canvasHeight / 2));
+            float mappedX = (normalizedX - 0.5f) * canvasWidth;
+            float mappedY = (normalizedY - 0.5f) * canvasHeight;
 
             customCursor.transform.localPosition = new Vector2(mappedX, mappedY);
+
 
             if (isVisible)
             {
