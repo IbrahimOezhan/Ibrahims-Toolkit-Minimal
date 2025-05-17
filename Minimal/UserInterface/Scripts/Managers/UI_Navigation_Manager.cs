@@ -50,7 +50,7 @@ public class UI_Navigation_Manager : MonoBehaviour
             input.Dispose();
         }
 
-        Input_Manager.Instance.OnInputChanged -= OnInputChanged;
+        if(Input_Manager.Instance != null)  Input_Manager.Instance.OnInputChanged -= OnInputChanged;
     }
 
     public void AddSelectable(UI_Selectable selectable)

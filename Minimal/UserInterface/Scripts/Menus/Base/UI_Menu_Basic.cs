@@ -39,11 +39,13 @@ namespace TemplateTools
 
         protected virtual void OnEnable()
         {
-            UI_Manager.Instance.OnHide += Hide;
-
             if (hideOnPause) Menu_Pause_Instance.OnPause += OnPause;
 
-            Hide(UI_Manager.Instance.hidden);
+            if (UI_Manager.Instance != null)
+            {
+                UI_Manager.Instance.OnHide += Hide;
+                Hide(UI_Manager.Instance.hidden);
+            }
         }
 
         protected virtual void OnDisable()

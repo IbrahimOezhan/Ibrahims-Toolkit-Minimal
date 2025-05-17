@@ -17,13 +17,13 @@ namespace TemplateTools
         protected override void OnAwake()
         {
             base.OnAwake();
-            Localization_Manager.Instance.OnLanguageChanged += UpdateUI;
+            if(Localization_Manager.Instance != null) Localization_Manager.Instance.OnLanguageChanged += UpdateUI;
         }
 
         protected override void OnOnDestroy()
         {
             base.OnOnDestroy();
-            Localization_Manager.Instance.OnLanguageChanged -= UpdateUI;
+            if (Localization_Manager.Instance != null) Localization_Manager.Instance.OnLanguageChanged -= UpdateUI;
         }
 
         public void SetFallback(string _fallback)
