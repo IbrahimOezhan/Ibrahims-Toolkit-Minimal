@@ -194,15 +194,10 @@ namespace TemplateTools
             string _rawJson = JsonSerializer.Serialize(dataToSave, options);
             string _json = encrypt ? DecryptEncrypt(_rawJson) : _rawJson;
 
-            Debug.Log("Converted to Raw: " + _rawJson);
-            Debug.Log("Converted to Final: " + _json);
-
             using (StreamWriter writer = new(GetPath(_name)))
             {
                 writer.Write(_json);
             }
-
-            Debug.Log("Saved: " + _name);
         }
 
         [Button]
