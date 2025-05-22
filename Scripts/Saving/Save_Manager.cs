@@ -113,7 +113,7 @@ namespace TemplateTools
             }
             else
             {
-                Debug.LogWarning("Key not found in generic data: " + key);
+                UnityEngine.Debug.LogWarning("Key not found in generic data: " + key);
                 return false;
             }
         }
@@ -160,7 +160,7 @@ namespace TemplateTools
                 {
                     SaveObject(_name, _defaultType, _decrypt);
 
-                    Log.LogNormal("Created path: " + _path + "and returned default value", gameObject);
+                    Debug.Log("Created path: " + _path + "and returned default value", gameObject);
 
                     return _defaultType;
                 }
@@ -179,7 +179,7 @@ namespace TemplateTools
                 }
             }
 
-            Log.LogNormal("Returned Default Value for save: " + _name,gameObject);
+            Debug.Log("Returned Default Value for save: " + _name,gameObject);
 
             return _defaultType;
         }

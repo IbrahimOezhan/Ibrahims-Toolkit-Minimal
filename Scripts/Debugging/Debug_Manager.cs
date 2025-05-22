@@ -19,6 +19,9 @@ namespace TemplateTools
 
         public static Debug_Manager instance;
 
+        public bool disableLogs;
+        public static bool s_disableLogs;
+
         private void Awake()
         {
             if (instance != null && instance != this)
@@ -28,7 +31,6 @@ namespace TemplateTools
             else
             {
                 instance = this;
-                DontDestroyOnLoad(gameObject);
             }
         }
 
@@ -42,8 +44,7 @@ namespace TemplateTools
                 }
                 else debugContainer.SetActive(true);
             }
-
-
+            s_disableLogs = disableLogs;
         }
 
         private void FixedUpdate()

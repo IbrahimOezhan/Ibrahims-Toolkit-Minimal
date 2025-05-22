@@ -160,86 +160,86 @@ namespace TemplateTools
 
             UI_Menu_Config config = customConfig != null ? customConfig : UI_Manager.Instance.defaultMenuConfig;
 
-            if (menuItem.menuType == Menu_Item_Type.SETTING)
+            switch(menuItem.menuType)
             {
-                Setting _foundSetting;
+                case Menu_Item_Type.SETTING:
+                    Setting _foundSetting;
 
-                if (menuItem.setting.settingType == SettingsInterfaceType.REFERENCE)
-                {
-                    _foundSetting = menuItem.setting.reference;
-                    if(_foundSetting == null)
+                    if (menuItem.setting.settingType == SettingsInterfaceType.REFERENCE)
                     {
-                        Debug.LogWarning("Setting reference is null or not assigned");
-                        return false;
-                    }
-                }
-                else
-                {
-                    if(!Settings_Manager.Instance.GetSetting(menuItem.setting.settingsKey, out _foundSetting))
-                    {
-                        return false;
-                    }
-                }
-
-                if (!_settings.Contains(_foundSetting))
-                {
-                    _settings.Add(_foundSetting);
-
-                    UI_Setting _prefab = config.settingPrefabs.Find(x => x.settingType == _foundSetting.GetSettingsType());
-
-                    if (_prefab != null)
-                    {
-                        UI_Setting instance = Instantiate(_prefab, parent);
-                        instance.interfaceType = menuItem.setting.settingType;
-
-                        if (instance.interfaceType == SettingsInterfaceType.REFERENCE) instance.setting = menuItem.setting.reference;
-                        else instance.settingKey = _foundSetting.GetKey();
-
-                        instance.UpdateUI();
-
-                        _goInstance = instance.gameObject;
-
-                        spawnedMenuItems.Add(_goInstance);
-
-                        return true;
+                        _foundSetting = menuItem.setting.reference;
+                        if (_foundSetting == null)
+                        {
+                            UnityEngine.Debug.LogWarning("Setting reference is null or not assigned");
+                            return false;
+                        }
                     }
                     else
                     {
-                        Debug.LogWarning("No Prefab found");
-                        return false;
+                        if (!Settings_Manager.Instance.GetSetting(menuItem.setting.settingsKey, out _foundSetting))
+                        {
+                            return false;
+                        }
                     }
-                }
+
+                    if (!_settings.Contains(_foundSetting))
+                    {
+                        _settings.Add(_foundSetting);
+
+                        UI_Setting _prefab = config.settingPrefabs.Find(x => x.settingType == _foundSetting.GetSettingsType());
+
+                        if (_prefab != null)
+                        {
+                            UI_Setting instance = Instantiate(_prefab, parent);
+                            instance.interfaceType = menuItem.setting.settingType;
+
+                            if (instance.interfaceType == SettingsInterfaceType.REFERENCE) instance.setting = menuItem.setting.reference;
+                            else instance.settingKey = _foundSetting.GetKey();
+
+                            instance.UpdateUI();
+
+                            _goInstance = instance.gameObject;
+
+                            spawnedMenuItems.Add(_goInstance);
+
+                            return true;
+                        }
+                        else
+                        {
+                            UnityEngine.Debug.LogWarning("No Prefab found");
+                            return false;
+                        }
+                    }
+                    break;
+                default:
+                    UI_Menu_Button b = Instantiate(config.menuButtonPrefab, parent);
+
+                    switch (menuItem.menuType)
+                    {
+                        case Menu_Item_Type.MENUREF:
+                            (UI_Menu_Basic menuReference, int transitionReference) = menuItem.menu.GetMenu();
+                            if (transitionReference == -1) b.Initialize(menuItem.localizationKey).AddListener(() => MenuTransition(menuReference));
+                            else b.Initialize(menuItem.localizationKey).AddListener(() => MenuTransition(transitionReference));
+                            break;
+                        case Menu_Item_Type.CUSTOM:
+                            UnityEvent uevent = menuItem.customEvent;
+                            b.Initialize(menuItem.localizationKey).AddListener(() => uevent.Invoke());
+                            break;
+                        case Menu_Item_Type.BACK:
+                            b.Initialize(menuItem.localizationKey).AddListener(() => Back());
+                            break;
+                        case Menu_Item_Type.QUIT:
+                            b.Initialize(menuItem.localizationKey).AddListener(() => Application.Quit());
+                            break;
+                    }
+
+                    _goInstance = b.gameObject;
+
+                    spawnedMenuItems.Add(_goInstance);
+
+                    return true;
+
             }
-            else
-            {
-                UI_Menu_Button b = Instantiate(config.menuButtonPrefab, parent);
-
-                switch (menuItem.menuType)
-                {
-                    case Menu_Item_Type.MENUREF:
-                        (UI_Menu_Basic menuReference, int transitionReference) = menuItem.menu.GetMenu();
-                        if (transitionReference == -1) b.Initialize(menuItem.localizationKey).AddListener(() => MenuTransition(menuReference));
-                        else b.Initialize(menuItem.localizationKey).AddListener(() => MenuTransition(transitionReference));
-                        break;
-                    case Menu_Item_Type.CUSTOM:
-                        UnityEvent uevent = menuItem.customEvent;
-                        b.Initialize(menuItem.localizationKey).AddListener(() => uevent.Invoke());
-                        break;
-                    case Menu_Item_Type.BACK:
-                        b.Initialize(menuItem.localizationKey).AddListener(() => Back());
-                        break;
-                    case Menu_Item_Type.QUIT:
-                        b.Initialize(menuItem.localizationKey).AddListener(() => Application.Quit());
-                        break;
-                }
-
-                _goInstance = b.gameObject;
-
-                spawnedMenuItems.Add(_goInstance);
-
-                return true;
-            }
-
 
             return false;
         }

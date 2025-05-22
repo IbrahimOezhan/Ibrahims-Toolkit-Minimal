@@ -37,7 +37,7 @@ namespace TemplateTools
             {
                 if (spawnedManagers.Find(x => x.name == ManagerToAdd) != null)
                 {
-                    Debug.LogWarning("Object of the same type already exists");
+                    UnityEngine.Debug.LogWarning("Object of the same type already exists");
                 }
                 else
                 {

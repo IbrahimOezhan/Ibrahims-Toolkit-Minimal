@@ -43,7 +43,7 @@ namespace TemplateTools
 
                 if (manager == null)
                 {
-                    Debug.LogWarning("No Localization_Manager found in scene.");
+                    UnityEngine.Debug.LogWarning("No Localization_Manager found in scene.");
                     return (text, null);
                 }
 

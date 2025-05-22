@@ -79,7 +79,7 @@ namespace TemplateTools
         {
             if(_origin == null)
             {
-                Log.LogWarning("Provided origin menu is null");
+                Debug.LogWarning("Provided origin menu is null");
                 return;
             }
 
@@ -92,7 +92,7 @@ namespace TemplateTools
 
             if(String_Utilities.IsEmpty(_key))
             {
-                Log.LogWarning("Provided key is empty or null");
+                Debug.LogWarning("Provided key is empty or null");
                 return false;
             }
 
@@ -100,7 +100,7 @@ namespace TemplateTools
 
             if(setting == null)
             {
-                Log.LogWarning("No setting found with key: " + _key);
+                Debug.LogWarning("No setting found with key: " + _key);
                 return false;
             }
 

@@ -80,7 +80,7 @@ public class UI_Navigation_Manager : MonoBehaviour
     [Button]
     public void Check()
     {
-        Debug.Log(test2.transform.position - test1.transform.position);
+        UnityEngine.Debug.Log(test2.transform.position - test1.transform.position);
     }
 
     private void OnKeyboardInput(InputAction.CallbackContext context)
