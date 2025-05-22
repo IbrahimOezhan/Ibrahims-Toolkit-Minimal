@@ -36,7 +36,7 @@ namespace TemplateTools
         {
             if (!Application.isPlaying)
             {
-                UI_Manager manager = FindObjectOfType<UI_Manager>();
+                UI_Manager manager = FindFirstObjectByType<UI_Manager>();
 
                 TextMeshProUGUI text = this.text != null ? this.text : GetComponent<TextMeshProUGUI>();
 

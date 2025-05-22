@@ -15,8 +15,6 @@ namespace TemplateTools
             localization.SetKey(localizationKey);
 
             return selec.OnClickEvent;
-
-            return button.onClick;
         }
     }
 }

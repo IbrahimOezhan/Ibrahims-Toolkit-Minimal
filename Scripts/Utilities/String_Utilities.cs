@@ -60,11 +60,10 @@ namespace TemplateTools
 
         public static string StringListToString(List<string> list, char delimiter)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             for (int i = 0; i < list.Count; ++i)
             {
                 sb.Append(list[i] + (i == list.Count - 1 ? "" : delimiter));
-
             }
             return sb.ToString();
         }

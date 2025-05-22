@@ -24,28 +24,32 @@ namespace TemplateTools
         [HorizontalGroup("Add"), HideLabel, Dropdown("TemplateManagers"), SerializeField]
         private string ManagerToAdd;
 
+        private void OnValidate()
+        {
+            if(ManagerToAdd != "None")
+            {
+                GameObject ob = managers.Find(x => x.name == ManagerToAdd);
+                if (ob != null)
+                {
+                    if (spawnedManagers.Find(x => x.name == ManagerToAdd) != null)
+                    {
+                        Debug.LogWarning("Object of the same type already exists");
+                    }
+                    else
+                    {
+                        GameObject sOb = (GameObject)PrefabUtility.InstantiatePrefab(ob, transform);
+                        spawnedManagers.Add(sOb);
+                        sOb.name = ManagerToAdd;
+                    }
+                }
+            }
+
+            ManagerToAdd = "None";
+        }
+
         private void OnTransformChildrenChanged()
         {
             StartCoroutine(DelayedUpdate());
-        }
-
-        [HorizontalGroup("Add"), Button]
-        public void Add()
-        {
-            GameObject ob = managers.Find(x => x.name == ManagerToAdd);
-            if (ob != null)
-            {
-                if (spawnedManagers.Find(x => x.name == ManagerToAdd) != null)
-                {
-                    UnityEngine.Debug.LogWarning("Object of the same type already exists");
-                }
-                else
-                {
-                    GameObject sOb = (GameObject)PrefabUtility.InstantiatePrefab(ob, transform);
-                    spawnedManagers.Add(sOb);
-                    sOb.name = ManagerToAdd;
-                }
-            }
         }
 
         [Button]
@@ -71,13 +75,19 @@ namespace TemplateTools
             }
             else
             {
-                Debug.LogError("Failed to load all assets!");
+                Debug.LogWarning("Failed to load all assets!");
             }
 
             names.Sort((string one, string two) =>
             {
                 return one.CompareTo(two);
             });
+
+            if (names.Count > 0)
+            {
+                names.Insert(0, "None");
+            }
+            else names.Add("None");
 
             String_Utilities.CreateDropdown(names, "TemplateManagers");
         }
@@ -87,6 +97,10 @@ namespace TemplateTools
             if(gameObject.activeInHierarchy)
             {
                 StartCoroutine(DelayedUpdate());
+            }
+            else
+            {
+                Debug.Log("Object not active");
             }
         }
 
@@ -105,15 +119,7 @@ namespace TemplateTools
         [Button]
         public void SortManangers()
         {
-            spawnedManagers.Sort((GameObject one, GameObject two) =>
-            {
-                return one.name.CompareTo(two.name);
-            });
-
-            for (int i = 0; i < spawnedManagers.Count; i++)
-            {
-                spawnedManagers[i].transform.SetSiblingIndex(i);
-            }
+            Transform_Utilities.SortTransformsOfParent(spawnedManagers);
         }
 #endif
     }

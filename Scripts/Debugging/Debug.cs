@@ -10,6 +10,12 @@ namespace TemplateTools
             UnityEngine.Debug.Log(message, context);
         }
 
+        public static void Log(Vector3 message, GameObject context = null)
+        {
+            if (Debug_Manager.s_disableLogs) return;
+            UnityEngine.Debug.Log(message, context);
+        }
+
         public static void LogWarning(string message, GameObject context = null)
         {
             if (Debug_Manager.s_disableLogs) return;

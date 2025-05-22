@@ -51,5 +51,18 @@ namespace TemplateTools
             rect.offsetMin = Vector2.zero; // Left, Bottom
             rect.offsetMax = Vector2.zero; // Right, Top
         }
+
+        public static void SortTransformsOfParent(List<GameObject> children)
+        {
+            children.Sort((GameObject one, GameObject two) =>
+            {
+                return one.name.CompareTo(two.name);
+            });
+
+            for (int i = 0; i < children.Count; i++)
+            {
+                children[i].transform.SetSiblingIndex(i);
+            }
+        }
     }
 }

@@ -32,7 +32,7 @@ public class Image_Utitlities
         return texture;
     }
 
-    public static Sprite GrayscaleSprite(Sprite _sprite, Texture2D tex)
+    public static Sprite GrayscaleSprite(Sprite _sprite)
     {
         Texture2D texture2D = _sprite.texture;
 
@@ -47,12 +47,12 @@ public class Image_Utitlities
             pixels[i] = new(range, range, range, pixels[i].a);
         }
 
-        tex = new Texture2D(texture2D.width, texture2D.height, texture2D.format, false);
+        Texture2D tex = new Texture2D(texture2D.width, texture2D.height, texture2D.format, false);
 
         tex.SetPixels(pixels);
         tex.Apply();
 
-        Rect rect = new Rect(0, 0, tex.width, tex.height);
+        Rect rect = new (0, 0, tex.width, tex.height);
         return Sprite.Create(tex, rect, new Vector2(0.5f, 0.5f));
     }
 }

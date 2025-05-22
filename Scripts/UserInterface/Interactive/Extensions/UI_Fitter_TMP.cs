@@ -52,7 +52,7 @@ public class UI_Fitter_TMP : UI_Extension
     {
         if (!Application.isPlaying)
         {
-            UI_Manager manager = FindObjectOfType<UI_Manager>();
+            UI_Manager manager = FindFirstObjectByType<UI_Manager>();
 
             TextMeshProUGUI text = this.text != null ? this.text : GetComponent<TextMeshProUGUI>();
             RectTransform rect = this.rect != null ? this.rect : GetComponent<RectTransform>();

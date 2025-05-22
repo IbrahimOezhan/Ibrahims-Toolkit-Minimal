@@ -34,7 +34,7 @@ namespace TemplateTools
             }
             else
             {
-                return (text != null ? text : GetComponent<TextMeshProUGUI>(), FindObjectOfType<Localization_Manager>());
+                return (text != null ? text : GetComponent<TextMeshProUGUI>(), FindFirstObjectByType<Localization_Manager>());
             }
         }
     }
