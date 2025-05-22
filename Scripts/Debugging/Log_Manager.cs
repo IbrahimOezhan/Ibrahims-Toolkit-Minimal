@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace TemplateTools
@@ -6,11 +5,9 @@ namespace TemplateTools
     [DefaultExecutionOrder(-10)]
     public class Log_Manager : Manager_Base
     {
+        public bool disableLogs;
+        public static bool s_disableLogs;
         public static Log_Manager instance;
-
-        public List<LogTag> tags = new List<LogTag>();
-
-        public Dictionary<string, bool> tagsDisabled = new();
 
         private void Awake()
         {
@@ -21,25 +18,12 @@ namespace TemplateTools
             else
             {
                 instance = this;
-
-                for (int i = 0; i < tags.Count; i++)
-                {
-                    tagsDisabled.Add(tags[i].tag, tags[i].disable);
-                }
             }
         }
 
-        public bool IsTagDisabled(string _tag)
+        private void Update()
         {
-            if (tagsDisabled.TryGetValue(_tag, out bool result)) return result;
-            return false;
+            s_disableLogs = disableLogs;
         }
-    }
-
-    [System.Serializable]
-    public class LogTag
-    {
-        public string tag;
-        public bool disable;
     }
 }

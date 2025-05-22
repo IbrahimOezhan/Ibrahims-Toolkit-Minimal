@@ -4,11 +4,22 @@ namespace TemplateTools
 {
     public class Log
     {
-        public static void SendLog(string _title, string _tag, string _value)
+        public static void LogNormal(string message, GameObject context = null)
         {
-            if (Log_Manager.instance && Log_Manager.instance.IsTagDisabled(_tag)) return;
+            if (Log_Manager.s_disableLogs) return;
+            Debug.Log(message, context);
+        }
 
-            Debug.Log("<color=cyan>" + _tag + "</color> " + _title + " " + _value);
+        public static void LogWarning(string message, GameObject context = null)
+        {
+            if (Log_Manager.s_disableLogs) return;
+            Debug.LogWarning(message, context);
+        }
+
+        public static void LogError(string message, GameObject context = null)
+        {
+            if (Log_Manager.s_disableLogs) return;
+            Debug.LogError(message, context);
         }
     }
 }

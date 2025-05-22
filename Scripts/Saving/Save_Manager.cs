@@ -160,7 +160,7 @@ namespace TemplateTools
                 {
                     SaveObject(_name, _defaultType, _decrypt);
 
-                    Log.SendLog("Save_Manager", "Template", "Created path: " + _path + "and returned default value");
+                    Log.LogNormal("Created path: " + _path + "and returned default value", gameObject);
 
                     return _defaultType;
                 }
@@ -179,7 +179,8 @@ namespace TemplateTools
                 }
             }
 
-            Log.SendLog("Save_Manager", "Template", "Returned Default Value");
+            Log.LogNormal("Returned Default Value for save: " + _name,gameObject);
+
             return _defaultType;
         }
 
