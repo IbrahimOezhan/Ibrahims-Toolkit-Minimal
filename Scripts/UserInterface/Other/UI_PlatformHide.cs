@@ -5,7 +5,7 @@ namespace TemplateTools
 {
     public class UI_PlatformHide : MonoBehaviour
     {
-        public List<RuntimePlatform> hide;
+        [SerializeField] private List<RuntimePlatform> hide;
 
         private void Awake()
         {

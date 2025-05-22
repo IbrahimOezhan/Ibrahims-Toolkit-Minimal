@@ -16,7 +16,7 @@ namespace TemplateTools
         public override void ChangeValue(float _value)
         {
             if (setting == null) return;
-            setting.value = slider.value;
+            setting.SetValue(slider.value);
             setting.ApplyChanges();
             UpdateUI();
         }
@@ -26,8 +26,8 @@ namespace TemplateTools
             base.UpdateUI();
             slider.minValue = setting.GetMinMax().x;
             slider.maxValue = setting.GetMinMax().y;
-            slider.wholeNumbers = setting.wholeNumber;
-            slider.value = setting.value;
+            slider.wholeNumbers = setting.GetIsWholeNumber();
+            slider.value = setting.GetValue();
         }
     }
 

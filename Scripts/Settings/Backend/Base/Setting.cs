@@ -9,14 +9,14 @@ namespace TemplateTools
     /// </summary>
     public class Setting : MonoBehaviour
     {
-        public string settingsKey;
+        [SerializeField] private string settingsKey;
 
         [FoldoutGroup("Localization"), Dropdown("Localization"), SerializeField] protected string titleKey;
-        [FoldoutGroup("Localization")] public bool enableDescription;
+        [FoldoutGroup("Localization"), SerializeField] private bool enableDescription;
         [FoldoutGroup("Localization"), Dropdown("Localization"), SerializeField, ShowIf("enableDescription")] protected string descriptionKey;
 
         [SerializeField] private float defaultValue;
-        public float value;
+        [SerializeField] protected float value;
 
         [SerializeField, Space(10)] private bool useOtherRangeAsMin;
         [HideIf("useOtherRangeAsMin"), SerializeField] protected float minValue;
@@ -27,13 +27,11 @@ namespace TemplateTools
         [ShowIf("useOtherRangeAsMax"), SerializeField] private Setting rMaxValue;
 
         [Space(10)]
-        public bool wholeNumber;
-        public bool loop;
+        [SerializeField] private bool wholeNumber;
+        [SerializeField] private bool loop;
 
-        public SettingsType type;
-
-        [ShowIf("type", SettingsType.RANGE)]
-        public float steps;
+        [SerializeField] private SettingsType type;
+        [ShowIf("type", SettingsType.RANGE), SerializeField] private float steps;
 
         [SerializeField] private UnityEvent OnValueChange;
 
@@ -90,6 +88,46 @@ namespace TemplateTools
         public virtual Vector2 GetMinMax()
         {
             return new Vector2(useOtherRangeAsMin ? rMinValue.value : minValue, useOtherRangeAsMax ? rMaxValue.value : maxValue);
+        }
+
+        public bool GetLoop()
+        {
+            return loop;
+        }  
+        
+        public bool GetIsWholeNumber()
+        {
+            return wholeNumber;
+        }
+
+        public SettingsType GetSettingsType()
+        {
+            return type;
+        }
+
+        public float GetStep()
+        {
+            return steps;
+        }
+
+        public float GetValue()
+        {
+            return value;
+        }
+
+        public void SetValue(float value)
+        {
+            this.value = value;
+        }
+
+        public bool GetHasDescription()
+        {
+            return enableDescription;
+        }
+
+        public string GetKey()
+        {
+            return settingsKey;
         }
     }
 }

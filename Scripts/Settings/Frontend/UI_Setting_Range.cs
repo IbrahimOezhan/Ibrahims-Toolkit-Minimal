@@ -14,16 +14,16 @@ namespace TemplateTools
             base.Enable();
             sub.OnClickEvent.RemoveAllListeners();
             add.OnClickEvent.RemoveAllListeners();
-            sub.OnClickEvent.AddListener(() => ChangeValue(-setting.steps));
-            add.OnClickEvent.AddListener(() => ChangeValue(setting.steps));
+            sub.OnClickEvent.AddListener(() => ChangeValue(-setting.GetStep()));
+            add.OnClickEvent.AddListener(() => ChangeValue(setting.GetStep()));
         }
 
         public override void UpdateUI()
         {
             base.UpdateUI();
-            if (setting.loop) return;
-            sub.interactable = setting.value >= setting.GetMinMax().x;
-            add.interactable = setting.value <= setting.GetMinMax().y;
+            if (setting.GetLoop()) return;
+            sub.interactable = setting.GetValue() >= setting.GetMinMax().x;
+            add.interactable = setting.GetValue() <= setting.GetMinMax().y;
         }
     }
 

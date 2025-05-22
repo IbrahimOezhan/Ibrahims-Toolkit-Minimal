@@ -52,7 +52,7 @@ namespace TemplateTools
             if (interfaceType == SettingsInterfaceType.KEY)
             {
                 if (settingKey == string.Empty) return false;
-                if(!Settings_Manager.Instance.GetSettingByKey(settingKey, out setting))
+                if(!Settings_Manager.Instance.GetSetting(settingKey, out setting))
                 {
                     return false;
                 }
@@ -65,7 +65,7 @@ namespace TemplateTools
                     subscribed = true;
                 }
 
-                if (!setting.enableDescription)
+                if (!setting.GetHasDescription())
                 {
                     if (description)
                     {

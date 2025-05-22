@@ -84,7 +84,10 @@ namespace TemplateTools
 
         public void DrawRefreshButton()
         {
-            StartCoroutine(DelayedUpdate());
+            if(gameObject.activeInHierarchy)
+            {
+                StartCoroutine(DelayedUpdate());
+            }
         }
 
         private IEnumerator DelayedUpdate()

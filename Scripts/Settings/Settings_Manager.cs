@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -34,17 +35,18 @@ namespace TemplateTools
             {
                 settings.RemoveAll(x => !x.gameObject.activeInHierarchy);
 
-                data = Save_Manager.Instance.LoadObject<SaveData>("Settings", new(settings.Count));
+                data = Save_Manager.Instance.LoadObject<SaveData>("Settings", new());
 
-                if (data.data.Count != settings.Count)
+                for(int i  = 0; i < settings.Count; i++)
                 {
-                    data.data.Clear();
-                    while (data.data.Count != settings.Count) data.data.Add("");
-                }
+                    string key = settings[i].GetKey();
 
-                for (int i = 0; i < settings.Count; i++)
-                {
-                    settings[i].LoadSetting(data.data[i]);
+                    if (!data.data.ContainsKey(key))
+                    {
+                        data.data.Add(key, "");
+                    }
+
+                    settings[i].LoadSetting(data.data[key]);
                     settings[i].ApplyChanges();
                 }
             }
@@ -56,31 +58,49 @@ namespace TemplateTools
             {
                 for (int i = 0; i < settings.Count; i++)
                 {
-                    data.data[i] = settings[i].value.ToString();
+                    string key = settings[i].GetKey();
+
+                    if(data.data.ContainsKey(key))
+                    {
+                        data.data[key] = settings[i].GetValue().ToString();
+                    }
                 }
+
                 Save_Manager.Instance.SaveObject("Settings", data);
             }
         }
 
         private void OnValidate()
         {
-            List<string> _keys = new();
-            for (int i = 0; i < settings.Count; i++) _keys.Add(settings[i].settingsKey);
-            String_Utilities.CreateDropdown(_keys, "Settings");
+            String_Utilities.CreateDropdown(settings.Select(x => x.GetKey()).ToList(), "Settings");
         }
 
         public void OpenSettings(UI_Menu_Basic _origin)
         {
+            if(_origin == null)
+            {
+                Log.LogWarning("Provided origin menu is null");
+                return;
+            }
+
             _origin.MenuTransition(Menu_Settings.Instance, _origin);
         }
 
-        public bool GetSettingByKey(string _key, out Setting setting)
+        public bool GetSetting(string _key, out Setting setting)
         {
-            setting = settings.Find(x => x.settingsKey.Equals(_key));
+            setting = null;
+
+            if(String_Utilities.IsEmpty(_key))
+            {
+                Log.LogWarning("Provided key is empty or null");
+                return false;
+            }
+
+            setting = settings.Find(x => x.GetKey().Equals(_key));
 
             if(setting == null)
             {
-                Debug.LogWarning("No setting found with key: " + _key);
+                Log.LogWarning("No setting found with key: " + _key);
                 return false;
             }
 
@@ -90,17 +110,7 @@ namespace TemplateTools
         [Serializable]
         private class SaveData
         {
-            public List<string> data = new();
-
-            public SaveData()
-            {
-
-            }
-
-            public SaveData(int count)
-            {
-                for (int i = 0; i < count; i++) data.Add("");
-            }
+            public Dictionary<string,string> data = new();
         }
     }
 }

@@ -39,7 +39,7 @@ namespace TemplateTools
                 if (data.first)
                 {
                     if (attemptSetToSystemLanguage) SetWindowsLanguage();
-                    else GetLanguageSetting().value = GetDefaultLanguage();
+                    else GetLanguageSetting().SetValue(GetDefaultLanguage());
                     data.first = false;
                 }
             }
@@ -189,8 +189,7 @@ namespace TemplateTools
 
         public void SetLanguage(int _newLang)
         {
-            GetLanguageSetting().value = _newLang;
-            //Settings_Manager.Instance.SaveSpecific(GetLanguageSetting());
+            GetLanguageSetting().SetValue(_newLang);
             UpdateLanguage();
         }
 
@@ -213,7 +212,7 @@ namespace TemplateTools
                 return _fallbackText;
             }
 
-            int _language = (int)GetLanguageSetting().value;
+            int _language = (int)GetLanguageSetting().GetValue();
 
             if (textLocalizationData.TryGetValue(_key, out Dictionary<int, string> value))
             {
@@ -270,12 +269,12 @@ namespace TemplateTools
 
         public string GetCurrentLanguageName()
         {
-            return GetLanguage((int)GetLanguageSetting().value).name;
+            return GetLanguage((int)GetLanguageSetting().GetValue()).name;
         }
 
         public SystemLanguage GetCurrentSysLanguage()
         {
-            return GetLanguage((int)GetLanguageSetting().value).sysLanguage;
+            return GetLanguage((int)GetLanguageSetting().GetValue()).sysLanguage;
         }
 
         public int GetNextUsableLanguage(int i)
@@ -292,7 +291,7 @@ namespace TemplateTools
 
         public Setting GetLanguageSetting()
         {
-            if ((Application.isPlaying? Settings_Manager.Instance : FindAnyObjectByType<Settings_Manager>()).GetSettingByKey(langSettKey, out Setting setting))
+            if ((Application.isPlaying? Settings_Manager.Instance : FindAnyObjectByType<Settings_Manager>()).GetSetting(langSettKey, out Setting setting))
             {
                 return setting;
             }

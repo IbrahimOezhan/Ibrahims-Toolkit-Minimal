@@ -175,7 +175,7 @@ namespace TemplateTools
                 }
                 else
                 {
-                    if(!Settings_Manager.Instance.GetSettingByKey(menuItem.setting.settingsKey, out _foundSetting))
+                    if(!Settings_Manager.Instance.GetSetting(menuItem.setting.settingsKey, out _foundSetting))
                     {
                         return false;
                     }
@@ -185,7 +185,7 @@ namespace TemplateTools
                 {
                     _settings.Add(_foundSetting);
 
-                    UI_Setting _prefab = config.settingPrefabs.Find(x => x.settingType == _foundSetting.type);
+                    UI_Setting _prefab = config.settingPrefabs.Find(x => x.settingType == _foundSetting.GetSettingsType());
 
                     if (_prefab != null)
                     {
@@ -193,7 +193,7 @@ namespace TemplateTools
                         instance.interfaceType = menuItem.setting.settingType;
 
                         if (instance.interfaceType == SettingsInterfaceType.REFERENCE) instance.setting = menuItem.setting.reference;
-                        else instance.settingKey = _foundSetting.settingsKey;
+                        else instance.settingKey = _foundSetting.GetKey();
 
                         instance.UpdateUI();
 
