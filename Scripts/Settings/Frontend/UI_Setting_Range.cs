@@ -9,9 +9,9 @@ namespace TemplateTools
         [FoldoutGroup("UI"), SerializeField] private UI_Selectable sub;
         [FoldoutGroup("UI"), SerializeField] private UI_Selectable add;
 
-        protected override void Enable()
+        protected override void OnEnable()
         {
-            base.Enable();
+            base.OnEnable();
             sub.OnClickEvent.RemoveAllListeners();
             add.OnClickEvent.RemoveAllListeners();
             sub.OnClickEvent.AddListener(() => ChangeValue(-setting.GetStep()));

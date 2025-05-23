@@ -11,14 +11,14 @@ namespace TemplateTools
     [DefaultExecutionOrder(-1)]
     public class UI_Manager : Manager_Base
     {
-        [SerializeField] private int[] uiLayouts;
+        private bool hidden;
+
         [SerializeField] private UI_Config_So defaultConfig;
         [SerializeField] private UI_Menu_Config defaultMenuConfig;
         [SerializeField] private UI_Style_SO defaultUIStyle;
 
+        [SerializeField] private int[] uiLayouts;
         [SerializeField] private List<UI_Menu_Basic> activeMenus = new();
-
-        private bool hidden;
 
         [SerializeField] private Key screenshotKey;
         [SerializeField] private Key screenshotNoUIKey;
@@ -29,7 +29,6 @@ namespace TemplateTools
         public Action OnClick;
         public Action OnLayoutChanged;
         public Action<UI_Menu_Basic, StateMode> OnCustomTR;
-
 
         public static UI_Manager Instance;
 

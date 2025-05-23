@@ -48,14 +48,6 @@ namespace TemplateTools
             if (reloadOnOpen) ReloadMenu();
         }
 
-        private void OnValidate()
-        {
-            foreach (var element in listMenuItems)
-            {
-                element.OnTypeChanged();
-            }
-        }
-
         protected override void OnMenuDisable()
         {
             base.OnMenuDisable();
@@ -126,7 +118,7 @@ namespace TemplateTools
             {
                 if (menuItem.skip) continue;
 
-                if (SpawnMenuItem(menuItem, _settings, list, out GameObject _instance))
+                if (SpawnMenuItem(menuItem, list as RectTransform, out GameObject _instance))
                 {
                     spawnedListMenuItems.Add(_instance);
                 }
@@ -139,114 +131,28 @@ namespace TemplateTools
             {
                 if (menuItem.skip) continue;
 
-                if (SpawnMenuItem(menuItem, _settings, hiddenGroup.transform, out GameObject _instance))
+                if (SpawnMenuItem(menuItem, hiddenGroup.transform as RectTransform, out GameObject _instance))
                 {
+                    menuItem.SetRectTransform(_instance.transform as RectTransform);
                     spawnedCustomMenuItems.Add(_instance);
-                    spawnedCustomMenuItems[^1].transform.position = menuItem.spawn.position;
                 }
             }
         }
 
-        public bool SpawnMenuItem(Menu_Item menuItem, List<Setting> _settings, Transform parent)
+        public UI_Menu_Config GetMenuConfig()
         {
-            return SpawnMenuItem(menuItem, _settings, parent, out GameObject _instance);
+           return customConfig != null ? customConfig : UI_Manager.Instance.GetDefaultMenuConfig();
         }
 
-        public bool SpawnMenuItem(Menu_Item menuItem, List<Setting> _settings, Transform parent, out GameObject _goInstance)
+        public bool SpawnMenuItem(Menu_Item menuItem, RectTransform parent, out GameObject _goInstance)
         {
             _goInstance = null;
 
             if (menuItem.layoutSpecific && !UI_Manager.Instance.ShowLayout(menuItem.layout)) return false;
 
-            UI_Menu_Config config = customConfig != null ? customConfig : UI_Manager.Instance.GetDefaultMenuConfig();
+            _goInstance = menuItem.Spawn(parent, this);
 
-            switch(menuItem.menuType)
-            {
-                case Menu_Item_Type.SETTING:
-                    Setting _foundSetting;
-
-                    if (menuItem.setting.settingType == SettingsInterfaceType.REFERENCE)
-                    {
-                        _foundSetting = menuItem.setting.reference;
-                        if (_foundSetting == null)
-                        {
-                            UnityEngine.Debug.LogWarning("Setting reference is null or not assigned");
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        if (!Settings_Manager.Instance.GetSetting(menuItem.setting.settingsKey, out _foundSetting))
-                        {
-                            return false;
-                        }
-                    }
-
-                    if (!_settings.Contains(_foundSetting))
-                    {
-                        _settings.Add(_foundSetting);
-
-                        UI_Setting _prefab = config.settingPrefabs.Find(x => x.settingType == _foundSetting.GetSettingsType());
-
-                        if (_prefab != null)
-                        {
-                            UI_Setting instance = Instantiate(_prefab, parent);
-                            instance.interfaceType = menuItem.setting.settingType;
-
-                            if (instance.interfaceType == SettingsInterfaceType.REFERENCE) instance.setting = menuItem.setting.reference;
-                            else instance.settingKey = _foundSetting.GetKey();
-
-                            instance.UpdateUI();
-
-                            _goInstance = instance.gameObject;
-
-                            spawnedMenuItems.Add(_goInstance);
-
-                            return true;
-                        }
-                        else
-                        {
-                            UnityEngine.Debug.LogWarning("No Prefab found");
-                            return false;
-                        }
-                    }
-                    break;
-                default:
-                    UI_Menu_Button b = Instantiate(config.menuButtonPrefab, parent);
-
-                    switch (menuItem.menuType)
-                    {
-                        case Menu_Item_Type.MENUREF:
-                            (UI_Menu_Basic menuReference, int transitionReference) = menuItem.menu.GetMenu();
-                            if (transitionReference == -1) b.Initialize(menuItem.localizationKey).AddListener(() => MenuTransition(menuReference));
-                            else b.Initialize(menuItem.localizationKey).AddListener(() => MenuTransition(transitionReference));
-                            break;
-                        case Menu_Item_Type.CUSTOM:
-                            UnityEvent uevent = menuItem.customEvent;
-                            b.Initialize(menuItem.localizationKey).AddListener(() => uevent.Invoke());
-                            break;
-                        case Menu_Item_Type.BACK:
-                            b.Initialize(menuItem.localizationKey).AddListener(() => Back());
-                            break;
-                        case Menu_Item_Type.QUIT:
-                            b.Initialize(menuItem.localizationKey).AddListener(() => Application.Quit());
-                            break;
-                    }
-
-                    _goInstance = b.gameObject;
-
-                    spawnedMenuItems.Add(_goInstance);
-
-                    return true;
-
-            }
-
-            return false;
-        }
-
-        public Menu_Item GetMenuItemByLocalKey(string key)
-        {
-            return listMenuItems.Find(x => x.localizationKey == key);
+            return _goInstance != null;
         }
 
         public virtual void Back()

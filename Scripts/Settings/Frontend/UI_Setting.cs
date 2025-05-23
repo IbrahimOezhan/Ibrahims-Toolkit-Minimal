@@ -32,12 +32,7 @@ namespace TemplateTools
         [FoldoutGroup("UI"), SerializeField]
         protected UI_Localization description;
 
-        private void OnEnable()
-        {
-            Enable();
-        }
-
-        protected virtual void Enable()
+        protected virtual void OnEnable()
         {
             if (Initialize()) UpdateUI();
         }
@@ -45,6 +40,16 @@ namespace TemplateTools
         private void OnDestroy()
         {
             if (Localization_Manager.Instance) Localization_Manager.Instance.OnLanguageChanged -= UpdateUI;
+        }
+
+        public void Setup(string settingKey)
+        {
+            this.settingKey = settingKey;
+        }
+
+        public void Setup(Setting setting)
+        {
+            this.setting = setting;
         }
 
         public virtual bool Initialize()
