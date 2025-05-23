@@ -78,13 +78,16 @@ namespace TemplateTools
             OnHide?.Invoke(hidden);
         }
 
-        public bool ShowLayout(int layout)
+        public bool ShowLayout(List<int> layout)
         {
             bool show = false;
 
             for (int i = 0; i < uiLayouts.Length; i++)
             {
-                if (uiLayouts[i] == layout) show = true;
+                for(int j = 0; j < layout.Count;j++)
+                {
+                    if(layout[i] == uiLayouts[j]) show = true;
+                }
             }
 
             return show;

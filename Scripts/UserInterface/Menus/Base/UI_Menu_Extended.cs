@@ -116,8 +116,6 @@ namespace TemplateTools
         {
             foreach (Menu_Item menuItem in listMenuItems)
             {
-                if (menuItem.skip) continue;
-
                 if (SpawnMenuItem(menuItem, list as RectTransform, out GameObject _instance))
                 {
                     spawnedListMenuItems.Add(_instance);
@@ -129,8 +127,6 @@ namespace TemplateTools
         {
             foreach (Menu_Item_Custom menuItem in customMenuItems)
             {
-                if (menuItem.skip) continue;
-
                 if (SpawnMenuItem(menuItem, hiddenGroup.transform as RectTransform, out GameObject _instance))
                 {
                     menuItem.SetRectTransform(_instance.transform as RectTransform);
@@ -147,8 +143,6 @@ namespace TemplateTools
         public bool SpawnMenuItem(Menu_Item menuItem, RectTransform parent, out GameObject _goInstance)
         {
             _goInstance = null;
-
-            if (menuItem.layoutSpecific && !UI_Manager.Instance.ShowLayout(menuItem.layout)) return false;
 
             _goInstance = menuItem.Spawn(parent, this);
 

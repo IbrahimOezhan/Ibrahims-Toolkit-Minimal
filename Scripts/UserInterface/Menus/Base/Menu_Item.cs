@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
@@ -19,14 +20,18 @@ namespace TemplateTools
         
         private Menu_Item_Back back;
 
-        public bool skip;
+        [SerializeField] private bool skip;
 
-        public bool layoutSpecific;
+        [SerializeField] private bool layoutSpecific;
 
-        [ShowIf("layoutSpecific")] public int layout;
+        [ShowIf("layoutSpecific"), SerializeField] private List<int> showOnLayouts;
 
         public GameObject Spawn(RectTransform parent, UI_Menu_Extended menu)
         {
+            if (skip) return null;
+
+            if (layoutSpecific) if (!UI_Manager.Instance.ShowLayout(showOnLayouts)) return null;
+
             Menu_Item_Base menuItem = null;
 
             switch (menuType)

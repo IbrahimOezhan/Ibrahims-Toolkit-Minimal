@@ -4,46 +4,43 @@ using UnityEngine.UI;
 
 namespace TemplateTools
 {
-    public partial class Menu_Item
+    [System.Serializable]
+    public class Menu_Item_Setting : Menu_Item_Base
     {
-        [System.Serializable]
-        public class Menu_Item_Setting : Menu_Item_Base
+        public SettingsInterfaceType settingType;
+
+        [ShowIf("settingType", SettingsInterfaceType.REFERENCE)]
+        public Setting reference;
+
+        [ShowIf("settingType", SettingsInterfaceType.KEY), Dropdown("Settings")]
+        public string settingsKey;
+
+        public override void Spawn(RectTransform parent, UI_Menu_Extended menu)
         {
-            public SettingsInterfaceType settingType;
+            UI_Menu_Config config = menu.GetMenuConfig();
 
-            [ShowIf("settingType", SettingsInterfaceType.REFERENCE)]
-            public Setting reference;
-
-            [ShowIf("settingType", SettingsInterfaceType.KEY), Dropdown("Settings")]
-            public string settingsKey;
-
-            public override void Spawn(RectTransform parent, UI_Menu_Extended menu)
+            if (!Settings_Manager.Instance.GetSetting(settingsKey, out Setting _foundSetting))
             {
-                UI_Menu_Config config = menu.GetMenuConfig();
-
-                if (!Settings_Manager.Instance.GetSetting(settingsKey, out Setting _foundSetting))
-                {
-                    return;
-                }
-
-                UI_Setting setting = config.GetSettingsPrefab(_foundSetting.GetSettingsType());
-
-                UI_Setting settingInstance = GameObject.Instantiate(setting, parent);
-
-                spawnedObject = settingInstance.gameObject;
-
-                switch(settingType)
-                {
-                    case SettingsInterfaceType.KEY:
-                        settingInstance.Setup(settingsKey);
-                        break;
-                    case SettingsInterfaceType.REFERENCE:
-                        settingInstance.Setup(reference);
-                        break;
-                }
-
-                settingInstance.UpdateUI();
+                return;
             }
+
+            UI_Setting setting = config.GetSettingsPrefab(_foundSetting.GetSettingsType());
+
+            UI_Setting settingInstance = GameObject.Instantiate(setting, parent);
+
+            spawnedObject = settingInstance.gameObject;
+
+            switch (settingType)
+            {
+                case SettingsInterfaceType.KEY:
+                    settingInstance.Setup(settingsKey);
+                    break;
+                case SettingsInterfaceType.REFERENCE:
+                    settingInstance.Setup(reference);
+                    break;
+            }
+
+            settingInstance.UpdateUI();
         }
     }
 }
