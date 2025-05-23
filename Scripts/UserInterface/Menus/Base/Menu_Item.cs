@@ -10,15 +10,16 @@ namespace TemplateTools
     [System.Serializable]
     public partial class Menu_Item
     {
-        [OnValueChanged("OnTypeChanged"), TitleGroup("$menuType")] public Menu_Item_Type menuType;
+        [TitleGroup("$menuType")] public Menu_Item_Type menuType;
 
         [TitleGroup("$menuType"), ShowIf("menuType", Menu_Item_Type.SETTING), SerializeField] private Menu_Item_Setting setting;
 
         [TitleGroup("$menuType"), ShowIf("menuType", Menu_Item_Type.MENUREF), SerializeField] private Menu_Item_Menu menu;
 
         [TitleGroup("$menuType"), ShowIf("menuType", Menu_Item_Type.CUSTOM), SerializeField] private Menu_Item_Custom1 custom;
-        
-        private Menu_Item_Back back;
+
+        [TitleGroup("$menuType"), ShowIf("menuType", Menu_Item_Type.BACK), SerializeField] private Menu_Item_Back back = new();
+        [TitleGroup("$menuType"), ShowIf("menuType", Menu_Item_Type.QUIT), SerializeField] private Menu_Item_Quit quit = new();
 
         [SerializeField] private bool skip;
 
@@ -49,6 +50,7 @@ namespace TemplateTools
                     menuItem = back;
                     break;
                 case Menu_Item_Type.QUIT:
+                    menuItem = quit;
                     break;
             }
 

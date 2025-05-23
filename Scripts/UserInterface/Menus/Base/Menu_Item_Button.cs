@@ -2,6 +2,7 @@
 
 namespace TemplateTools
 {
+    [System.Serializable]
     public class Menu_Item_Button : Menu_Item_Base
     {
         protected UI_Menu_Button spawnedButton;

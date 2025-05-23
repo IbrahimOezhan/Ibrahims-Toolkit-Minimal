@@ -25,6 +25,31 @@ namespace TemplateTools
             UpdateUI();
         }
 
+        public void Initialize(int amount, int amountPerPage)
+        {
+            int am = 0;
+            int pages = 0;
+
+            while (am < amount)
+            {
+                am += amountPerPage;
+                pages++;
+            }
+
+            if (am > amount)
+            {
+                pages++;
+            }
+
+            currentPageIndex = 0;
+            this.amountPerPage = amountPerPage;
+            this.maxPageIndex = pages;
+
+            Debug.Log(this.maxPageIndex.ToString());
+
+            UpdateUI();
+        }
+
         public void Left() => ChangePage(-1);
         public void Right() => ChangePage(1);
 
@@ -38,26 +63,6 @@ namespace TemplateTools
             currentPageIndex = Mathf.Clamp(currentPageIndex, 0, maxPageIndex);
             OnPageChanged?.Invoke(currentPageIndex);
             OnPageChangedEvent?.Invoke(currentPageIndex);
-            UpdateUI();
-        }
-
-        public void SetContentAmount(int amount, int amountPerPage)
-        {
-            this.amountPerPage = amountPerPage;
-
-            int maxPageIndex = 0;
-            bool notMissing = false;
-
-            for(int i = 0; i < amount; i+= amountPerPage)
-            {
-                maxPageIndex++;
-                if(i == amount - 1) notMissing = true;
-            }
-
-            if (!notMissing && amount > amountPerPage) maxPageIndex++;
-
-            currentPageIndex = 0;
-            this.maxPageIndex = maxPageIndex - 1;
             UpdateUI();
         }
 

@@ -26,20 +26,23 @@ namespace TemplateTools
 
         private void OnValidate()
         {
-            if(ManagerToAdd != "None")
+            if(gameObject.scene.IsValid())
             {
-                GameObject ob = managers.Find(x => x.name == ManagerToAdd);
-                if (ob != null)
+                if (ManagerToAdd != "None")
                 {
-                    if (spawnedManagers.Find(x => x.name == ManagerToAdd) != null)
+                    GameObject ob = managers.Find(x => x.name == ManagerToAdd);
+                    if (ob != null)
                     {
-                        Debug.LogWarning("Object of the same type already exists");
-                    }
-                    else
-                    {
-                        GameObject sOb = (GameObject)PrefabUtility.InstantiatePrefab(ob, transform);
-                        spawnedManagers.Add(sOb);
-                        sOb.name = ManagerToAdd;
+                        if (spawnedManagers.Find(x => x.name == ManagerToAdd) != null)
+                        {
+                            Debug.LogWarning("Object of the same type already exists");
+                        }
+                        else
+                        {
+                            GameObject sOb = (GameObject)PrefabUtility.InstantiatePrefab(ob, transform);
+                            spawnedManagers.Add(sOb);
+                            sOb.name = ManagerToAdd;
+                        }
                     }
                 }
             }

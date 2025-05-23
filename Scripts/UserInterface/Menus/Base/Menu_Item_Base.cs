@@ -4,7 +4,7 @@ namespace TemplateTools
 {
     public abstract class Menu_Item_Base
     {
-        [SerializeField] protected GameObject spawnedObject;
+        protected GameObject spawnedObject;
 
         public GameObject GetSpawnedObject()
         {
