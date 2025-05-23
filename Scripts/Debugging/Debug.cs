@@ -6,26 +6,31 @@ namespace TemplateTools
     {
         public static void Log(string message, GameObject context = null)
         {
-            if (Debug_Manager.s_disableLogs) return;
+            if (IsDisabled()) return;
             UnityEngine.Debug.Log(message, context);
         }
 
         public static void Log(Vector3 message, GameObject context = null)
         {
-            if (Debug_Manager.s_disableLogs) return;
+            if (IsDisabled()) return;
             UnityEngine.Debug.Log(message, context);
         }
 
         public static void LogWarning(string message, GameObject context = null)
         {
-            if (Debug_Manager.s_disableLogs) return;
+            if (IsDisabled()) return;
             UnityEngine.Debug.LogWarning(message, context);
         }
 
         public static void LogError(string message, GameObject context = null)
         {
-            if (Debug_Manager.s_disableLogs) return;
+            if (IsDisabled()) return;
             UnityEngine.Debug.LogError(message, context);
+        }
+
+        public static bool IsDisabled()
+        {
+            return Debug_Manager.s_disableLogs;
         }
     }
 }

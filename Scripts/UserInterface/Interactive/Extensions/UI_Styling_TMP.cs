@@ -48,12 +48,14 @@ namespace TemplateTools
                 }
                 else
                 {
-                    return (text, style != null ? style.style : manager.defaultStyle != null ? manager.defaultStyle.style : defaultStyle);
+                    return (text, style != null ? style.style : manager.GetDefaultStyle() != null ? manager.GetDefaultStyle().style : defaultStyle);
                 }
             }
             else
             {
-                return (text, style != null ? style.style : UI_Manager.Instance.defaultStyle != null ? UI_Manager.Instance.defaultStyle.style : defaultStyle);
+                UI_Manager manager = UI_Manager.Instance;
+
+                return (text, style != null ? style.style : manager.GetDefaultStyle() != null ? manager.GetDefaultStyle().style : defaultStyle);
             }
         }
     }

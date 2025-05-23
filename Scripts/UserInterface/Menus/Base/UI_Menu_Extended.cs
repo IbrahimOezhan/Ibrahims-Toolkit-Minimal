@@ -158,7 +158,7 @@ namespace TemplateTools
 
             if (menuItem.layoutSpecific && !UI_Manager.Instance.ShowLayout(menuItem.layout)) return false;
 
-            UI_Menu_Config config = customConfig != null ? customConfig : UI_Manager.Instance.defaultMenuConfig;
+            UI_Menu_Config config = customConfig != null ? customConfig : UI_Manager.Instance.GetDefaultMenuConfig();
 
             switch(menuItem.menuType)
             {

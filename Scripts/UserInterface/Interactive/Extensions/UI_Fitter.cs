@@ -66,7 +66,7 @@ public class UI_Fitter : UI_Extension
             }
             else
             {
-                return (text, rect, customConfig != null ? customConfig.config : manager.defaultConfig.config != null ? manager.defaultConfig.config : defaultConfig);
+                return (text, rect, customConfig != null ? customConfig.config : manager.GetDefaultUIConfig().config != null ? manager.GetDefaultUIConfig().config : defaultConfig);
             }
         }
         else
@@ -76,7 +76,7 @@ public class UI_Fitter : UI_Extension
             if (customConfig != null) config = customConfig.config;
             else
             {
-                if (UI_Manager.Instance != null) config = UI_Manager.Instance.defaultConfig.config;
+                if (UI_Manager.Instance != null) config = UI_Manager.Instance.GetDefaultUIConfig().config;
                 else config = defaultConfig;
             }
 

@@ -65,12 +65,12 @@ public class UI_Fitter_TMP : UI_Extension
             }
             else
             {
-                return (text, rect, customConfig != null ? customConfig.config : manager.defaultConfig.config != null ? manager.defaultConfig.config : defaultConfig);
+                return (text, rect, customConfig != null ? customConfig.config : manager.GetDefaultUIConfig().config != null ? manager.GetDefaultUIConfig().config : defaultConfig);
             }
         }
         else
         {
-            return (text, rect, customConfig != null ? customConfig.config : UI_Manager.Instance.defaultConfig.config != null ? UI_Manager.Instance.defaultConfig.config : defaultConfig);
+            return (text, rect, customConfig != null ? customConfig.config : UI_Manager.Instance.GetDefaultUIConfig().config != null ? UI_Manager.Instance.GetDefaultUIConfig().config : defaultConfig);
         }
     }
 }

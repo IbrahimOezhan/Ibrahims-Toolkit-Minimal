@@ -11,8 +11,7 @@ public class Menu_Pause_Instance : MonoBehaviour
 
     [SerializeField, Dropdown("States")] private string pausedState;
     [SerializeField] private List<AllowPause> allowPause = new();
-
-    public UI_Menu_Basic Menu;
+    [SerializeField] private UI_Menu_Basic Menu;
 
     public static bool paused;
     public static event Action<bool> OnPause;
@@ -69,6 +68,7 @@ public class Menu_Pause_Instance : MonoBehaviour
         }
     }
 
+    [Serializable]
     private class AllowPause
     {
         public bool allow;

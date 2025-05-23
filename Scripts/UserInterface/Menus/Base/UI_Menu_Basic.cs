@@ -44,7 +44,7 @@ namespace TemplateTools
             if (UI_Manager.Instance != null)
             {
                 UI_Manager.Instance.OnHide += Hide;
-                Hide(UI_Manager.Instance.hidden);
+                UI_Manager.Instance.UpdateHide();
             }
         }
 
@@ -115,6 +115,7 @@ namespace TemplateTools
         protected void InitMenuContent()
         {
             menuUI = Transform_Utilities.GetChildren<UI_Base>(transform);
+
             foreach(UI_Base child in  menuUI)
             {
                 child.SetParentMenu(this);

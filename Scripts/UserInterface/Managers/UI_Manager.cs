@@ -11,23 +11,25 @@ namespace TemplateTools
     [DefaultExecutionOrder(-1)]
     public class UI_Manager : Manager_Base
     {
-        public int[] uiLayouts;
-        public UI_Config_So defaultConfig;
-        public UI_Menu_Config defaultMenuConfig;
-        public UI_Style_SO defaultStyle;
+        [SerializeField] private int[] uiLayouts;
+        [SerializeField] private UI_Config_So defaultConfig;
+        [SerializeField] private UI_Menu_Config defaultMenuConfig;
+        [SerializeField] private UI_Style_SO defaultUIStyle;
 
-        public List<UI_Menu_Basic> activeMenus = new();
+        [SerializeField] private List<UI_Menu_Basic> activeMenus = new();
 
-        [ReadOnly] public bool hidden;
+        private bool hidden;
+
+        [SerializeField] private Key screenshotKey;
+        [SerializeField] private Key screenshotNoUIKey;
+        [SerializeField] private Key hideKey;
 
         public Action<bool> OnHide;
         public Action OnHover;
         public Action OnClick;
         public Action OnLayoutChanged;
         public Action<UI_Menu_Basic, StateMode> OnCustomTR;
-        public Key screenshotKey;
-        public Key screenshotNoUIKey;
-        public Key hideKey; 
+
 
         public static UI_Manager Instance;
 
@@ -69,6 +71,11 @@ namespace TemplateTools
         private void Hide()
         {
             hidden = !hidden;
+            UpdateHide();
+        }
+
+        public void UpdateHide()
+        {
             OnHide?.Invoke(hidden);
         }
 
@@ -209,7 +216,20 @@ namespace TemplateTools
             activeMenus.Remove(menu);
         }
 
+        public UI_Style_SO GetDefaultStyle()
+        {
+            return defaultUIStyle;
+        }
 
+        public UI_Menu_Config GetDefaultMenuConfig()
+        {
+            return defaultMenuConfig;
+        }
+
+        public UI_Config_So GetDefaultUIConfig()
+        {
+            return defaultConfig;
+        }
     }
 
     public enum FadeMode
