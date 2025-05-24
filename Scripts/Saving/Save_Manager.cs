@@ -101,7 +101,7 @@ namespace TemplateTools
             public void SaveGenericData()
             {
                 string json = JsonSerializer.Serialize(genericData, options);
-                WriteToFile(Combine(generic), json);
+                WriteToFile(Path.Combine(folderPath,generic), json);
             }
 
             public SaveFolder(string folderPath)
@@ -115,18 +115,16 @@ namespace TemplateTools
                 }
 
                 string vPath = Path.Combine(folderPath, versionPath);
+                string gPath = Path.Combine(folderPath, generic);
 
                 nonSaveFiles.Add(vPath);
+                nonSaveFiles.Add(gPath);
 
                 if (!File.Exists(vPath))
                 {
                     WriteToFile(vPath, Application.version);
                     Debug.Log("Created missing file: " + vPath);
                 }
-
-                string gPath = Path.Combine(folderPath, generic);
-
-                nonSaveFiles.Add(gPath);
 
                 if (!File.Exists(gPath))
                 {
@@ -137,7 +135,7 @@ namespace TemplateTools
 
             public string GetVersion()
             {
-                return ReadFromFile(Combine(versionPath));
+                return ReadFromFile(Path.Combine(folderPath, versionPath));
             }
 
             public bool ValidateSaves()
@@ -163,7 +161,7 @@ namespace TemplateTools
 
                     string decrypted = String_Utilities.DecryptEncrypt(fileContents[i], code);
 
-                    Debug.Log("FileContents: " + decrypted);
+                    Debug.Log("FileContents in " +  files[i] + " : " + decrypted);
 
                     Savable s = JsonSerializer.Deserialize<Savable>(decrypted, options2);
 
@@ -279,7 +277,7 @@ namespace TemplateTools
                     return _defaultType;
                 }
 
-                string _path = CombineToText(_name);
+                string _path = Path.Combine(folderPath,_name + ".txt");
 
                 string fileContent = ReadFromFile(_path);
 
@@ -319,14 +317,14 @@ namespace TemplateTools
 
                 string _json = encrypt ? String_Utilities.DecryptEncrypt(_rawJson, code) : _rawJson;
 
-                WriteToFile(_name, _json);
+                WriteToFile(Path.Combine(folderPath, _name + ".txt"), _json);
 
                 Debug.Log("Successfully saved: " + _name + "\n" + _rawJson);
             }
 
             private void WriteToFile(string filePath, string fileContent)
             {
-                using (StreamWriter writer = new(CombineToText(filePath)))
+                using (StreamWriter writer = new(filePath))
                 {
                     writer.Write(fileContent);
                 }
@@ -345,16 +343,6 @@ namespace TemplateTools
                 }
 
                 return fileContent;
-            }
-
-            private string CombineToText(string _name)
-            {
-                return Path.Combine(folderPath, _name + ".txt");
-            }
-
-            private string Combine(string path)
-            {
-                return Path.Combine(folderPath, path);
             }
         }
     }
