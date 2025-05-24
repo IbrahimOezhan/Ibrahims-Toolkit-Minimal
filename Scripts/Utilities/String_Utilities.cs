@@ -1,5 +1,3 @@
-using Mono.Cecil.Cil;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -122,7 +120,7 @@ namespace TemplateTools
             return result;
         }
 
-        public static int CompareVersions(string v1,  string v2)
+        public static int CompareVersions(string v1, string v2)
         {
             string[] aSplit = v1.Split('.');
             string[] bSplit = v2.Split('.');

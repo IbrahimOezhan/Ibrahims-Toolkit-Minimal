@@ -1,15 +1,9 @@
-using Mono.Cecil.Cil;
-using Mono.CSharp;
-using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text.Json;
 using UnityEngine;
-using UnityEngine.WSA;
-using Wireframe;
 using Application = UnityEngine.Application;
 
 namespace TemplateTools
@@ -41,7 +35,7 @@ namespace TemplateTools
 
                 allDirectories.Remove(currentSaveFolder);
 
-                if(saveFolder.ValidateSaves())
+                if (saveFolder.ValidateSaves())
                 {
                     Debug.LogWarning("Current save folder failed validation");
 
@@ -53,7 +47,7 @@ namespace TemplateTools
                     foreach (string directory in allDirectories)
                     {
                         SaveFolder folder = new(directory);
-                        if(!folder.ValidateSaves())
+                        if (!folder.ValidateSaves())
                         {
                             Debug.LogWarning("Folder with version " + folder.GetVersion() + " succeded validation");
                             currentFolder = folder;
@@ -94,7 +88,7 @@ namespace TemplateTools
             JsonSerializerOptions options = new JsonSerializerOptions
             {
                 IncludeFields = true,
-                WriteIndented = true, 
+                WriteIndented = true,
                 UnmappedMemberHandling = System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow
             };
 
@@ -114,10 +108,10 @@ namespace TemplateTools
             {
                 this.folderPath = folderPath;
 
-                if(!Directory.Exists(folderPath))
+                if (!Directory.Exists(folderPath))
                 {
                     Directory.CreateDirectory(folderPath);
-                    Debug.Log("Created missing directory: " +  folderPath);
+                    Debug.Log("Created missing directory: " + folderPath);
                 }
 
                 string vPath = Path.Combine(folderPath, versionPath);
@@ -179,13 +173,13 @@ namespace TemplateTools
                     {
                         Type? type = Type.GetType(fullName);
 
-                        if(type == null) Debug.LogWarning("Couldnt get type of type: " + fullName);
+                        if (type == null) Debug.LogWarning("Couldnt get type of type: " + fullName);
 
                         object obj = JsonSerializer.Deserialize(decrypted, type, options);
 
                         Debug.Log("Successfull deserialization");
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         Debug.Log("Deserialize failed with type: " + fullName + " " + ex.Message);
 
@@ -265,7 +259,7 @@ namespace TemplateTools
                     {
                         Debug.LogWarning("Value is not a float: " + genericData[key]);
                         return false;
- 
+
                     }
                     return true;
                 }
