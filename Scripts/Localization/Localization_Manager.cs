@@ -34,7 +34,7 @@ namespace TemplateTools
 
                 Initialize();
 
-                data = Save_Manager.Instance.LoadObject<SaveData>("LocalizationManager", new());
+                data = Save_Manager.currentFolder.LoadObject<SaveData>("LocalizationManager", new());
 
                 if (data.first)
                 {
@@ -47,7 +47,7 @@ namespace TemplateTools
 
         private void OnDestroy()
         {
-            if (Save_Manager.Instance && Instance == this) Save_Manager.Instance.SaveObject("LocalizationManager", data);
+            if (Save_Manager.Instance && Instance == this) Save_Manager.currentFolder.SaveObject("LocalizationManager", data);
         }
 
         private void OnValidate()
@@ -304,7 +304,7 @@ namespace TemplateTools
             return languages.FindAll(x => x.used).Count;
         }
 
-        private class SaveData
+        private class SaveData : Savable
         {
             public bool first = true;
         }

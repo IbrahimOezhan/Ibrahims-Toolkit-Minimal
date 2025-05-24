@@ -9,7 +9,6 @@ public class DropdownUpdater : AssetPostprocessor
     {
         foreach (string asset in importedAssets)
         {
-            Debug.Log($"New file added: {asset}");
 
         }
     }

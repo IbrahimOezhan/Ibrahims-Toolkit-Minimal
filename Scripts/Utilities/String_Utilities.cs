@@ -1,8 +1,11 @@
+using Mono.Cecil.Cil;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace TemplateTools
 {
@@ -117,6 +120,36 @@ namespace TemplateTools
             }
 
             return result;
+        }
+
+        public static int CompareVersions(string v1,  string v2)
+        {
+            string[] aSplit = v1.Split('.');
+            string[] bSplit = v2.Split('.');
+
+            int longestLength = Mathf.Max(aSplit.Length, bSplit.Length);
+
+            for (int i = 0; i < longestLength; i++)
+            {
+                if (i >= aSplit.Length) return -1;
+                if (i >= bSplit.Length) return 1;
+
+                int numA = int.Parse(aSplit[i]);
+                int numB = int.Parse(bSplit[i]);
+
+                int dif = numA - numB;
+
+                if (dif != 0) return dif;
+            }
+
+            return 0;
+        }
+
+        public static string DecryptEncrypt(string _data, string key)
+        {
+            string _result = "";
+            for (int i = 0; i < _data.Length; i++) _result += (char)(_data[i] ^ key[i % key.Length]);
+            return _result;
         }
     }
 }

@@ -35,7 +35,7 @@ namespace TemplateTools
             {
                 settings.RemoveAll(x => !x.gameObject.activeInHierarchy);
 
-                data = Save_Manager.Instance.LoadObject<SaveData>("Settings", new());
+                data = Save_Manager.currentFolder.LoadObject<SaveData>("Settings", new());
 
                 for (int i = 0; i < settings.Count; i++)
                 {
@@ -66,7 +66,7 @@ namespace TemplateTools
                     }
                 }
 
-                Save_Manager.Instance.SaveObject("Settings", data);
+                Save_Manager.currentFolder.SaveObject("Settings", data);
             }
         }
 
@@ -108,7 +108,7 @@ namespace TemplateTools
         }
 
         [Serializable]
-        private class SaveData
+        private class SaveData : Savable
         {
             public Dictionary<string, string> data = new();
         }

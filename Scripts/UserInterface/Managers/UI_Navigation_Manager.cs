@@ -24,7 +24,6 @@ namespace TemplateTools
             else
             {
                 Instance = this;
-                DontDestroyOnLoad(gameObject);
 
                 Input_Manager.Instance.OnInputChanged += OnInputChanged;
                 Input_Manager.Instance.InputUpdate();

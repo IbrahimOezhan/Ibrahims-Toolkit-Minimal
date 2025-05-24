@@ -1,9 +1,16 @@
+using Mono.Cecil.Cil;
+using Mono.CSharp;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text.Json;
 using UnityEngine;
+using UnityEngine.WSA;
+using Wireframe;
+using Application = UnityEngine.Application;
 
 namespace TemplateTools
 {
@@ -13,17 +20,10 @@ namespace TemplateTools
     [DefaultExecutionOrder(-5)]
     public class Save_Manager : Manager_Base
     {
-        private const string save = "Saves";
-        private const string generic = "Generic.txt";
         private const string code = "a3c9e7r3gf3d5e7";
 
-        private string savePath;
-        private string genericPath;
-
-        private Dictionary<string, string> genericData = new();
-        private List<string> loadedObjets = new();
-
         public static Save_Manager Instance;
+        public static SaveFolder currentFolder;
 
         private void Awake()
         {
@@ -32,17 +32,43 @@ namespace TemplateTools
             {
                 Instance = this;
 
-                savePath = Path.Combine(Path_Utilities.GetGamePath(), save);
-                if (!Directory.Exists(savePath)) Directory.CreateDirectory(savePath);
+                string saveFolderPath = Path.Combine(Path_Utilities.GetGamePath(), "Saves");
+                string currentSaveFolder = Path.Combine(saveFolderPath, "Current");
 
-                genericPath = Path.Combine(savePath, generic);
-                if (!File.Exists(genericPath)) File.Create(genericPath).Close();
+                SaveFolder saveFolder = new(currentSaveFolder);
 
-                using (StreamReader reader = new(genericPath))
+                List<string> allDirectories = Directory.GetDirectories(saveFolderPath).ToList();
+
+                allDirectories.Remove(currentSaveFolder);
+
+                if(saveFolder.ValidateSaves())
                 {
-                    string json = reader.ReadToEnd();
-                    if (!String_Utilities.IsEmpty(json)) genericData = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
+                    Debug.LogWarning("Current save folder failed validation");
+
+                    allDirectories.Sort((a, b) =>
+                    {
+                        return String_Utilities.CompareVersions(Path.GetDirectoryName(a), Path.GetDirectoryName(b));
+                    });
+
+                    foreach (string directory in allDirectories)
+                    {
+                        SaveFolder folder = new(directory);
+                        if(!folder.ValidateSaves())
+                        {
+                            Debug.LogWarning("Folder with version " + folder.GetVersion() + " succeded validation");
+                            currentFolder = folder;
+                            break;
+                        }
+                    }
+
+                    Directory.Move(currentSaveFolder, Path.Combine(saveFolderPath, saveFolder.GetVersion()));
+
+                    saveFolder = new(currentSaveFolder);
+
+                    Debug.LogWarning("Migrating old save to version folder");
                 }
+
+                currentFolder = saveFolder;
             }
         }
 
@@ -50,178 +76,292 @@ namespace TemplateTools
         {
             if (Instance == this)
             {
-                using (StreamWriter writer = new(genericPath))
-                {
-                    string json = JsonSerializer.Serialize(genericData);
-                    writer.Write(json);
-                }
+
             }
         }
 
-        public int WriteValue(string key, string value)
+        public class SaveFolder
         {
-            try
+            public string folderPath;
+
+            private string versionPath = "Version.txt";
+
+            private string generic = "Generic.txt";
+
+            private Dictionary<string, string> genericData = new();
+            private List<string> nonSaveFiles = new();
+
+            JsonSerializerOptions options = new JsonSerializerOptions
             {
-                if (genericData.ContainsKey(key))
-                {
-                    genericData[key] = value;
-                    return 1;
-                }
-                else
-                {
-                    genericData.Add(key, value);
-                    return 0;
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("Error writing value to generic data: " + e.Message);
-                return -1;
-            }
-        }
+                IncludeFields = true,
+                WriteIndented = true, 
+                UnmappedMemberHandling = System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow
+            };
 
-        public bool ReadString(string key, out string value)
-        {
-            value = string.Empty;
-            if (genericData.ContainsKey(key))
-            {
-                value = genericData[key];
-                return true;
-            }
-            else
-            {
-                Debug.LogWarning("Key not found in generic data: " + key);
-                return false;
-            }
-        }
-
-        public bool ReadInt(string key, out int value)
-        {
-            value = 0;
-
-            if (genericData.ContainsKey(key))
-            {
-                if (int.TryParse(genericData[key], out value))
-                {
-                    return true;
-                }
-                else
-                {
-                    Debug.LogWarning("Value is not an integer: " + genericData[key]);
-                    return false;
-                }
-            }
-            else
-            {
-                UnityEngine.Debug.LogWarning("Key not found in generic data: " + key);
-                return false;
-            }
-        }
-
-        public bool ReadFloat(string key, out float value)
-        {
-            value = 0;
-
-            if (genericData.ContainsKey(key))
-            {
-                if (float.TryParse(genericData[key], out value))
-                {
-                    return true;
-                }
-                else
-                {
-                    Debug.LogWarning("Value is not a float: " + genericData[key]);
-                    return false;
-                }
-            }
-            else
-            {
-                Debug.LogWarning("Key not found in generic data: " + key);
-                return false;
-            }
-        }
-
-        public T LoadObject<T>(string _name, T _defaultType, bool _decrypt = true)
-        {
-            if (Directory.Exists(savePath))
-            {
-                string _path = GetPath(_name);
-
-                string fileContent = string.Empty;
-
-                bool fileExists = File.Exists(_path);
-
-                if (fileExists)
-                {
-                    fileContent = File.ReadAllText(_path);
-                }
-
-                if (!fileExists || String_Utilities.IsEmpty(fileContent))
-                {
-                    SaveObject(_name, _defaultType, _decrypt);
-
-                    Debug.Log("Created path: " + _path + "and returned default value", gameObject);
-
-                    return _defaultType;
-                }
-                else
-                {
-                    string _data = _decrypt ? DecryptEncrypt(fileContent) : fileContent;
-
-                    var options = new JsonSerializerOptions
-                    {
-                        IncludeFields = true,
-                        WriteIndented = true,
-                    };
-
-                    T _loadedData = JsonSerializer.Deserialize<T>(_data, options);
-                    if (_loadedData != null) return _loadedData;
-                }
-            }
-
-            Debug.Log("Returned Default Value for save: " + _name, gameObject);
-
-            return _defaultType;
-        }
-
-        public void SaveObject<T>(string _name, T dataToSave, bool encrypt = true)
-        {
-            var options = new JsonSerializerOptions
+            JsonSerializerOptions options2 = new JsonSerializerOptions
             {
                 IncludeFields = true,
                 WriteIndented = true,
             };
 
-            string _rawJson = JsonSerializer.Serialize(dataToSave, options);
-            string _json = encrypt ? DecryptEncrypt(_rawJson) : _rawJson;
-
-            using (StreamWriter writer = new(GetPath(_name)))
+            public void SaveGenericData()
             {
-                writer.Write(_json);
+                string json = JsonSerializer.Serialize(genericData, options);
+                WriteToFile(Combine(generic), json);
             }
-        }
 
-        [Button]
-        public void DeleteSaveData()
-        {
-            string[] files = Directory.GetFiles(savePath);
-
-            for (int i = 0; i < files.Length; i++)
+            public SaveFolder(string folderPath)
             {
-                File.Delete(files[i]);
+                this.folderPath = folderPath;
+
+                if(!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                    Debug.Log("Created missing directory: " +  folderPath);
+                }
+
+                string vPath = Path.Combine(folderPath, versionPath);
+
+                nonSaveFiles.Add(vPath);
+
+                if (!File.Exists(vPath))
+                {
+                    WriteToFile(vPath, Application.version);
+                    Debug.Log("Created missing file: " + vPath);
+                }
+
+                string gPath = Path.Combine(folderPath, generic);
+
+                nonSaveFiles.Add(gPath);
+
+                if (!File.Exists(gPath))
+                {
+                    using StreamWriter writer = new(gPath);
+                    Debug.Log("Created missing file: " + gPath);
+                }
             }
-        }
 
-        private string GetPath(string _name)
-        {
-            return Path.Combine(savePath, _name + ".txt");
-        }
+            public string GetVersion()
+            {
+                return ReadFromFile(Combine(versionPath));
+            }
 
-        private string DecryptEncrypt(string _data)
-        {
-            string _result = "";
-            for (int i = 0; i < _data.Length; i++) _result += (char)(_data[i] ^ code[i % code.Length]);
-            return _result;
+            public bool ValidateSaves()
+            {
+                string[] files = Directory.GetFiles(folderPath);
+                string[] fileContents = new string[files.Length];
+
+                for (int i = 0; i < files.Length; i++)
+                {
+                    fileContents[i] = ReadFromFile(files[i]);
+
+                    if (nonSaveFiles.Contains(files[i]))
+                    {
+                        Debug.Log("Validate: Contains non save file. Continueing");
+                        continue;
+                    }
+
+                    if (String_Utilities.IsEmpty(fileContents[i]))
+                    {
+                        Debug.Log("Validate: Is Empty. Continueing");
+                        continue;
+                    }
+
+                    string decrypted = String_Utilities.DecryptEncrypt(fileContents[i], code);
+
+                    Debug.Log("FileContents: " + decrypted);
+
+                    Savable s = JsonSerializer.Deserialize<Savable>(decrypted, options2);
+
+                    string fullName = s.fullName;
+
+                    try
+                    {
+                        Type? type = Type.GetType(fullName);
+
+                        if(type == null) Debug.LogWarning("Couldnt get type of type: " + fullName);
+
+                        object obj = JsonSerializer.Deserialize(decrypted, type, options);
+
+                        Debug.Log("Successfull deserialization");
+                    }
+                    catch(Exception ex)
+                    {
+                        Debug.Log("Deserialize failed with type: " + fullName + " " + ex.Message);
+
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            public int WriteValue(string key, string value)
+            {
+                try
+                {
+                    if (genericData.ContainsKey(key))
+                    {
+                        genericData[key] = value;
+                        return 1;
+                    }
+                    else
+                    {
+                        genericData.Add(key, value);
+                        return 0;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError("Error writing value to generic data: " + e.Message);
+                    return -1;
+                }
+            }
+
+            public bool ReadString(string key, out string value)
+            {
+                value = string.Empty;
+
+                if (genericData.ContainsKey(key))
+                {
+                    value = genericData[key];
+                    return true;
+                }
+                else
+                {
+                    Debug.LogWarning("Key not found in generic data: " + key);
+                    return false;
+                }
+            }
+
+            public bool ReadInt(string key, out int value)
+            {
+                value = 0;
+
+                if (genericData.ContainsKey(key))
+                {
+                    if (!int.TryParse(genericData[key], out value))
+                    {
+                        Debug.LogWarning("Value is not an integer: " + genericData[key]);
+                        return false;
+                    }
+
+                    return true;
+                }
+                else
+                {
+                    Debug.LogWarning("Key not found in generic data: " + key);
+                    return false;
+                }
+            }
+
+            public bool ReadFloat(string key, out float value)
+            {
+                value = 0;
+
+                if (genericData.ContainsKey(key))
+                {
+                    if (!float.TryParse(genericData[key], out value))
+                    {
+                        Debug.LogWarning("Value is not a float: " + genericData[key]);
+                        return false;
+ 
+                    }
+                    return true;
+                }
+                else
+                {
+                    Debug.LogWarning("Key not found in generic data: " + key);
+                    return false;
+                }
+            }
+
+            public T LoadObject<T>(string _name, T _defaultType, bool _decrypt = true)
+            {
+                if (!Directory.Exists(folderPath))
+                {
+                    Debug.Log("Returned Default Value for save: " + _name);
+
+                    return _defaultType;
+                }
+
+                string _path = CombineToText(_name);
+
+                string fileContent = ReadFromFile(_path);
+
+                if (String_Utilities.IsEmpty(fileContent))
+                {
+                    SaveObject(_name, _defaultType, _decrypt);
+
+                    Debug.Log("Created path: " + _path + "and returned default value");
+
+                    return _defaultType;
+                }
+
+                string _data = _decrypt ? String_Utilities.DecryptEncrypt(fileContent, code) : fileContent;
+
+                var options = new JsonSerializerOptions
+                {
+                    IncludeFields = true,
+                    WriteIndented = true,
+                };
+
+                T _loadedData = JsonSerializer.Deserialize<T>(_data, options);
+
+                if (_loadedData != null)
+                {
+                    Debug.LogWarning("Successfully loaded data: " + _data);
+                    return _loadedData;
+                }
+
+                Debug.LogWarning("Was not able to deserialize. Fallback to default");
+
+                return _defaultType;
+            }
+
+            public void SaveObject<T>(string _name, T dataToSave, bool encrypt = true)
+            {
+                string _rawJson = JsonSerializer.Serialize(dataToSave, options);
+
+                string _json = encrypt ? String_Utilities.DecryptEncrypt(_rawJson, code) : _rawJson;
+
+                WriteToFile(_name, _json);
+
+                Debug.Log("Successfully saved: " + _name + "\n" + _rawJson);
+            }
+
+            private void WriteToFile(string filePath, string fileContent)
+            {
+                using (StreamWriter writer = new(CombineToText(filePath)))
+                {
+                    writer.Write(fileContent);
+                }
+            }
+
+            private string ReadFromFile(string filePath)
+            {
+                string fileContent = string.Empty;
+
+                bool fileExists = File.Exists(filePath);
+
+                if (fileExists)
+                {
+                    using StreamReader reader = new(filePath);
+                    fileContent = reader.ReadToEnd();
+                }
+
+                return fileContent;
+            }
+
+            private string CombineToText(string _name)
+            {
+                return Path.Combine(folderPath, _name + ".txt");
+            }
+
+            private string Combine(string path)
+            {
+                return Path.Combine(folderPath, path);
+            }
         }
     }
 }
