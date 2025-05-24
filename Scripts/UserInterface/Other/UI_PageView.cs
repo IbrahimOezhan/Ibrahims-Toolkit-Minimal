@@ -27,25 +27,18 @@ namespace TemplateTools
 
         public void Initialize(int amount, int amountPerPage)
         {
-            int am = 0;
-            int pages = 0;
+            int i = 0;
+            int maxPageIndex = 0;
 
-            while (am < amount)
+            while (i < amount)
             {
-                am += amountPerPage;
-                pages++;
-            }
-
-            if (am > amount)
-            {
-                pages++;
+                i ++;
+                if(i == (amountPerPage * (maxPageIndex  + 1))) maxPageIndex++;
             }
 
             currentPageIndex = 0;
             this.amountPerPage = amountPerPage;
-            this.maxPageIndex = pages;
-
-            Debug.Log(this.maxPageIndex.ToString());
+            this.maxPageIndex = maxPageIndex;
 
             UpdateUI();
         }
@@ -59,10 +52,12 @@ namespace TemplateTools
             {
                 Destroy(child.gameObject);
             }
+
             currentPageIndex += dir;
             currentPageIndex = Mathf.Clamp(currentPageIndex, 0, maxPageIndex);
             OnPageChanged?.Invoke(currentPageIndex);
             OnPageChangedEvent?.Invoke(currentPageIndex);
+
             UpdateUI();
         }
 
