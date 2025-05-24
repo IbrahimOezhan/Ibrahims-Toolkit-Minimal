@@ -37,7 +37,7 @@ namespace TemplateTools
 
                 data = Save_Manager.Instance.LoadObject<SaveData>("Settings", new());
 
-                for(int i  = 0; i < settings.Count; i++)
+                for (int i = 0; i < settings.Count; i++)
                 {
                     string key = settings[i].GetKey();
 
@@ -60,7 +60,7 @@ namespace TemplateTools
                 {
                     string key = settings[i].GetKey();
 
-                    if(data.data.ContainsKey(key))
+                    if (data.data.ContainsKey(key))
                     {
                         data.data[key] = settings[i].GetValue().ToString();
                     }
@@ -77,7 +77,7 @@ namespace TemplateTools
 
         public void OpenSettings(UI_Menu_Basic _origin)
         {
-            if(_origin == null)
+            if (_origin == null)
             {
                 Debug.LogWarning("Provided origin menu is null");
                 return;
@@ -90,7 +90,7 @@ namespace TemplateTools
         {
             setting = null;
 
-            if(String_Utilities.IsEmpty(_key))
+            if (String_Utilities.IsEmpty(_key))
             {
                 Debug.LogWarning("Provided key is empty or null");
                 return false;
@@ -98,7 +98,7 @@ namespace TemplateTools
 
             setting = settings.Find(x => x.GetKey().Equals(_key));
 
-            if(setting == null)
+            if (setting == null)
             {
                 Debug.LogWarning("No setting found with key: " + _key);
                 return false;
@@ -110,7 +110,7 @@ namespace TemplateTools
         [Serializable]
         private class SaveData
         {
-            public Dictionary<string,string> data = new();
+            public Dictionary<string, string> data = new();
         }
     }
 }

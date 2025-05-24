@@ -2,7 +2,6 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace TemplateTools
@@ -137,7 +136,7 @@ namespace TemplateTools
 
         public UI_Menu_Config GetMenuConfig()
         {
-           return customConfig != null ? customConfig : UI_Manager.Instance.GetDefaultMenuConfig();
+            return customConfig != null ? customConfig : UI_Manager.Instance.GetDefaultMenuConfig();
         }
 
         public bool SpawnMenuItem(Menu_Item menuItem, RectTransform parent, out GameObject _goInstance)

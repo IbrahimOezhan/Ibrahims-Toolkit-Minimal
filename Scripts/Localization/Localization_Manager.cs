@@ -1,9 +1,9 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -291,7 +291,7 @@ namespace TemplateTools
 
         public Setting GetLanguageSetting()
         {
-            if ((Application.isPlaying? Settings_Manager.Instance : FindAnyObjectByType<Settings_Manager>()).GetSetting(langSettKey, out Setting setting))
+            if ((Application.isPlaying ? Settings_Manager.Instance : FindAnyObjectByType<Settings_Manager>()).GetSetting(langSettKey, out Setting setting))
             {
                 return setting;
             }

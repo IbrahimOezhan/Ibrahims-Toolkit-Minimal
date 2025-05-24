@@ -1,9 +1,6 @@
-﻿using System;
+﻿using Sirenix.OdinInspector;
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Splines;
 
 namespace TemplateTools
 {
@@ -38,7 +35,7 @@ namespace TemplateTools
             switch (menuType)
             {
                 case Menu_Item_Type.SETTING:
-                    menuItem = setting;                    
+                    menuItem = setting;
                     break;
                 case Menu_Item_Type.MENUREF:
                     menuItem = this.menu;

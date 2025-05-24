@@ -52,7 +52,7 @@ public class Image_Utitlities
         tex.SetPixels(pixels);
         tex.Apply();
 
-        Rect rect = new (0, 0, tex.width, tex.height);
+        Rect rect = new(0, 0, tex.width, tex.height);
         return Sprite.Create(tex, rect, new Vector2(0.5f, 0.5f));
     }
 }

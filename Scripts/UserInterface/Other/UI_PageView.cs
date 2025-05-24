@@ -32,8 +32,8 @@ namespace TemplateTools
 
             while (i < amount)
             {
-                i ++;
-                if(i == (amountPerPage * (maxPageIndex  + 1))) maxPageIndex++;
+                i++;
+                if (i == (amountPerPage * (maxPageIndex + 1))) maxPageIndex++;
             }
 
             currentPageIndex = 0;

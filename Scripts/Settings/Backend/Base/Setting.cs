@@ -93,8 +93,8 @@ namespace TemplateTools
         public bool GetLoop()
         {
             return loop;
-        }  
-        
+        }
+
         public bool GetIsWholeNumber()
         {
             return wholeNumber;

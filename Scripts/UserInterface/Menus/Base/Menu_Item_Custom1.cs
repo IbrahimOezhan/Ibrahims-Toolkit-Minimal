@@ -11,7 +11,7 @@ namespace TemplateTools
         public override void Spawn(RectTransform parent, UI_Menu_Extended menu)
         {
             base.Spawn(parent, menu);
-            spawnedButton.Initialize(localizationKey).AddListener(()=> { unityEvent.Invoke(); });
+            spawnedButton.Initialize(localizationKey).AddListener(() => { unityEvent.Invoke(); });
         }
     }
 }

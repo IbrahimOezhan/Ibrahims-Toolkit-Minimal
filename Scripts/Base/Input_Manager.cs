@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using System;
 using TemplateTools;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -34,7 +33,7 @@ public class Input_Manager : Manager_Base
 
         for (int i = 0; i < InputSystem.devices.Count; i++)
         {
-            foreach(InputControl control in  InputSystem.devices[i].allControls)
+            foreach (InputControl control in InputSystem.devices[i].allControls)
             {
                 switch (control)
                 {
@@ -64,7 +63,7 @@ public class Input_Manager : Manager_Base
             }
         }
 
-        if(currentInputType != type) InputUpdate();
+        if (currentInputType != type) InputUpdate();
     }
 
     private bool IsMouseButton(ButtonControl button)

@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -84,9 +83,9 @@ namespace TemplateTools
 
             for (int i = 0; i < uiLayouts.Length; i++)
             {
-                for(int j = 0; j < layout.Count;j++)
+                for (int j = 0; j < layout.Count; j++)
                 {
-                    if(layout[i] == uiLayouts[j]) show = true;
+                    if (layout[i] == uiLayouts[j]) show = true;
                 }
             }
 

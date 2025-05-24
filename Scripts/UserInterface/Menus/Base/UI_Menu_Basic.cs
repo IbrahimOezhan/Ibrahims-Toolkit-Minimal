@@ -105,7 +105,7 @@ namespace TemplateTools
         {
             gameObject.SetActive(val);
 
-            if(val)
+            if (val)
             {
                 OnMenuEnabled();
             }
@@ -116,7 +116,7 @@ namespace TemplateTools
         {
             menuUI = Transform_Utilities.GetChildren<UI_Base>(transform);
 
-            foreach(UI_Base child in  menuUI)
+            foreach (UI_Base child in menuUI)
             {
                 child.SetParentMenu(this);
             }

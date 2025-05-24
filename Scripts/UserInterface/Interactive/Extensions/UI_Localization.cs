@@ -17,7 +17,7 @@ namespace TemplateTools
         protected override void OnAwake()
         {
             base.OnAwake();
-            if(Localization_Manager.Instance != null) Localization_Manager.Instance.OnLanguageChanged += UpdateUI;
+            if (Localization_Manager.Instance != null) Localization_Manager.Instance.OnLanguageChanged += UpdateUI;
         }
 
         protected override void OnOnDestroy()

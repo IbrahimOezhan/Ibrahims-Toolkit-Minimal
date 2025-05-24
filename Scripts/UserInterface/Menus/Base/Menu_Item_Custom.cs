@@ -14,8 +14,8 @@ namespace TemplateTools
         {
             rectTransform.localPosition = position;
             rectTransform.localRotation = Quaternion.identity;
-            rectTransform.anchorMin = new(xAnchor.x,yAnchor.x);
-            rectTransform.anchorMax = new(xAnchor.y,yAnchor.y);
+            rectTransform.anchorMin = new(xAnchor.x, yAnchor.x);
+            rectTransform.anchorMax = new(xAnchor.y, yAnchor.y);
             rectTransform.pivot = pivot;
         }
     }

@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace TemplateTools
 {
     public interface IDebug

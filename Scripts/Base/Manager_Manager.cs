@@ -26,7 +26,7 @@ namespace TemplateTools
 
         private void OnValidate()
         {
-            if(gameObject.scene.IsValid())
+            if (gameObject.scene.IsValid())
             {
                 if (ManagerToAdd != "None")
                 {
@@ -97,7 +97,7 @@ namespace TemplateTools
 
         public void DrawRefreshButton()
         {
-            if(gameObject.activeInHierarchy)
+            if (gameObject.activeInHierarchy)
             {
                 StartCoroutine(DelayedUpdate());
             }

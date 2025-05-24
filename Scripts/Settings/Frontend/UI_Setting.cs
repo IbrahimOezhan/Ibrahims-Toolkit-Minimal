@@ -57,7 +57,7 @@ namespace TemplateTools
             if (interfaceType == SettingsInterfaceType.KEY)
             {
                 if (settingKey == string.Empty) return false;
-                if(!Settings_Manager.Instance.GetSetting(settingKey, out setting))
+                if (!Settings_Manager.Instance.GetSetting(settingKey, out setting))
                 {
                     return false;
                 }

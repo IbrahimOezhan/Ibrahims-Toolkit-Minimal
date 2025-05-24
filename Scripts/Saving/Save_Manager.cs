@@ -1,8 +1,8 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace TemplateTools
@@ -151,7 +151,7 @@ namespace TemplateTools
 
                 bool fileExists = File.Exists(_path);
 
-                if(fileExists)
+                if (fileExists)
                 {
                     fileContent = File.ReadAllText(_path);
                 }
@@ -179,7 +179,7 @@ namespace TemplateTools
                 }
             }
 
-            Debug.Log("Returned Default Value for save: " + _name,gameObject);
+            Debug.Log("Returned Default Value for save: " + _name, gameObject);
 
             return _defaultType;
         }
