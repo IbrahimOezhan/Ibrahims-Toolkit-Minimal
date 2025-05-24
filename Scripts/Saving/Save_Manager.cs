@@ -70,7 +70,7 @@ namespace TemplateTools
         {
             if (Instance == this)
             {
-
+                currentFolder.SaveGenericData();
             }
         }
 
