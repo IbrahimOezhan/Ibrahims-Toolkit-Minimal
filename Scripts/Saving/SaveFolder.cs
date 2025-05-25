@@ -1,9 +1,7 @@
-using Mono.Cecil.Cil;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using Application = UnityEngine.Application;
 
@@ -15,8 +13,8 @@ namespace TemplateTools
         private const string generic = "Generic.txt";
 
         private string encryptionKey;
-
         private string folderPath;
+
         private Dictionary<string, string> genericData = new();
         private List<string> nonSaveFiles = new();
 
@@ -51,7 +49,6 @@ namespace TemplateTools
             if (!File.Exists(vPath))
             {
                 File_Utilities.WriteToFile(vPath, Application.version);
-                Debug.Log("Created missing file: " + vPath);
             }
 
             if (!File.Exists(gPath))
@@ -91,35 +88,27 @@ namespace TemplateTools
 
                 bool tryParse = Parse_Utilties.IsValidJson(fileContents[i]);
 
-                string decrypted = tryParse ? fileContents[i] : String_Utilities.DecryptEncrypt(fileContents[i], encryptionKey);
+                if (!tryParse)
+                {
+                    fileContents[i] = String_Utilities.DecryptEncrypt(fileContents[i], encryptionKey);
 
-                Debug.Log("FileContents in " + files[i] + " : " + decrypted);
+                    Debug.Log("File " + files[i] + " probably encrypted. Attemping decryption");
 
-                Savable s = JsonSerializer.Deserialize<Savable>(decrypted, genericOptions);
+                    tryParse = Parse_Utilties.IsValidJson(fileContents[i]);
+
+                    if (!tryParse)
+                    {
+                        Debug.LogError("File still not in json format after decryption. Probably damaged");
+                    }
+                }
+
+                Savable s = GetSavable(fileContents[i]);
 
                 string fullName = s.fullName;
 
                 try
                 {
-                    Type? type = Type.GetType(fullName);
-
-                    if (type == null) Debug.LogWarning("Couldnt get type of type: " + fullName);
-
-                    JsonSerializerOptions options = new JsonSerializerOptions
-                    {
-                        IncludeFields = true,
-                        WriteIndented = true,
-                        UnmappedMemberHandling = System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow,
-                    };
-
-                    Type converterType = typeof(JsonAliasConverter<>).MakeGenericType(type);
-
-                    // Create an instance (assuming parameterless constructor)
-                    JsonConverter converterInstance = (JsonConverter)Activator.CreateInstance(converterType);
-
-                    options.Converters.Add(converterInstance);
-
-                    object obj = JsonSerializer.Deserialize(decrypted, type, options);
+                    Savable derived = GetDerivedSavable(fileContents[i], s);
 
                     Debug.Log("Successfull deserialization");
                 }
@@ -132,6 +121,100 @@ namespace TemplateTools
             }
 
             return false;
+        }
+
+        public Savable LoadObject(string _name, Savable _defaultType, bool _decrypt = true)
+        {
+            if (!Directory.Exists(folderPath))
+            {
+                Debug.Log("Returned Default Value for save: " + _name);
+
+                return _defaultType;
+            }
+
+            string _path = Path.Combine(folderPath, _name + ".txt");
+
+            string fileContent = File_Utilities.ReadFromFile(_path);
+
+            if (String_Utilities.IsEmpty(fileContent))
+            {
+                SaveObject(_name, _defaultType, _decrypt);
+
+                Debug.Log("Created path: " + _path + "and returned default value");
+
+                return _defaultType;
+            }
+
+            fileContent = _decrypt ? String_Utilities.DecryptEncrypt(fileContent, encryptionKey) : fileContent;
+
+            Savable savable = GetSavable(fileContent);
+
+            Savable derived = GetDerivedSavable(fileContent, savable);
+
+            if (derived != null)
+            {
+                Debug.LogWarning("Successfully loaded data");
+                return derived;
+            }
+
+            Debug.LogWarning("Was not able to deserialize. Fallback to default");
+
+            return _defaultType;
+        }
+
+        public void SaveObject(string _name, Savable dataToSave, bool encrypt = true)
+        {
+            JsonSerializerOptions options = new JsonSerializerOptions
+            {
+                IncludeFields = true,
+                WriteIndented = true,
+            };
+
+            string _rawJson = JsonSerializer.Serialize(dataToSave, options);
+
+            string _json = encrypt ? String_Utilities.DecryptEncrypt(_rawJson, encryptionKey) : _rawJson;
+
+            string _path = Path.Combine(folderPath, _name + ".txt");
+
+            File_Utilities.WriteToFile(_path, _json);
+        }
+
+        private void AddAliasConvert(JsonSerializerOptions options, Type type)
+        {
+            Type converterType = typeof(JsonAliasConverter<>).MakeGenericType(type);
+
+            JsonConverter converterInstance = (JsonConverter)Activator.CreateInstance(converterType);
+
+            options.Converters.Add(converterInstance);
+        }
+
+        private Savable GetSavable(string json)
+        {
+            JsonSerializerOptions genericOptions = new()
+            {
+                IncludeFields = true,
+                WriteIndented = true,
+            };
+
+            return JsonSerializer.Deserialize<Savable>(json, genericOptions);
+        }
+
+        private Savable GetDerivedSavable(string json, Savable type)
+        {
+            JsonSerializerOptions genericOptions = new()
+            {
+                IncludeFields = true,
+                WriteIndented = true,
+                UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow,
+            };
+
+            Type instanceType = Type.GetType(type.fullName);
+
+            AddAliasConvert(genericOptions, instanceType);
+
+            object o = JsonSerializer.Deserialize(json, instanceType, genericOptions);
+
+            return (Savable)o;
         }
 
         public int WriteValue(string key, string value)
@@ -200,83 +283,6 @@ namespace TemplateTools
 
             Debug.LogWarning("Key not found in generic data: " + key);
             return false;
-        }
-
-        public T LoadObject<T>(string _name, T _defaultType, bool _decrypt = true)
-        {
-            if (!Directory.Exists(folderPath))
-            {
-                Debug.Log("Returned Default Value for save: " + _name);
-
-                return _defaultType;
-            }
-
-            string _path = Path.Combine(folderPath, _name + ".txt");
-
-            string fileContent = File_Utilities.ReadFromFile(_path);
-
-            if (String_Utilities.IsEmpty(fileContent))
-            {
-                SaveObject(_name, _defaultType, _decrypt);
-
-                Debug.Log("Created path: " + _path + "and returned default value");
-
-                return _defaultType;
-            }
-
-            string _data = _decrypt ? String_Utilities.DecryptEncrypt(fileContent, encryptionKey) : fileContent;
-
-            var options = new JsonSerializerOptions
-            {
-                IncludeFields = true,
-                WriteIndented = true,
-            };
-
-            T _loadedData = JsonSerializer.Deserialize<T>(_data, options);
-
-            if (_loadedData != null)
-            {
-                Debug.LogWarning("Successfully loaded data: " + _data);
-                return _loadedData;
-            }
-
-            Debug.LogWarning("Was not able to deserialize. Fallback to default");
-
-            return _defaultType;
-        }
-
-        public void SaveObject<T>(string _name, T dataToSave, bool encrypt = true)
-        {
-            JsonSerializerOptions options = new JsonSerializerOptions
-            {
-                IncludeFields = true,
-                WriteIndented = true,
-                UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow,
-            };
-
-            string _rawJson = JsonSerializer.Serialize(dataToSave, options);
-
-            string _json = encrypt ? String_Utilities.DecryptEncrypt(_rawJson, encryptionKey) : _rawJson;
-
-            string _path = Path.Combine(folderPath, _name + ".txt");
-
-            File_Utilities.WriteToFile(_path, _json);
-        }
-
-        private bool TryDeserialize(string json, Type type, JsonSerializerOptions options, out object result)
-        {
-            result = null;
-
-            try
-            {
-                result = JsonSerializer.Deserialize(json, type, options);
-                return true;
-            }
-            catch (Exception e)
-            {
-                result = null;
-                return false;
-            }
         }
     }
 }

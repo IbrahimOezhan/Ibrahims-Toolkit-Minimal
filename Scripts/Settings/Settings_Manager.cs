@@ -35,7 +35,7 @@ namespace TemplateTools
             {
                 settings.RemoveAll(x => !x.gameObject.activeInHierarchy);
 
-                data = Save_Manager.currentFolder.LoadObject<SaveData>("Settings", new());
+                data = (SaveData)Save_Manager.currentFolder.LoadObject("Settings", new SaveData());
 
                 for (int i = 0; i < settings.Count; i++)
                 {
