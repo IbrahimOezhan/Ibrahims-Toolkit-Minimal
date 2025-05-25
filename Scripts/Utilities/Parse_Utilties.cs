@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace TemplateTools
 {
     public class Parse_Utilties
@@ -34,6 +36,24 @@ namespace TemplateTools
                 _seconds -= 60;
             }
             return _minutes.ToString("00") + ":" + _seconds.ToString("00");
+        }
+
+        public static bool IsValidJson(string json)
+        {
+            if (string.IsNullOrWhiteSpace(json))
+                return false;
+
+            try
+            {
+                using (JsonDocument.Parse(json))
+                {
+                    return true;
+                }
+            }
+            catch (JsonException)
+            {
+                return false;
+            }
         }
     }
 }
