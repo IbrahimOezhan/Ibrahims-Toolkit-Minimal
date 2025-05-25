@@ -23,6 +23,8 @@ namespace TemplateTools
             {
                 Instance = this;
 
+                Debug_Manager.bufferLogs = true;
+
                 string saveFolderPath = Path.Combine(Path_Utilities.GetGamePath(), "Saves");
                 string currentSaveFolder = Path.Combine(saveFolderPath, "Current");
 
@@ -60,6 +62,10 @@ namespace TemplateTools
                 }
 
                 currentFolder = saveFolder;
+
+
+                Debug.ReleaseBuffer();
+                Debug_Manager.bufferLogs = false;
             }
         }
 

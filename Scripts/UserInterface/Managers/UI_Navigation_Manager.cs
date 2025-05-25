@@ -81,7 +81,7 @@ namespace TemplateTools
         [BoxGroup("Testing"), Button]
         public void Test()
         {
-            Debug.Log(test2.transform.position - test1.transform.position);
+            Debug.Log((test2.transform.position - test1.transform.position).ToString());
         }
 
         private void OnKeyboardInput(InputAction.CallbackContext context)

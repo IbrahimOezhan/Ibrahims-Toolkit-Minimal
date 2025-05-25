@@ -76,13 +76,13 @@ namespace TemplateTools
 
                 if (nonSaveFiles.Contains(files[i]))
                 {
-                    Debug.Log("Validate: Contains non save file. Continueing");
+                    Debug.Log("Skipping "+ files[i]);
                     continue;
                 }
 
                 if (String_Utilities.IsEmpty(fileContents[i]))
                 {
-                    Debug.Log("Validate: Is Empty. Continueing");
+                    Debug.Log("File contents are empty for " + files[i]);
                     continue;
                 }
 
@@ -110,11 +110,11 @@ namespace TemplateTools
                 {
                     Savable derived = GetDerivedSavable(fileContents[i], s);
 
-                    Debug.Log("Successfull deserialization");
+                    Debug.Log("Deserialization successfull");
                 }
                 catch (Exception ex)
                 {
-                    Debug.Log("Deserialize failed with type: " + fullName + " " + ex.Message);
+                    Debug.Log("Deserialization failed with type: " + fullName + " " + ex.Message);
 
                     return true;
                 }
@@ -153,7 +153,7 @@ namespace TemplateTools
 
             if (derived != null)
             {
-                Debug.LogWarning("Successfully loaded data");
+                Debug.Log("Successfully loaded data");
                 return derived;
             }
 

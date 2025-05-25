@@ -19,6 +19,7 @@ namespace TemplateTools
         public static Debug_Manager instance;
 
         public bool disableLogs;
+        public static bool bufferLogs;
         public static bool s_disableLogs;
 
         private void Awake()
