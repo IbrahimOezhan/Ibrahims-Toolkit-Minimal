@@ -7,13 +7,13 @@ namespace TemplateTools
     [System.Serializable]
     public class Menu_Item_Setting : Menu_Item_Base
     {
-        public SettingsInterfaceType settingType;
+        [SerializeField] private SettingsInterfaceType settingType;
 
-        [ShowIf("settingType", SettingsInterfaceType.REFERENCE)]
-        public Setting reference;
+        [ShowIf("settingType", SettingsInterfaceType.REFERENCE),SerializeField]
+        private Setting reference;
 
-        [ShowIf("settingType", SettingsInterfaceType.KEY), Dropdown("Settings")]
-        public string settingsKey;
+        [ShowIf("settingType", SettingsInterfaceType.KEY), Dropdown("Settings"),SerializeField]
+        private string settingsKey;
 
         public override void Spawn(RectTransform parent, UI_Menu_Extended menu)
         {

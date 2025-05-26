@@ -118,6 +118,7 @@ namespace TemplateTools
                 if (SpawnMenuItem(menuItem, list as RectTransform, out GameObject _instance))
                 {
                     spawnedListMenuItems.Add(_instance);
+                    spawnedMenuItems.Add(_instance);
                 }
             }
         }
@@ -130,6 +131,7 @@ namespace TemplateTools
                 {
                     menuItem.SetRectTransform(_instance.transform as RectTransform);
                     spawnedCustomMenuItems.Add(_instance);
+                    spawnedMenuItems.Add(_instance);
                 }
             }
         }

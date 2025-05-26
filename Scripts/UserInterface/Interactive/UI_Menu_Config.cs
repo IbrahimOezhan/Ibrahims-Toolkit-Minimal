@@ -11,6 +11,6 @@ public class UI_Menu_Config : ScriptableObject
 
     public UI_Setting GetSettingsPrefab(SettingsType settingsType)
     {
-        return settingPrefabs.Find(x => x.settingType == settingsType);
+        return settingPrefabs.Find(x => x.GetSettingsType() == settingsType);
     }
 }
