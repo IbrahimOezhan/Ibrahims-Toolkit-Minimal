@@ -25,7 +25,7 @@ namespace TemplateTools
             }
             else
             {
-                Debug.Log("File at "+ filePath + " does not exist");
+                Debug.Log("File at " + filePath + " does not exist");
             }
 
             return fileContent;

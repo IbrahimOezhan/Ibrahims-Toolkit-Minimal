@@ -20,7 +20,7 @@ namespace TemplateTools
         [FoldoutGroup("Interface"), ShowIf("interfaceType", SettingsInterfaceType.REFERENCE)]
         public Setting setting;
 
-        [FoldoutGroup("Interface"),SerializeField]
+        [FoldoutGroup("Interface"), SerializeField]
         protected SettingsType settingType;
 
         [FoldoutGroup("UI"), SerializeField]

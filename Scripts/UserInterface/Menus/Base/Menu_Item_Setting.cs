@@ -9,10 +9,10 @@ namespace TemplateTools
     {
         [SerializeField] private SettingsInterfaceType settingType;
 
-        [ShowIf("settingType", SettingsInterfaceType.REFERENCE),SerializeField]
+        [ShowIf("settingType", SettingsInterfaceType.REFERENCE), SerializeField]
         private Setting reference;
 
-        [ShowIf("settingType", SettingsInterfaceType.KEY), Dropdown("Settings"),SerializeField]
+        [ShowIf("settingType", SettingsInterfaceType.KEY), Dropdown("Settings"), SerializeField]
         private string settingsKey;
 
         public override void Spawn(RectTransform parent, UI_Menu_Extended menu)

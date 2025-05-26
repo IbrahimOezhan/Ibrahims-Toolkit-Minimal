@@ -34,7 +34,7 @@ namespace TemplateTools
 
                 Initialize();
 
-                data = (SaveData) Save_Manager.currentFolder.LoadObject("LocalizationManager", new SaveData());
+                data = (SaveData)Save_Manager.currentFolder.LoadObject("LocalizationManager", new SaveData());
 
                 if (data.first)
                 {

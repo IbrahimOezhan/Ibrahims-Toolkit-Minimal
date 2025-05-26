@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 using UnityEngine;
 
@@ -12,7 +11,7 @@ namespace TemplateTools
         {
             if (IsDisabled()) return;
 
-            if(Debug_Manager.bufferLogs)
+            if (Debug_Manager.bufferLogs)
             {
                 string msg = "<color=white>" + message + "</color>";
 

@@ -30,7 +30,7 @@ namespace TemplateTools
                 SaveFolder currentSaveFolder = new(currentSavePath, encryptionKey);
 
                 string regex = "([0-9]+\\.)+[0-9]*";
-                List<string> allDirectories = Directory.GetDirectories(saveFolderPath).Where(x => Regex.IsMatch(x,regex)).ToList();
+                List<string> allDirectories = Directory.GetDirectories(saveFolderPath).Where(x => Regex.IsMatch(x, regex)).ToList();
 
                 // Enters statement if save folder is not compatible anymore
                 if (currentSaveFolder.ValidateSaves())
@@ -52,7 +52,7 @@ namespace TemplateTools
                         currentFolder = currentSaveFolder;
                     }
                     // Current is older meaning an older version of the game was launched after a newer one was already launched
-                    else if(versionCompare < 0)
+                    else if (versionCompare < 0)
                     {
                         Debug.LogWarning("Current version is older than the save file version. Trying to fall back on old version.");
 
@@ -76,19 +76,19 @@ namespace TemplateTools
                             }
                         }
 
-                        if(currentFolder == null)
+                        if (currentFolder == null)
                         {
                             Debug.LogWarning("No old save found with supported files. Creating new");
 
                             string oldVersionPath = Path.Combine(saveFolderPath, Application.version);
-                            SaveFolder newFolder = new(oldVersionPath, encryptionKey,true);
+                            SaveFolder newFolder = new(oldVersionPath, encryptionKey, true);
                             currentFolder = newFolder;
                         }
                     }
                     else
                     {
                         Debug.LogWarning("Version is identitcal but still corrupted. Creating new");
-                        currentSaveFolder = new(currentSavePath, encryptionKey,true);
+                        currentSaveFolder = new(currentSavePath, encryptionKey, true);
                         currentFolder = currentSaveFolder;
                     }
                 }
