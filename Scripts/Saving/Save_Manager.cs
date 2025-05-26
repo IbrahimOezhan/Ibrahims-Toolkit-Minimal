@@ -34,18 +34,39 @@ namespace TemplateTools
 
                 allDirectories.Remove(currentSaveFolder);
 
+                // Enters statement if save folder is not compatible anymore
                 if (saveFolder.ValidateSaves())
                 {
+                    int versionCompare = String_Utilities.CompareVersions(saveFolder.GetVersion(), Application.version);
+
+                    // Current is newer version than the save files version
+                    if (versionCompare > 0)
+                    {
+                        string oldVersionPath = Path.Combine(saveFolderPath, saveFolder.GetVersion());
+
+                        //Backup data to new folder named the old version
+                        Directory.CreateDirectory(oldVersionPath);
+                        SaveFolder.CopyAll(saveFolder, oldVersionPath);
+                    }
+                    // Current is older meaning an older version of the game was launched after a newer one was already launched
+                    else if(versionCompare < 0)
+                    {
+                        //Sort list by version number
+                        allDirectories.Sort((a, b) =>
+                        {
+                            return String_Utilities.CompareVersions(Path.GetDirectoryName(a), Path.GetDirectoryName(b));
+                        });
+                    }
+
                     Debug.LogWarning("Current save folder failed validation");
 
-                    allDirectories.Sort((a, b) =>
-                    {
-                        return String_Utilities.CompareVersions(Path.GetDirectoryName(a), Path.GetDirectoryName(b));
-                    });
+                    
 
+                    // Check if old version is compatible
                     foreach (string directory in allDirectories)
                     {
                         SaveFolder folder = new(directory, encryptionKey);
+
                         if (!folder.ValidateSaves())
                         {
                             Debug.LogWarning("Folder with version " + folder.GetVersion() + " succeded validation");
@@ -54,7 +75,6 @@ namespace TemplateTools
                         }
                     }
 
-                    Directory.Move(currentSaveFolder, Path.Combine(saveFolderPath, saveFolder.GetVersion()));
 
                     saveFolder = new(currentSaveFolder, encryptionKey);
 
@@ -62,7 +82,6 @@ namespace TemplateTools
                 }
 
                 currentFolder = saveFolder;
-
 
                 Debug.ReleaseBuffer();
                 Debug_Manager.bufferLogs = false;
