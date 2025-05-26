@@ -4,8 +4,10 @@ namespace TemplateTools
 {
     public class File_Utilities
     {
-        public static void WriteToFile(string filePath, string fileContent)
+        public static void WriteToFile(string filePath, string fileContent, bool ifDoesntExist = false)
         {
+            if (File.Exists(filePath) && ifDoesntExist) return;
+
             using StreamWriter writer = new(filePath);
             writer.Write(fileContent);
 

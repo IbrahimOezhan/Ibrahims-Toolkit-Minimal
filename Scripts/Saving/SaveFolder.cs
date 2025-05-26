@@ -12,6 +12,8 @@ namespace TemplateTools
         private const string versionPath = "Version.txt";
         private const string generic = "Generic.txt";
 
+        private string[] outdatedFiles;
+
         private string encryptionKey;
         private string folderPath;
 
@@ -30,7 +32,7 @@ namespace TemplateTools
             File_Utilities.WriteToFile(Path.Combine(folderPath, generic), json);
         }
 
-        public SaveFolder(string folderPath, string encryptionKey)
+        public SaveFolder(string folderPath, string encryptionKey, SaveFolder old = null)
         {
             this.folderPath = folderPath;
 
@@ -40,22 +42,17 @@ namespace TemplateTools
                 Debug.Log("Created missing directory: " + folderPath);
             }
 
+            if(old != null) CopyOutdated(old, this);
+
             string vPath = Path.Combine(folderPath, versionPath);
             string gPath = Path.Combine(folderPath, generic);
 
             nonSaveFiles.Add(vPath);
             nonSaveFiles.Add(gPath);
 
-            if (!File.Exists(vPath))
-            {
-                File_Utilities.WriteToFile(vPath, Application.version);
-            }
+            File_Utilities.WriteToFile(vPath, Application.version, true);
 
-            if (!File.Exists(gPath))
-            {
-                using StreamWriter writer = new(gPath);
-                Debug.Log("Created missing file: " + gPath);
-            }
+            File_Utilities.WriteToFile(gPath, string.Empty, true);
 
             this.encryptionKey = encryptionKey;
         }
@@ -69,6 +66,7 @@ namespace TemplateTools
         {
             string[] files = Directory.GetFiles(folderPath);
             string[] fileContents = new string[files.Length];
+            outdatedFiles = new string[files.Length];
 
             for (int i = 0; i < files.Length; i++)
             {
@@ -116,11 +114,39 @@ namespace TemplateTools
                 {
                     Debug.Log("Deserialization failed with type: " + fullName + " " + ex.Message);
 
+                    outdatedFiles[i] = files[i];
+
                     return true;
                 }
             }
 
             return false;
+        }
+
+        public static void CopyOutdated(SaveFolder from, string folderPath)
+        {
+            string[] outdated = from.outdatedFiles;
+            string toFilePath = folderPath;
+
+            for(int i = 0; i < outdated.Length;i++)
+            {
+                if (String_Utilities.IsEmpty(outdated[i])) continue;
+
+                string fileleName = Path.GetFileName(outdated[i]);
+
+                string newFilePath = Path.Combine(toFilePath, fileleName);
+
+                File.Copy(outdated[i], newFilePath, true);
+            }
+        }
+
+        public static void CopyAll(SaveFolder from, string folderPath)
+        {
+            string[] files = Directory.GetFiles(from.folderPath);
+            for(int i = 0; i < files.Length;i++)
+            {
+                File.Copy(files[i], Path.Combine(folderPath, Path.GetFileName(files[i])), true);   
+            }
         }
 
         public Savable LoadObject(string _name, Savable _defaultType, bool _decrypt = true)
@@ -151,15 +177,14 @@ namespace TemplateTools
 
             Savable derived = GetDerivedSavable(fileContent, savable);
 
-            if (derived != null)
+            if (derived == null)
             {
-                Debug.Log("Successfully loaded data");
-                return derived;
+                Debug.LogWarning("Was not able to deserialize. Fallback to default");
+                return _defaultType;
             }
 
-            Debug.LogWarning("Was not able to deserialize. Fallback to default");
-
-            return _defaultType;
+            Debug.Log("Successfully loaded data");
+            return derived;
         }
 
         public void SaveObject(string _name, Savable dataToSave, bool encrypt = true)
