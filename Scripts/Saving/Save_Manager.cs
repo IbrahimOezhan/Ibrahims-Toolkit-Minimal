@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace TemplateTools
@@ -23,68 +24,80 @@ namespace TemplateTools
             {
                 Instance = this;
 
-                Debug_Manager.bufferLogs = true;
-
                 string saveFolderPath = Path.Combine(Path_Utilities.GetGamePath(), "Saves");
-                string currentSaveFolder = Path.Combine(saveFolderPath, "Current");
+                string currentSavePath = Path.Combine(saveFolderPath, "Current");
 
-                SaveFolder saveFolder = new(currentSaveFolder, encryptionKey);
+                SaveFolder currentSaveFolder = new(currentSavePath, encryptionKey);
 
-                List<string> allDirectories = Directory.GetDirectories(saveFolderPath).ToList();
-
-                allDirectories.Remove(currentSaveFolder);
+                string regex = "([0-9]+\\.)+[0-9]*";
+                List<string> allDirectories = Directory.GetDirectories(saveFolderPath).Where(x => Regex.IsMatch(x,regex)).ToList();
 
                 // Enters statement if save folder is not compatible anymore
-                if (saveFolder.ValidateSaves())
+                if (currentSaveFolder.ValidateSaves())
                 {
-                    int versionCompare = String_Utilities.CompareVersions(saveFolder.GetVersion(), Application.version);
+                    Debug.LogWarning("Current save folder failed validation");
+
+                    int versionCompare = String_Utilities.CompareVersions(currentSaveFolder.GetVersion(), Application.version);
 
                     // Current is newer version than the save files version
                     if (versionCompare > 0)
                     {
-                        string oldVersionPath = Path.Combine(saveFolderPath, saveFolder.GetVersion());
+                        Debug.LogWarning("Current version is newer than the save file version. Creating backup of old save.");
 
                         //Backup data to new folder named the old version
+                        string oldVersionPath = Path.Combine(saveFolderPath, currentSaveFolder.GetVersion());
                         Directory.CreateDirectory(oldVersionPath);
-                        SaveFolder.CopyAll(saveFolder, oldVersionPath);
+                        SaveFolder.CopyAll(currentSaveFolder, oldVersionPath);
+                        currentSaveFolder.DeleteOutdated();
+                        currentFolder = currentSaveFolder;
                     }
                     // Current is older meaning an older version of the game was launched after a newer one was already launched
                     else if(versionCompare < 0)
                     {
+                        Debug.LogWarning("Current version is older than the save file version. Trying to fall back on old version.");
+
                         //Sort list by version number
                         allDirectories.Sort((a, b) =>
                         {
                             return String_Utilities.CompareVersions(Path.GetDirectoryName(a), Path.GetDirectoryName(b));
                         });
-                    }
 
-                    Debug.LogWarning("Current save folder failed validation");
-
-                    
-
-                    // Check if old version is compatible
-                    foreach (string directory in allDirectories)
-                    {
-                        SaveFolder folder = new(directory, encryptionKey);
-
-                        if (!folder.ValidateSaves())
+                        // Check if old version is compatible
+                        foreach (string directory in allDirectories)
                         {
-                            Debug.LogWarning("Folder with version " + folder.GetVersion() + " succeded validation");
-                            currentFolder = folder;
-                            break;
+                            SaveFolder oldFolder = new(directory, encryptionKey);
+
+                            if (!oldFolder.ValidateSaves())
+                            {
+                                Debug.LogWarning("Old save folder with version " + oldFolder.GetVersion() + " succeded validation");
+
+                                currentFolder = oldFolder;
+                                break;
+                            }
+                        }
+
+                        if(currentFolder == null)
+                        {
+                            Debug.LogWarning("No old save found with supported files. Creating new");
+
+                            string oldVersionPath = Path.Combine(saveFolderPath, Application.version);
+                            SaveFolder newFolder = new(oldVersionPath, encryptionKey,true);
+                            currentFolder = newFolder;
                         }
                     }
-
-
-                    saveFolder = new(currentSaveFolder, encryptionKey);
-
-                    Debug.LogWarning("Migrating old save to version folder");
+                    else
+                    {
+                        Debug.LogWarning("Version is identitcal but still corrupted. Creating new");
+                        currentSaveFolder = new(currentSavePath, encryptionKey,true);
+                        currentFolder = currentSaveFolder;
+                    }
                 }
+                else
+                {
+                    Debug.Log("Save file successfully loaded");
 
-                currentFolder = saveFolder;
-
-                Debug.ReleaseBuffer();
-                Debug_Manager.bufferLogs = false;
+                    currentFolder = currentSaveFolder;
+                }
             }
         }
 

@@ -20,8 +20,8 @@ namespace TemplateTools
         [FoldoutGroup("Interface"), ShowIf("interfaceType", SettingsInterfaceType.REFERENCE)]
         public Setting setting;
 
-        [FoldoutGroup("Interface")]
-        public SettingsType settingType;
+        [FoldoutGroup("Interface"),SerializeField]
+        protected SettingsType settingType;
 
         [FoldoutGroup("UI"), SerializeField]
         protected UI_Localization title;
@@ -104,6 +104,11 @@ namespace TemplateTools
                 value.GetComponent<Text>().text = setting.GetDisplayValue();
                 value.UpdateUI();
             }
+        }
+
+        public SettingsType GetSettingsType()
+        {
+            return settingType;
         }
     }
 }

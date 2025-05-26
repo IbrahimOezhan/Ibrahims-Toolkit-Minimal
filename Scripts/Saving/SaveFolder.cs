@@ -1,16 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
+using UnityEngine;
 using Application = UnityEngine.Application;
 
 namespace TemplateTools
 {
     public class SaveFolder
     {
-        private const string versionPath = "Version.txt";
+        private const string versionPath = "Version.meta";
         private const string generic = "Generic.txt";
+        private const string saveExtension = ".save";
+        private const string saveFileRegex = ".*\\.save";
 
         private string[] outdatedFiles;
 
@@ -18,9 +23,8 @@ namespace TemplateTools
         private string folderPath;
 
         private Dictionary<string, string> genericData = new();
-        private List<string> nonSaveFiles = new();
 
-        JsonSerializerOptions genericOptions = new JsonSerializerOptions
+        JsonSerializerOptions genericOptions = new()
         {
             IncludeFields = true,
             WriteIndented = true,
@@ -32,7 +36,7 @@ namespace TemplateTools
             File_Utilities.WriteToFile(Path.Combine(folderPath, generic), json);
         }
 
-        public SaveFolder(string folderPath, string encryptionKey, SaveFolder old = null)
+        public SaveFolder(string folderPath, string encryptionKey, bool deleteAll = false)
         {
             this.folderPath = folderPath;
 
@@ -42,13 +46,18 @@ namespace TemplateTools
                 Debug.Log("Created missing directory: " + folderPath);
             }
 
-            if(old != null) CopyOutdated(old, this);
+            if (deleteAll)
+            {
+                string[] files = GetFiles();
+
+                for (int i = 0; i < files.Length; i++)
+                {
+                    File.Delete(files[i]);
+                }
+            }
 
             string vPath = Path.Combine(folderPath, versionPath);
             string gPath = Path.Combine(folderPath, generic);
-
-            nonSaveFiles.Add(vPath);
-            nonSaveFiles.Add(gPath);
 
             File_Utilities.WriteToFile(vPath, Application.version, true);
 
@@ -62,21 +71,25 @@ namespace TemplateTools
             return File_Utilities.ReadFromFile(Path.Combine(folderPath, versionPath));
         }
 
+        public string[] GetFiles()
+        {
+            return Directory.GetFiles(folderPath);
+        }
+
+        public string[] GetFiles(string regex)
+        {
+            return Directory.GetFiles(folderPath).Where(x => Regex.IsMatch(x, regex)).ToArray();
+        }
+
         public bool ValidateSaves()
         {
-            string[] files = Directory.GetFiles(folderPath);
+            string[] files = GetFiles(saveFileRegex);
             string[] fileContents = new string[files.Length];
             outdatedFiles = new string[files.Length];
 
             for (int i = 0; i < files.Length; i++)
             {
                 fileContents[i] = File_Utilities.ReadFromFile(files[i]);
-
-                if (nonSaveFiles.Contains(files[i]))
-                {
-                    Debug.Log("Skipping "+ files[i]);
-                    continue;
-                }
 
                 if (String_Utilities.IsEmpty(fileContents[i]))
                 {
@@ -123,29 +136,25 @@ namespace TemplateTools
             return false;
         }
 
-        public static void CopyOutdated(SaveFolder from, string folderPath)
+        public void DeleteOutdated()
         {
-            string[] outdated = from.outdatedFiles;
-            string toFilePath = folderPath;
+            string[] outdated = outdatedFiles;
 
-            for(int i = 0; i < outdated.Length;i++)
+            for (int i = 0; i < outdated.Length; i++)
             {
                 if (String_Utilities.IsEmpty(outdated[i])) continue;
 
-                string fileleName = Path.GetFileName(outdated[i]);
-
-                string newFilePath = Path.Combine(toFilePath, fileleName);
-
-                File.Copy(outdated[i], newFilePath, true);
+                File.Delete(outdated[i]);
             }
         }
 
         public static void CopyAll(SaveFolder from, string folderPath)
         {
             string[] files = Directory.GetFiles(from.folderPath);
-            for(int i = 0; i < files.Length;i++)
+
+            for (int i = 0; i < files.Length; i++)
             {
-                File.Copy(files[i], Path.Combine(folderPath, Path.GetFileName(files[i])), true);   
+                File.Copy(files[i], Path.Combine(folderPath, Path.GetFileName(files[i])), true);
             }
         }
 
@@ -158,7 +167,7 @@ namespace TemplateTools
                 return _defaultType;
             }
 
-            string _path = Path.Combine(folderPath, _name + ".txt");
+            string _path = Path.Combine(folderPath, _name + saveExtension);
 
             string fileContent = File_Utilities.ReadFromFile(_path);
 
@@ -173,9 +182,13 @@ namespace TemplateTools
 
             fileContent = _decrypt ? String_Utilities.DecryptEncrypt(fileContent, encryptionKey) : fileContent;
 
+            Debug.Log("Read file content " + fileContent + " for " + _name);
+
             Savable savable = GetSavable(fileContent);
 
             Savable derived = GetDerivedSavable(fileContent, savable);
+
+            Debug.Log(JsonUtility.ToJson(savable) + " " + JsonUtility.ToJson(derived));
 
             if (derived == null)
             {
@@ -184,6 +197,7 @@ namespace TemplateTools
             }
 
             Debug.Log("Successfully loaded data");
+
             return derived;
         }
 
@@ -195,22 +209,17 @@ namespace TemplateTools
                 WriteIndented = true,
             };
 
-            string _rawJson = JsonSerializer.Serialize(dataToSave, options);
+            Type type = Type.GetType(dataToSave.fullName);
+
+            string _rawJson = JsonSerializer.Serialize(dataToSave, type, options);
+
+            Debug.Log("Saved file content " + _rawJson + " for " + _name);
 
             string _json = encrypt ? String_Utilities.DecryptEncrypt(_rawJson, encryptionKey) : _rawJson;
 
-            string _path = Path.Combine(folderPath, _name + ".txt");
+            string _path = Path.Combine(folderPath, _name + saveExtension);
 
             File_Utilities.WriteToFile(_path, _json);
-        }
-
-        private void AddAliasConvert(JsonSerializerOptions options, Type type)
-        {
-            Type converterType = typeof(JsonAliasConverter<>).MakeGenericType(type);
-
-            JsonConverter converterInstance = (JsonConverter)Activator.CreateInstance(converterType);
-
-            options.Converters.Add(converterInstance);
         }
 
         private Savable GetSavable(string json)
@@ -235,7 +244,7 @@ namespace TemplateTools
 
             Type instanceType = Type.GetType(type.fullName);
 
-            AddAliasConvert(genericOptions, instanceType);
+            Debug.Log(instanceType);
 
             object o = JsonSerializer.Deserialize(json, instanceType, genericOptions);
 

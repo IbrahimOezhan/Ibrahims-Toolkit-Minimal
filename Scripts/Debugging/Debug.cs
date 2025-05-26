@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using UnityEngine;
 
@@ -7,54 +8,74 @@ namespace TemplateTools
     {
         private static StringBuilder buffer = new();
 
-        public static void Log(string message, GameObject context = null)
+        public static void Log(object message, GameObject context = null)
         {
             if (IsDisabled()) return;
 
             if(Debug_Manager.bufferLogs)
             {
-                buffer.AppendLine("<color=white>" + message + "</color>");
+                string msg = "<color=white>" + message + "</color>";
+
+                AddToBuffer(msg);
+
                 return;
             }
 
             UnityEngine.Debug.Log(message, context);
         }
 
-        public static void LogWarning(string message, GameObject context = null)
+        public static void LogWarning(object message, GameObject context = null)
         {
             if (IsDisabled()) return;
 
             if (Debug_Manager.bufferLogs)
             {
-                buffer.AppendLine("<color=yellow>" + message + "</color>");
+                string msg = "<color=yellow>" + message + "</color>";
+
+                AddToBuffer(msg);
+
                 return;
             }
 
             UnityEngine.Debug.LogWarning(message, context);
         }
 
-        public static void LogError(string message, GameObject context = null)
+        public static void LogError(object message, GameObject context = null)
         {
             if (IsDisabled()) return;
 
             if (Debug_Manager.bufferLogs)
             {
-                buffer.AppendLine("<color=red>" + message + "</color>");
+                string msg = "<color=red>" + message + "</color>";
+
+                AddToBuffer(msg);
+
                 return;
             }
 
             UnityEngine.Debug.LogError(message, context);
         }
 
+        private static void AddToBuffer(object msg)
+        {
+            buffer.AppendLine(msg.ToString());
+        }
+
         public static void ReleaseBuffer()
         {
-            UnityEngine.Debug.Log(buffer.ToString());
-            buffer.Clear();
+            UnityEngine.Debug.Log(buffer);
+            buffer = new();
         }
 
         public static bool IsDisabled()
         {
             return Debug_Manager.s_disableLogs;
+        }
+
+        public static void Buffer(bool value)
+        {
+            Debug_Manager.bufferLogs = value;
+            buffer = new();
         }
     }
 }

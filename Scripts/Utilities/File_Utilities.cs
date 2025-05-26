@@ -10,8 +10,6 @@ namespace TemplateTools
 
             using StreamWriter writer = new(filePath);
             writer.Write(fileContent);
-
-            Debug.Log("Successfully written " + fileContent + " to " + filePath);
         }
 
         public static string ReadFromFile(string filePath)
@@ -24,8 +22,6 @@ namespace TemplateTools
             {
                 using StreamReader reader = new(filePath);
                 fileContent = reader.ReadToEnd();
-
-                Debug.Log("Successfully read " + fileContent + " from " + filePath);
             }
             else
             {
