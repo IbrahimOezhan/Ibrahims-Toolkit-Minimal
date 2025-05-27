@@ -12,6 +12,7 @@ namespace TemplateTools
     [DefaultExecutionOrder(-1)]
     public class Localization_Manager : Manager_Base
     {
+        public const string loc = "Localization";
         private const string langSettKey = "lang";
         private SaveData data;
 
