@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.UI;
 
 namespace TemplateTools
@@ -67,22 +68,11 @@ namespace TemplateTools
 
                     if (enableCustomCursor)
                     {
-                        OnCustomCursor();
+                        if (!OnCustomCursor()) OnDefaultCursor();
                     }
                     else
                     {
-                        if (isVisible)
-                        {
-                            Cursor.visible = true;
-                            Cursor.lockState = CursorLockMode.Confined;
-                        }
-                        else
-                        {
-                            Cursor.visible = false;
-                            Cursor.lockState = CursorLockMode.Locked;
-                        }
-
-                        customCursor.gameObject.SetActive(true);
+                        OnDefaultCursor();
                     }
 
                     break;
@@ -99,6 +89,7 @@ namespace TemplateTools
         {
             if (State_Manager.Instance) State_Manager.Instance.OnStateChange -= OnStateChanged;
             if (Input_Manager.Instance) Input_Manager.Instance.OnInputChanged -= OnInputTypeChanged;
+
             if (input != null)
             {
                 input.Disable();
@@ -106,7 +97,7 @@ namespace TemplateTools
             }
         }
 
-        private void OnCustomCursor()
+        private bool OnCustomCursor()
         {
             preCursorState = cursorState;
 
@@ -114,17 +105,34 @@ namespace TemplateTools
 
             found = false;
 
-            if (EventSystem.current.IsPointerOverGameObject())
-            {
-                //Debug.Log("UI Hit");
+            if (mainCamera == null) mainCamera = Camera.main;
 
-                PointerEventData pointerData = new(EventSystem.current)
+            if(mainCamera == null)
+            {
+                Debug.LogWarning("Main Camera is null");
+
+                return false;
+            }
+
+            EventSystem eventSystem = EventSystem.current;
+
+            if(eventSystem == null)
+            {
+                Debug.LogWarning("Event System is null");
+
+                return false;
+            }
+
+            if (eventSystem.IsPointerOverGameObject())
+            {
+                PointerEventData pointerData = new(eventSystem)
                 {
                     position = mousePos
                 };
 
                 List<RaycastResult> results = new();
-                EventSystem.current.RaycastAll(pointerData, results);
+
+                eventSystem.RaycastAll(pointerData, results);
 
                 if (results.Count > 0 && results[0].gameObject.GetComponent<ICursorHandler>() != null)
                 {
@@ -133,16 +141,12 @@ namespace TemplateTools
             }
             else
             {
-                if (mainCamera == null) mainCamera = Camera.main;
-
                 Vector2 mousePosWorld = mainCamera.ScreenToWorldPoint(mousePos);
 
                 RaycastHit2D hit2D = Physics2D.Raycast(mousePosWorld, Vector2.zero);
 
                 if (hit2D.transform != null)
                 {
-                    //Debug.Log("Hit: " + hit2D.transform.gameObject.name);
-
                     if (hit2D.transform.gameObject.GetComponent<ICursorHandler>() != null)
                     {
                         found = true;
@@ -152,7 +156,9 @@ namespace TemplateTools
 
             if (found)
             {
-                if (Mouse.current.leftButton.wasPressedThisFrame || (cursorState == CursorState.Down && Mouse.current.leftButton.isPressed))
+                ButtonControl leftButton = Mouse.current.leftButton;
+
+                if (leftButton.wasPressedThisFrame || (cursorState == CursorState.Down && leftButton.isPressed))
                 {
                     SetCursor(CursorState.Down);
                 }
@@ -166,11 +172,13 @@ namespace TemplateTools
                 SetCursor(CursorState.None);
             }
 
+            Rect mainCameraRect = mainCamera.rect;
+
             // Get camera rect in screen pixels:
-            float camX = mainCamera.rect.x * Screen.width;
-            float camY = mainCamera.rect.y * Screen.height;
-            float camWidth = mainCamera.rect.width * Screen.width;
-            float camHeight = mainCamera.rect.height * Screen.height;
+            float camX = mainCameraRect.x * Screen.width;
+            float camY = mainCameraRect.y * Screen.height;
+            float camWidth = mainCameraRect.width * Screen.width;
+            float camHeight = mainCameraRect.height * Screen.height;
 
             // Clamp mouse position to inside camera viewport (optional, if you want cursor only in viewport)
             float clampedX = Mathf.Clamp(mousePos.x, camX, camX + camWidth);
@@ -189,12 +197,10 @@ namespace TemplateTools
 
             customCursor.transform.localPosition = new Vector2(mappedX, mappedY);
 
-
             if (isVisible)
             {
                 customCursor.gameObject.SetActive(true);
                 Cursor.lockState = CursorLockMode.Confined;
-
             }
             else
             {
@@ -208,6 +214,24 @@ namespace TemplateTools
             }
 
             Cursor.visible = false;
+
+            return true;
+        }
+
+        private void OnDefaultCursor()
+        {
+            if (isVisible)
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.Confined;
+            }
+            else
+            {
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+
+            customCursor.gameObject.SetActive(false);
         }
 
         private bool IsVisible(string state)
