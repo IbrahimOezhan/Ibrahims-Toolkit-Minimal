@@ -49,6 +49,12 @@ namespace TemplateTools
             if (!float.TryParse(_value, out value)) value = defaultValue;
         }
 
+        public void LoadDefault()
+        {
+            ChangeValue(defaultValue - value);
+            ApplyChanges();
+        }
+
         public virtual void ChangeValue(float _value)
         {
             value += _value;
@@ -69,6 +75,26 @@ namespace TemplateTools
             OnValueChange.Invoke();
         }
 
+        public void SetValue(float value)
+        {
+            this.value = value;
+        }
+
+        public SettingsType GetSettingsType()
+        {
+            return type;
+        }
+
+        public UnityEvent GetEvent()
+        {
+            return OnValueChange;
+        }
+
+        public virtual Vector2 GetMinMax()
+        {
+            return new Vector2(useOtherRangeAsMin ? rMinValue.value : minValue, useOtherRangeAsMax ? rMaxValue.value : maxValue);
+        }
+
         public virtual string GetTitleValue()
         {
             return titleKey;
@@ -85,24 +111,9 @@ namespace TemplateTools
             return _value;
         }
 
-        public virtual Vector2 GetMinMax()
+        public string GetKey()
         {
-            return new Vector2(useOtherRangeAsMin ? rMinValue.value : minValue, useOtherRangeAsMax ? rMaxValue.value : maxValue);
-        }
-
-        public bool GetLoop()
-        {
-            return loop;
-        }
-
-        public bool GetIsWholeNumber()
-        {
-            return wholeNumber;
-        }
-
-        public SettingsType GetSettingsType()
-        {
-            return type;
+            return settingsKey;
         }
 
         public float GetStep()
@@ -115,19 +126,19 @@ namespace TemplateTools
             return value;
         }
 
-        public void SetValue(float value)
-        {
-            this.value = value;
-        }
-
         public bool GetHasDescription()
         {
             return enableDescription;
         }
 
-        public string GetKey()
+        public bool GetLoop()
         {
-            return settingsKey;
+            return loop;
+        }
+
+        public bool GetIsWholeNumber()
+        {
+            return wholeNumber;
         }
     }
 }
