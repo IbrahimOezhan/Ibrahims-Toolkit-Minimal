@@ -1,4 +1,5 @@
 using System;
+using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
 namespace TemplateTools
@@ -14,12 +15,12 @@ namespace TemplateTools
         public override void ApplyChanges()
         {
             base.ApplyChanges();
-            Settings_Manager.Instance.pipelineAsset.upscalingFilter = (UpscalingFilterSelection)value;
+            ((UniversalRenderPipelineAsset)GraphicsSettings.defaultRenderPipeline).upscalingFilter = (UpscalingFilterSelection)value;
         }
 
         public override string GetDisplayValue()
         {
-            return Settings_Manager.Instance.pipelineAsset.upscalingFilter.ToString();
+            return ((UniversalRenderPipelineAsset)GraphicsSettings.defaultRenderPipeline).upscalingFilter.ToString();
         }
     }
 }

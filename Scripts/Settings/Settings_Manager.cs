@@ -13,8 +13,6 @@ namespace TemplateTools
 
         [SerializeField] private List<Setting> settings;
 
-        public UniversalRenderPipelineAsset pipelineAsset;
-
         public static Settings_Manager Instance;
 
         private void Awake()

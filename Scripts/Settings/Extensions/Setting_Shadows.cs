@@ -1,3 +1,6 @@
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+
 namespace TemplateTools
 {
     public class Setting_Shadows : Setting
@@ -5,7 +8,7 @@ namespace TemplateTools
         public override void ApplyChanges()
         {
             base.ApplyChanges();
-            Settings_Manager.Instance.pipelineAsset.shadowDistance = value;
+            ((UniversalRenderPipelineAsset)GraphicsSettings.defaultRenderPipeline).shadowDistance = value;
         }
     }
 }
