@@ -9,29 +9,25 @@ namespace TemplateTools
     /// </summary>
     public class Setting : MonoBehaviour
     {
-        [SerializeField] private string settingsKey;
+        [SerializeField, Dropdown("Localization")] private string settingsKey;
 
-        [FoldoutGroup("Localization"), Dropdown("Localization"), SerializeField] protected string titleKey;
-        [FoldoutGroup("Localization"), SerializeField] private bool enableDescription;
-        [FoldoutGroup("Localization"), Dropdown("Localization"), SerializeField, ShowIf("enableDescription")] protected string descriptionKey;
+        [BoxGroup("Value"), SerializeField] private float defaultValue;
+        [BoxGroup("Value"), SerializeField] protected float value;
 
-        [SerializeField] private float defaultValue;
-        [SerializeField] protected float value;
+        [BoxGroup("Value"), SerializeField] private bool wholeNumber;
+        [BoxGroup("Value"), SerializeField] private bool loop;
 
-        [SerializeField, Space(10)] private bool useOtherRangeAsMin;
-        [HideIf("useOtherRangeAsMin"), SerializeField] protected float minValue;
-        [ShowIf("useOtherRangeAsMin"), SerializeField] private Setting rMinValue;
+        [BoxGroup("Min"), SerializeField] private bool useOtherRangeAsMin;
+        [BoxGroup("Min"), HideIf("useOtherRangeAsMin"), SerializeField] protected float minValue;
+        [BoxGroup("Min"), ShowIf("useOtherRangeAsMin"), SerializeField] private Setting rMinValue;
 
-        [SerializeField, Space(10)] private bool useOtherRangeAsMax;
-        [HideIf("useOtherRangeAsMax"), SerializeField] protected float maxValue;
-        [ShowIf("useOtherRangeAsMax"), SerializeField] private Setting rMaxValue;
+        [BoxGroup("Max"),SerializeField] private bool useOtherRangeAsMax;
+        [BoxGroup("Max"), HideIf("useOtherRangeAsMax"), SerializeField] protected float maxValue;
+        [BoxGroup("Max"), ShowIf("useOtherRangeAsMax"), SerializeField] private Setting rMaxValue;
 
-        [Space(10)]
-        [SerializeField] private bool wholeNumber;
-        [SerializeField] private bool loop;
 
-        [SerializeField] private SettingsType type;
-        [ShowIf("type", SettingsType.RANGE), SerializeField] private float steps;
+        [BoxGroup("Other Properties"), SerializeField] private SettingsType type;
+        [BoxGroup("Other Properties"), ShowIf("type", SettingsType.RANGE), SerializeField] private float steps;
 
         [SerializeField] private UnityEvent OnValueChange;
 
@@ -58,6 +54,7 @@ namespace TemplateTools
         public virtual void ChangeValue(float _value)
         {
             value += _value;
+
             if (loop)
             {
                 if (value < GetMinMax().x) value = GetMinMax().y;
@@ -95,14 +92,9 @@ namespace TemplateTools
             return new Vector2(useOtherRangeAsMin ? rMinValue.value : minValue, useOtherRangeAsMax ? rMaxValue.value : maxValue);
         }
 
-        public virtual string GetTitleValue()
+        public Setting_Local_Json GetLocal()
         {
-            return titleKey;
-        }
-
-        public virtual string GetDescriptionValue()
-        {
-            return descriptionKey;
+            return JsonUtility.FromJson< Setting_Local_Json >( Localization_Manager.Instance.GetLocalizedString(settingsKey));
         }
 
         public virtual string GetDisplayValue()
@@ -124,11 +116,6 @@ namespace TemplateTools
         public float GetValue()
         {
             return value;
-        }
-
-        public bool GetHasDescription()
-        {
-            return enableDescription;
         }
 
         public bool GetLoop()
