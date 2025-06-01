@@ -6,8 +6,8 @@ namespace TemplateTools
 {
     public class UI_Setting_Range : UI_Setting
     {
-        [FoldoutGroup("UI"), SerializeField] private UI_Selectable sub;
-        [FoldoutGroup("UI"), SerializeField] private UI_Selectable add;
+        [BoxGroup("UI"), SerializeField] private UI_Selectable sub;
+        [BoxGroup("UI"), SerializeField] private UI_Selectable add;
 
         protected override void OnEnable()
         {

@@ -16,5 +16,7 @@ public class UI_Text_Setter_Legacy : UI_Text_Setter
         if (!init) Init();
 
         this.text.text = text;
+
+        UpdateUI();
     }
 }

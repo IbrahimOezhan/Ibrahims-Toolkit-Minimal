@@ -11,9 +11,6 @@ namespace TemplateTools
     public class UI_Setting : MonoBehaviour
     {
         private bool subscribed;
-        private Text titleText;
-        private Text descText;
-        private Text valueText;
 
         [BoxGroup("Interface"), SerializeField]
         protected SettingsType settingType;
@@ -28,13 +25,13 @@ namespace TemplateTools
         protected Setting setting;
 
         [BoxGroup("UI"), SerializeField]
-        protected UI_Interactive title;
+        protected UI_Text_Setter_Legacy title;
 
         [BoxGroup("UI"), SerializeField]
-        protected UI_Interactive description;
+        protected UI_Text_Setter_Legacy description;
 
         [BoxGroup("UI"), SerializeField]
-        protected UI_Interactive value;
+        protected UI_Text_Setter_Legacy value;
 
         protected virtual void OnEnable()
         {
@@ -94,15 +91,12 @@ namespace TemplateTools
                 return false;
             }
 
-            titleText = title.GetComponent<Text>();
-            //titleText.Set
-            //title.SetKey(settingLocal.title);
+            title.SetText(settingLocal.title);
 
-            //if (description != null && !String_Utilities.IsEmpty(settingLocal.description))
-            //{
-            //    description.SetKey(settingLocal.description);
-            //    return false;
-            //}
+            if (description != null && !String_Utilities.IsEmpty(settingLocal.description))
+            {
+                description.SetText(settingLocal.description);
+            }
 
             return true;
         }
