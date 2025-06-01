@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace TemplateTools
 {
-    public class UI_Styling : UI_Extension
+    public class UI_Styling_Legacy : UI_Extension
     {
         private UI_Style defaultStyle;
 
