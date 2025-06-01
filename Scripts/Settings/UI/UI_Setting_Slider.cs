@@ -26,16 +26,8 @@ namespace TemplateTools
             base.UpdateUI();
             slider.minValue = setting.GetMinMax().x;
             slider.maxValue = setting.GetMinMax().y;
-            slider.wholeNumbers = setting.GetIsWholeNumber();
+            //slider.wholeNumbers = setting.GetIsWholeNumber();
             slider.value = setting.GetValue();
         }
-    }
-
-    [System.Serializable]
-    public class SliderData
-    {
-        public UI_Localization title;
-        public UI_Localization value;
-        public Slider slider;
     }
 }

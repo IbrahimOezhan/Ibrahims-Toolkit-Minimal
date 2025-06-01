@@ -9,7 +9,7 @@ namespace TemplateTools
     {
         [SerializeField] private SettingsInterfaceType settingType;
 
-        [ShowIf("settingType", SettingsInterfaceType.REFERENCE), SerializeField]
+        [ShowIf("settingType", SettingsInterfaceType.LOCAL), SerializeField]
         private Setting reference;
 
         [ShowIf("settingType", SettingsInterfaceType.KEY), Dropdown("Settings"), SerializeField]
@@ -35,7 +35,7 @@ namespace TemplateTools
                 case SettingsInterfaceType.KEY:
                     settingInstance.Setup(settingsKey);
                     break;
-                case SettingsInterfaceType.REFERENCE:
+                case SettingsInterfaceType.LOCAL:
                     settingInstance.Setup(reference);
                     break;
             }

@@ -2,9 +2,9 @@ namespace TemplateTools
 {
     public class Setting_Language : Setting
     {
-        protected override void OnAwake()
+        protected override void Init()
         {
-            base.OnAwake();
+            base.Init();
             maxValue = Localization_Manager.Instance.GetUsedLanguageAmount() - 1;
         }
 

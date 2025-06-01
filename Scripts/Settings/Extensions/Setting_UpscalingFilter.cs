@@ -6,9 +6,9 @@ namespace TemplateTools
 {
     public class Setting_UpscalingFilter : Setting
     {
-        protected override void OnAwake()
+        protected override void Init()
         {
-            base.OnAwake();
+            base.Init();
             maxValue = Enum.GetNames(typeof(UpscalingFilterSelection)).Length - 1;
         }
 

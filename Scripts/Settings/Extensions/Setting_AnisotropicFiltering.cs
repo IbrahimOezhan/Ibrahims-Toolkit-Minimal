@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace TemplateTools
 {
-    public class Setting_AnisotropicFiltering : Setting_KeyValue
+    public class Setting_AnisotropicFiltering : Setting
     {
         public override void ApplyChanges()
         {

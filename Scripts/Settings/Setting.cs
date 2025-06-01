@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,39 +8,33 @@ namespace TemplateTools
     /// <summary>
     /// Provides the base functionality for all elements that the game can have
     /// </summary>
-    public class Setting : MonoBehaviour
+    [Serializable]
+    public class Setting
     {
-        [SerializeField, Dropdown("Localization")] private string settingsKey;
+        [BoxGroup("Base"), SerializeField, Dropdown("Localization")] private string settingsKey;
 
         [BoxGroup("Value"), SerializeField] private float defaultValue;
         [BoxGroup("Value"), SerializeField] protected float value;
-
-        [BoxGroup("Value"), SerializeField] private bool wholeNumber;
         [BoxGroup("Value"), SerializeField] private bool loop;
 
-        [BoxGroup("Min"), SerializeField] private bool useOtherRangeAsMin;
-        [BoxGroup("Min"), SerializeField, HideIf("useOtherRangeAsMin")] protected float minValue;
-        [BoxGroup("Min"), SerializeField, ShowIf("useOtherRangeAsMin")] private Setting rMinValue;
+        [BoxGroup("ValueRange"), SerializeField] protected float minValue;
+        [BoxGroup("ValueRange"), SerializeField] protected float maxValue;
 
-        [BoxGroup("Max"), SerializeField] private bool useOtherRangeAsMax;
-        [BoxGroup("Max"), SerializeField, HideIf("useOtherRangeAsMax")] protected float maxValue;
-        [BoxGroup("Max"), SerializeField, ShowIf("useOtherRangeAsMax")] private Setting rMaxValue;
+        [BoxGroup("Display"), SerializeField] private DisplayMode displayMode;
+        [BoxGroup("Display"), Dropdown("Localization"), SerializeField, ShowIf("displayMode", DisplayMode.KEY)] protected string[] keys;
 
         [BoxGroup("Other Properties"), SerializeField] private SettingsType type;
         [BoxGroup("Other Properties"), SerializeField, ShowIf("type", SettingsType.RANGE)] protected float steps;
         [BoxGroup("Other Properties"), SerializeField] private UnityEvent OnValueChange;
 
-        private void Awake()
+        protected virtual void Init()
         {
-            OnAwake();
-        }
 
-        protected virtual void OnAwake()
-        {
         }
 
         public virtual void LoadSetting(string _value)
         {
+            Init();
             if (!float.TryParse(_value, out value)) value = defaultValue;
         }
 
@@ -87,7 +82,7 @@ namespace TemplateTools
 
         public virtual Vector2 GetMinMax()
         {
-            return new Vector2(useOtherRangeAsMin ? rMinValue.value : minValue, useOtherRangeAsMax ? rMaxValue.value : maxValue);
+            return new Vector2(minValue, maxValue);
         }
 
         public SettingsType GetSettingsType()
@@ -97,8 +92,17 @@ namespace TemplateTools
 
         public virtual string GetDisplayValue()
         {
-            string _value = wholeNumber ? value.ToString("0") : value.ToString("0.0");
-            return _value;
+            switch(displayMode)
+            {
+                case DisplayMode.RAW:
+                    return value.ToString("0.0");
+                case DisplayMode.INT:
+                    return value.ToString("0");
+                case DisplayMode.KEY:
+                    return Localization_Manager.Instance.GetLocalizedString(keys[(int)(value / steps)], "");
+            }
+
+            return "ERROR";
         }
 
         public string GetKey()
@@ -121,9 +125,11 @@ namespace TemplateTools
             return loop;
         }
 
-        public bool GetIsWholeNumber()
+        private enum DisplayMode
         {
-            return wholeNumber;
+            RAW,
+            INT,
+            KEY,
         }
     }
 }

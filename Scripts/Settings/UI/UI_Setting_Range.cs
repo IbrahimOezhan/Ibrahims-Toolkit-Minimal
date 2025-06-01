@@ -26,13 +26,4 @@ namespace TemplateTools
             add.interactable = setting.GetValue() <= setting.GetMinMax().y;
         }
     }
-
-    [System.Serializable]
-    public class RangeData
-    {
-        public UI_Localization title;
-        public UI_Localization value;
-        public Button sub;
-        public Button add;
-    }
 }

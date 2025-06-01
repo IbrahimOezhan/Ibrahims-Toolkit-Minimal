@@ -1,5 +1,5 @@
 public enum SettingsInterfaceType
 {
     KEY,
-    REFERENCE,
+    LOCAL,
 }

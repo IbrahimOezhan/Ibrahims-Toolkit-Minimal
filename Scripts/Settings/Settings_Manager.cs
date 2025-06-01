@@ -2,6 +2,7 @@ using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -12,7 +13,7 @@ namespace TemplateTools
     {
         private SaveData data;
 
-        [SerializeField] private List<Setting> settings;
+        [SerializeField] private List<Setting_Container> settings;
 
         public static Settings_Manager Instance;
 
@@ -32,21 +33,13 @@ namespace TemplateTools
         {
             if (Instance == this)
             {
-                settings.RemoveAll(x => !x.gameObject.activeInHierarchy);
-
-                data = (SaveData)Save_Manager.currentFolder.LoadObject("Settings", new SaveData());
+                data = (SaveData) Save_Manager.currentFolder.LoadObject("Settings", new SaveData());
 
                 for (int i = 0; i < settings.Count; i++)
                 {
-                    string key = settings[i].GetKey();
-
-                    if (!data.data.ContainsKey(key))
-                    {
-                        data.data.Add(key, "");
-                    }
-
-                    settings[i].LoadSetting(data.data[key]);
-                    settings[i].ApplyChanges();
+                    string key = settings[i].GetSetting().GetKey();
+                    settings[i].GetSetting().LoadSetting(data.GetValue(key));
+                    settings[i].GetSetting().ApplyChanges();
                 }
             }
         }
@@ -57,12 +50,9 @@ namespace TemplateTools
             {
                 for (int i = 0; i < settings.Count; i++)
                 {
-                    string key = settings[i].GetKey();
+                    string key = settings[i].GetSetting().GetKey();
 
-                    if (data.data.ContainsKey(key))
-                    {
-                        data.data[key] = settings[i].GetValue().ToString();
-                    }
+                    data.SetValue(key, settings[i].GetSetting().GetValue().ToString());
                 }
 
                 Save_Manager.currentFolder.SaveObject("Settings", data);
@@ -72,7 +62,7 @@ namespace TemplateTools
         [Button(Name ="Validate")]
         private void OnValidate()
         {
-            String_Utilities.CreateDropdown(settings.Select(x => x.GetKey()).ToList(), "Settings");
+            String_Utilities.CreateDropdown(settings.Select(x => x.GetSetting().GetKey()).ToList(), "Settings");
         }
 
         public void OpenSettings(UI_Menu_Basic _origin)
@@ -96,7 +86,7 @@ namespace TemplateTools
                 return false;
             }
 
-            setting = settings.Find(x => x.GetKey().Equals(_key));
+            setting = settings.Select(x => x.GetSetting()).ToList().Find(x => x.GetKey().Equals(_key));
 
             if (setting == null)
             {
@@ -110,7 +100,27 @@ namespace TemplateTools
         [Serializable]
         private class SaveData : Savable
         {
-            public Dictionary<string, string> data = new();
+            [JsonInclude]
+            private Dictionary<string, string> data = new();
+
+            public string GetValue(string key)
+            {
+                if(data.TryGetValue(key, out string value))
+                {
+                    return value;
+                }
+
+                return "";
+            }
+
+            public void SetValue(string key, string value)
+            {
+                if (data.ContainsKey(key))
+                {
+                    data[key] = value;
+                }
+                else data.TryAdd(key, value);
+            }
         }
     }
 }

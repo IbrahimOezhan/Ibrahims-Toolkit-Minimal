@@ -5,9 +5,9 @@ namespace TemplateTools
 {
     public class Setting_ScreenMode : Setting
     {
-        protected override void OnAwake()
+        protected override void Init()
         {
-            base.OnAwake();
+            base.Init();
             maxValue = Enum.GetNames(typeof(FullScreenMode)).Length - 1;
         }
 

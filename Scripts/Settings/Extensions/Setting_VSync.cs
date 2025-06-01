@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace TemplateTools
 {
-    public class Setting_VSync : Setting_KeyValue
+    public class Setting_VSync : Setting
     {
         public override void ApplyChanges()
         {

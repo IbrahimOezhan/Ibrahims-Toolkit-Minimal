@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace TemplateTools
 {
-    public class Setting_AntiAliasing : Setting_KeyValue
+    public class Setting_AntiAliasing : Setting
     {
         private readonly int[] values = { 0, 2, 4, 8 };
 

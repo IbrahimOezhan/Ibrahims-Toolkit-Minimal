@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace TemplateTools
 {
-    public class Setting_TextureQuality : Setting_KeyValue
+    public class Setting_TextureQuality : Setting
     {
         public override void ApplyChanges()
         {

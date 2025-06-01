@@ -10,6 +10,8 @@ namespace TemplateTools
     /// </summary>
     public class UI_Setting : MonoBehaviour
     {
+        protected Setting setting;
+
         private bool subscribed;
 
         [BoxGroup("Interface"), SerializeField]
@@ -21,8 +23,8 @@ namespace TemplateTools
         [BoxGroup("Interface"), ShowIf("interfaceType", SettingsInterfaceType.KEY), Dropdown("Settings"), SerializeField]
         private string settingKey;
 
-        [BoxGroup("Interface"), ShowIf("interfaceType", SettingsInterfaceType.REFERENCE),SerializeField]
-        protected Setting setting;
+        [BoxGroup("Interface"), ShowIf("interfaceType", SettingsInterfaceType.LOCAL),SerializeField]
+        protected Setting_Container localSetting;
 
         [BoxGroup("UI"), SerializeField]
         protected UI_Text_Setter_Legacy title;
@@ -55,9 +57,14 @@ namespace TemplateTools
 
         public virtual bool Initialize()
         {
-            if (interfaceType == SettingsInterfaceType.KEY)
+            switch(interfaceType)
             {
-                if (!Settings_Manager.Instance.GetSetting(settingKey, out setting)) return false;
+                case SettingsInterfaceType.LOCAL:
+                    setting = localSetting.GetSetting();
+                    break;
+                case SettingsInterfaceType.KEY:
+                    Settings_Manager.Instance.GetSetting(settingKey, out setting);
+                    break;
             }
 
             if (setting == null)
