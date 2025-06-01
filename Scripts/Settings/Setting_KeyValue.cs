@@ -14,7 +14,7 @@ namespace TemplateTools
 
         public override string GetDisplayValue()
         {
-            return Localization_Manager.Instance.GetLocalizedString(keys[(int)value], "");
+            return Localization_Manager.Instance.GetLocalizedString(keys[(int)(value / steps)], "");
         }
     }
 }

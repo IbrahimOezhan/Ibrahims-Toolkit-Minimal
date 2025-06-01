@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,6 +69,7 @@ namespace TemplateTools
             }
         }
 
+        [Button(Name ="Validate")]
         private void OnValidate()
         {
             String_Utilities.CreateDropdown(settings.Select(x => x.GetKey()).ToList(), "Settings");

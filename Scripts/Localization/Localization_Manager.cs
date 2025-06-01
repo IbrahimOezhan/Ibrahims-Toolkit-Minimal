@@ -13,7 +13,7 @@ namespace TemplateTools
     public class Localization_Manager : Manager_Base
     {
         public const string loc = "Localization";
-        private const string langSettKey = "lang";
+        private const string langSettKey = "language";
         private SaveData data;
 
         [SerializeField] private bool attemptSetToSystemLanguage = true;

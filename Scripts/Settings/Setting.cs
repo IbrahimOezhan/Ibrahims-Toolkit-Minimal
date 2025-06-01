@@ -18,18 +18,16 @@ namespace TemplateTools
         [BoxGroup("Value"), SerializeField] private bool loop;
 
         [BoxGroup("Min"), SerializeField] private bool useOtherRangeAsMin;
-        [BoxGroup("Min"), HideIf("useOtherRangeAsMin"), SerializeField] protected float minValue;
-        [BoxGroup("Min"), ShowIf("useOtherRangeAsMin"), SerializeField] private Setting rMinValue;
+        [BoxGroup("Min"), SerializeField, HideIf("useOtherRangeAsMin")] protected float minValue;
+        [BoxGroup("Min"), SerializeField, ShowIf("useOtherRangeAsMin")] private Setting rMinValue;
 
-        [BoxGroup("Max"),SerializeField] private bool useOtherRangeAsMax;
-        [BoxGroup("Max"), HideIf("useOtherRangeAsMax"), SerializeField] protected float maxValue;
-        [BoxGroup("Max"), ShowIf("useOtherRangeAsMax"), SerializeField] private Setting rMaxValue;
-
+        [BoxGroup("Max"), SerializeField] private bool useOtherRangeAsMax;
+        [BoxGroup("Max"), SerializeField, HideIf("useOtherRangeAsMax")] protected float maxValue;
+        [BoxGroup("Max"), SerializeField, ShowIf("useOtherRangeAsMax")] private Setting rMaxValue;
 
         [BoxGroup("Other Properties"), SerializeField] private SettingsType type;
-        [BoxGroup("Other Properties"), ShowIf("type", SettingsType.RANGE), SerializeField] private float steps;
-
-        [SerializeField] private UnityEvent OnValueChange;
+        [BoxGroup("Other Properties"), SerializeField, ShowIf("type", SettingsType.RANGE)] protected float steps;
+        [BoxGroup("Other Properties"), SerializeField] private UnityEvent OnValueChange;
 
         private void Awake()
         {
@@ -77,14 +75,14 @@ namespace TemplateTools
             this.value = value;
         }
 
-        public SettingsType GetSettingsType()
-        {
-            return type;
-        }
-
         public UnityEvent GetEvent()
         {
             return OnValueChange;
+        }
+
+        public Setting_Local_Json GetLocal()
+        {
+            return JsonUtility.FromJson<Setting_Local_Json>(Localization_Manager.Instance.GetLocalizedString(settingsKey));
         }
 
         public virtual Vector2 GetMinMax()
@@ -92,9 +90,9 @@ namespace TemplateTools
             return new Vector2(useOtherRangeAsMin ? rMinValue.value : minValue, useOtherRangeAsMax ? rMaxValue.value : maxValue);
         }
 
-        public Setting_Local_Json GetLocal()
+        public SettingsType GetSettingsType()
         {
-            return JsonUtility.FromJson< Setting_Local_Json >( Localization_Manager.Instance.GetLocalizedString(settingsKey));
+            return type;
         }
 
         public virtual string GetDisplayValue()

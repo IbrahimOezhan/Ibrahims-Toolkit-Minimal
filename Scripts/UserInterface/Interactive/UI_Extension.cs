@@ -3,7 +3,7 @@ using UnityEngine;
 namespace TemplateTools
 {
     [RequireComponent(typeof(UI_Interactive))]
-    public class UI_Extension : MonoBehaviour
+    public abstract class UI_Extension : MonoBehaviour
     {
         protected bool init;
 

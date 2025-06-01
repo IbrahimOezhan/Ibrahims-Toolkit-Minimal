@@ -1,5 +1,6 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 namespace TemplateTools
@@ -10,6 +11,8 @@ namespace TemplateTools
     public class UI_Setting : MonoBehaviour
     {
         private bool subscribed;
+        private Text titleText;
+        private Text descText;
         private Text valueText;
 
         [BoxGroup("Interface"), SerializeField]
@@ -25,9 +28,10 @@ namespace TemplateTools
         protected Setting setting;
 
         [BoxGroup("UI"), SerializeField]
-        protected UI_Localization title;
+        protected UI_Interactive title;
+
         [BoxGroup("UI"), SerializeField]
-        protected UI_Localization description;
+        protected UI_Interactive description;
 
         [BoxGroup("UI"), SerializeField]
         protected UI_Interactive value;
@@ -56,8 +60,6 @@ namespace TemplateTools
         {
             if (interfaceType == SettingsInterfaceType.KEY)
             {
-                if (String_Utilities.IsEmpty(settingKey)) return false;
-
                 if (!Settings_Manager.Instance.GetSetting(settingKey, out setting)) return false;
             }
 
@@ -74,8 +76,33 @@ namespace TemplateTools
 
             Setting_Local_Json settingLocal = setting.GetLocal();
 
-            title.SetKey(settingLocal.title);
-            description.SetKey(settingLocal.description);
+            if(settingLocal == null)
+            {
+                Debug.LogWarning("Local json is null");
+                return false;
+            }
+
+            if(String_Utilities.IsEmpty(settingLocal.title))
+            {
+                Debug.LogWarning("Title is empty");
+                return false;
+            }
+
+            if(title == null)
+            {
+                Debug.LogWarning("Title is null");
+                return false;
+            }
+
+            titleText = title.GetComponent<Text>();
+            //titleText.Set
+            //title.SetKey(settingLocal.title);
+
+            //if (description != null && !String_Utilities.IsEmpty(settingLocal.description))
+            //{
+            //    description.SetKey(settingLocal.description);
+            //    return false;
+            //}
 
             return true;
         }

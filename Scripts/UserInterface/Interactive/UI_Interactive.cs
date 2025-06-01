@@ -1,4 +1,6 @@
 using Sirenix.OdinInspector;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,7 +11,7 @@ namespace TemplateTools
     {
         [SerializeField, ReadOnly] private List<UI_Extension> extensions = new();
 
-        [SerializeField, OnValueChanged("OnValueChanged")] private Extension extension;
+        [SerializeField, OnValueChanged("OnValueChanged"), ValueDropdown("GetAllSubtypes")] private string extension = "None";
 
         protected override void OnEnable()
         {
@@ -17,38 +19,41 @@ namespace TemplateTools
             UpdateUI();
         }
 
+        private Type[] GetDerivedTypes()
+        {
+            var baseType = typeof(UI_Extension);
+
+            return AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(assembly => assembly.GetTypes())
+                .Where(t => t.IsClass
+                            && !t.IsAbstract
+                            && baseType.IsAssignableFrom(t)).ToArray();
+        }
+
+        private IEnumerable GetAllSubtypes()
+        {
+            List<string> subtypes = GetDerivedTypes().Select(x => x.Name).ToList();
+            subtypes.Insert(0, "None");
+
+            return subtypes;
+        }
+
         public void OnValueChanged()
         {
             extensions.RemoveAll(x => x == null);
 
-            Extension newExtension = extension;
+           List<Type> types = GetDerivedTypes().ToList();
 
-            if (extension != Extension.SELECT)
+            Type type = types.Find(x => x.Name == extension);
+
+            if(type != null)
             {
-                extension = Extension.SELECT;
-
-                UI_Extension extensionToAdd = null;
-
-                switch (newExtension)
-                {
-                    case Extension.Localization:
-                        extensionToAdd = gameObject.AddComponent<UI_Localization_Legacy>();
-                        break;
-                    case Extension.Fitter:
-                        extensionToAdd = gameObject.AddComponent<UI_Fitter>();
-                        break;
-                    case Extension.Audio:
-                        extensionToAdd = gameObject.AddComponent<UI_Audio>();
-                        break;
-                    case Extension.Styling:
-                        extensionToAdd = gameObject.AddComponent<UI_Styling>();
-                        break;
-                }
-
+                UI_Extension extensionToAdd = gameObject.AddComponent(type) as UI_Extension;
                 extensions.Add(extensionToAdd);
-
                 SortList();
             }
+
+            extension = "None";
         }
 
         private void SortList()
@@ -88,15 +93,6 @@ namespace TemplateTools
         public void MenuUpdate()
         {
             UpdateUI();
-        }
-
-        private enum Extension
-        {
-            SELECT,
-            Localization,
-            Styling,
-            Fitter,
-            Audio,
         }
     }
 }

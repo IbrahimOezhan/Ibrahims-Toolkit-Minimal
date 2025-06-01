@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace TemplateTools
 {
-    public class UI_Localization : UI_Extension
+    public abstract class UI_Localization : UI_Extension
     {
         [Dropdown("Localization"), SerializeField]
         protected string key;
