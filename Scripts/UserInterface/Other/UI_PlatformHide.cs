@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     public class UI_PlatformHide : MonoBehaviour
     {

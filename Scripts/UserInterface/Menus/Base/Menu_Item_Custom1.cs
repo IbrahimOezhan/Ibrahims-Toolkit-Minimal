@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     [System.Serializable]
     public class Menu_Item_Custom1 : Menu_Item_Button

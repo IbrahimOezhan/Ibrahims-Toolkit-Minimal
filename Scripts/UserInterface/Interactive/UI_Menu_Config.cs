@@ -1,16 +1,19 @@
 using System.Collections.Generic;
-using TemplateTools;
+using IbrahKit;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewUIMenuConfig", menuName = "ScriptableObjects/UI_MenuConfig")]
-public class UI_Menu_Config : ScriptableObject
+namespace IbrahKit
 {
-    public UI_Menu_Button menuButtonPrefab;
-
-    public List<UI_Setting> settingPrefabs;
-
-    public UI_Setting GetSettingsPrefab(SettingsType settingsType)
+    [CreateAssetMenu(fileName = "NewUIMenuConfig", menuName = "ScriptableObjects/UI_MenuConfig")]
+    public class UI_Menu_Config : ScriptableObject
     {
-        return settingPrefabs.Find(x => x.GetSettingsType() == settingsType);
+        public UI_Menu_Button menuButtonPrefab;
+
+        public List<UI_Setting> settingPrefabs;
+
+        public UI_Setting GetSettingsPrefab(SettingsType settingsType)
+        {
+            return settingPrefabs.Find(x => x.GetSettingsType() == settingsType);
+        }
     }
 }

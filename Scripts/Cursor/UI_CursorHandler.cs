@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     [RequireComponent(typeof(CanvasRenderer))]
     public class UI_CursorHandler : Graphic, ICursorHandler

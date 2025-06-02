@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.UI;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     public class Cursor_Manager : MonoBehaviour
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     public class Menu_Loading : UI_Menu_Basic
     {

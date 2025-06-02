@@ -1,7 +1,7 @@
 using Unity.Cinemachine;
 using UnityEngine;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     [ExecuteAlways]
     [RequireComponent(typeof(Camera))]

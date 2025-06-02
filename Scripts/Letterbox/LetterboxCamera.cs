@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     [ExecuteAlways]
     [RequireComponent(typeof(Camera))]

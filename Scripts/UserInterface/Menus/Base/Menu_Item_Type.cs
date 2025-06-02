@@ -1,4 +1,4 @@
-﻿namespace TemplateTools
+﻿namespace IbrahKit
 {
     public enum Menu_Item_Type
     {

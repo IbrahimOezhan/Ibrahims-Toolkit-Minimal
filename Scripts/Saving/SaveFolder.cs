@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using Application = UnityEngine.Application;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     public class SaveFolder
     {

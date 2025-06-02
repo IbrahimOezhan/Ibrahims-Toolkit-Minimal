@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     public class UI_Interactive : UI_Base, IMenuUpdate
     {

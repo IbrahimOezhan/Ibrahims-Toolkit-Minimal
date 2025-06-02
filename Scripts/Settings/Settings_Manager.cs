@@ -1,20 +1,24 @@
 using Sirenix.OdinInspector;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
-namespace TemplateTools
+namespace IbrahKit
 {
-    [DefaultExecutionOrder(-2)]
+    [DefaultExecutionOrder(Execution_Order.settings)]
     public class Settings_Manager : Manager_Base
     {
         private SaveData data;
 
-        [SerializeField] private List<Setting_Container> settings;
+        [SerializeField, OnValueChanged("OnValueChanged"), ValueDropdown("GetAllTypesDropdownFormat")] 
+        private string addSetting = "None";
 
+        [SerializeField,SerializeReference]
+        private List<Setting> settings;
+        
         public static Settings_Manager Instance;
 
         private void Awake()
@@ -37,9 +41,9 @@ namespace TemplateTools
 
                 for (int i = 0; i < settings.Count; i++)
                 {
-                    string key = settings[i].GetSetting().GetKey();
-                    settings[i].GetSetting().LoadSetting(data.GetValue(key));
-                    settings[i].GetSetting().ApplyChanges();
+                    string key = settings[i].GetKey();
+                    settings[i].LoadSetting(data.GetValue(key));
+                    settings[i].ApplyChanges();
                 }
             }
         }
@@ -50,19 +54,40 @@ namespace TemplateTools
             {
                 for (int i = 0; i < settings.Count; i++)
                 {
-                    string key = settings[i].GetSetting().GetKey();
+                    string key = settings[i].GetKey();
 
-                    data.SetValue(key, settings[i].GetSetting().GetValue().ToString());
+                    data.SetValue(key, settings[i].GetValue().ToString());
                 }
 
                 Save_Manager.currentFolder.SaveObject("Settings", data);
             }
         }
 
+
+        //Invoked by Odin
+        private IEnumerable GetAllTypesDropdownFormat() { return Type_Utilities.GetAllTypesDropdownFormat(typeof(Setting)); }
+       
+        //Invoked by Odin
+        private void OnValueChanged()
+        {
+            if (addSetting == "None") return;
+
+            List<Type> types = Type_Utilities.GetAllTypes(typeof(Setting)).ToList();
+
+            Type type = types.Find(x => x.Name == addSetting);
+
+            if (type != null)
+            {
+                settings.Add((Setting)Activator.CreateInstance(type));
+            }
+
+            addSetting = "None";
+        }
+
         [Button(Name ="Validate")]
         private void OnValidate()
         {
-            String_Utilities.CreateDropdown(settings.Select(x => x.GetSetting().GetKey()).ToList(), "Settings");
+            String_Utilities.CreateDropdown(settings.Select(x => x.GetKey()).ToList(), "Settings");
         }
 
         public void OpenSettings(UI_Menu_Basic _origin)
@@ -86,7 +111,7 @@ namespace TemplateTools
                 return false;
             }
 
-            setting = settings.Select(x => x.GetSetting()).ToList().Find(x => x.GetKey().Equals(_key));
+            setting = settings.Select(x => x).ToList().Find(x => x.GetKey().Equals(_key));
 
             if (setting == null)
             {

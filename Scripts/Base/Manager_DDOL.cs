@@ -1,19 +1,22 @@
 using UnityEngine;
 
-public class Manager_DDOL : MonoBehaviour
+namespace IbrahKit
 {
-    public static Manager_DDOL Instance;
-
-    private void Awake()
+    public class Manager_DDOL : MonoBehaviour
     {
-        if (Instance != null && Instance != this)
+        public static Manager_DDOL Instance;
+
+        private void Awake()
         {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
         }
     }
 }

@@ -1,7 +1,7 @@
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     public class Setting_Shadows : Setting
     {

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     [AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
     public class DropdownAttribute : PropertyAttribute

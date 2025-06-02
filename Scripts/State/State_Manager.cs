@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TemplateTools
+namespace IbrahKit
 {
-    [DefaultExecutionOrder(-1)]
+    [DefaultExecutionOrder(Execution_Order.state)]
     public class State_Manager : Manager_Base
     {
         [FoldoutGroup("States"), SerializeField, ReadOnly] private int currentState = 0;

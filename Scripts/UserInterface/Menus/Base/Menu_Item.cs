@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     [System.Serializable]
     public partial class Menu_Item

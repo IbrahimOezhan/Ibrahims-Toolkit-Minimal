@@ -1,9 +1,13 @@
 using Sirenix.OdinInspector;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     /// <summary>
     /// Provides the functionality for the UI that displays and changes elements
@@ -14,17 +18,23 @@ namespace TemplateTools
 
         private bool subscribed;
 
-        [BoxGroup("Interface"), SerializeField]
+        [BoxGroup("Setting"), SerializeField]
         protected SettingsType settingType;
 
-        [BoxGroup("Interface"), SerializeField]
+        [BoxGroup("Setting"), SerializeField]
         private SettingsInterfaceType interfaceType;
 
-        [BoxGroup("Interface"), ShowIf("interfaceType", SettingsInterfaceType.KEY), Dropdown("Settings"), SerializeField]
+        [BoxGroup("Setting"), ShowIf("interfaceType", SettingsInterfaceType.KEY), Dropdown("Settings"), SerializeField]
         private string settingKey;
 
-        [BoxGroup("Interface"), ShowIf("interfaceType", SettingsInterfaceType.LOCAL),SerializeField]
-        protected Setting_Container localSetting;
+        [BoxGroup("Setting"), ShowIf("interfaceType", SettingsInterfaceType.LOCALREFERENCE) , SerializeField]
+        protected Setting_Container localReference;
+
+        [BoxGroup("Setting"), ShowIf("interfaceType", SettingsInterfaceType.LOCAL), SerializeField, OnValueChanged("OnValueChanged"), ValueDropdown("GetAllTypesDropdownFormat")] 
+        private string extension = "None";
+
+        [BoxGroup("Setting"), ShowIf("interfaceType", SettingsInterfaceType.LOCAL), SerializeField,SerializeReference]
+        protected Setting localSetting;
 
         [BoxGroup("UI"), SerializeField]
         protected UI_Text_Setter_Legacy title;
@@ -55,15 +65,34 @@ namespace TemplateTools
             this.setting = setting;
         }
 
+        private IEnumerable GetAllTypesDropdownFormat() { return Type_Utilities.GetAllTypesDropdownFormat(typeof(Setting)); }
+
+        private void OnValueChanged()
+        {
+            List<Type> types = Type_Utilities.GetAllTypes(typeof(Setting)).ToList();
+
+            Type type = types.Find(x => x.Name == extension);
+
+            if (type != null)
+            {
+                localSetting = (Setting)Activator.CreateInstance(type);
+            }
+
+            extension = "None";
+        }
+
         public virtual bool Initialize()
         {
             switch(interfaceType)
             {
-                case SettingsInterfaceType.LOCAL:
-                    setting = localSetting.GetSetting();
+                case SettingsInterfaceType.LOCALREFERENCE:
+                    setting = localReference.GetSetting();
                     break;
                 case SettingsInterfaceType.KEY:
                     Settings_Manager.Instance.GetSetting(settingKey, out setting);
+                    break;
+                case SettingsInterfaceType.LOCAL:
+                    setting = localSetting;
                     break;
             }
 
@@ -86,19 +115,23 @@ namespace TemplateTools
                 return false;
             }
 
-            if(String_Utilities.IsEmpty(settingLocal.title))
+            bool titleEmpty = String_Utilities.IsEmpty(settingLocal.title);
+            bool titleNull = title == null;
+
+            if (titleEmpty)
             {
                 Debug.LogWarning("Title is empty");
-                return false;
             }
 
-            if(title == null)
+            if(titleNull)
             {
                 Debug.LogWarning("Title is null");
-                return false;
             }
 
-            title.SetText(settingLocal.title);
+            if(!titleEmpty && !titleNull)
+            {
+                title.SetText(settingLocal.title);
+            }
 
             if (description != null && !String_Utilities.IsEmpty(settingLocal.description))
             {

@@ -1,4 +1,4 @@
-namespace TemplateTools
+namespace IbrahKit
 {
     public class Setting_Language : Setting
     {

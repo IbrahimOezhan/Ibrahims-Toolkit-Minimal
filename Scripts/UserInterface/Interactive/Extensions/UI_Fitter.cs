@@ -1,86 +1,90 @@
-using TemplateTools;
+using IbrahKit;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_Fitter : UI_Extension
+namespace IbrahKit
 {
-    private UI_Config defaultConfig;
-
-    private RectTransform rect;
-
-    [SerializeField] private Text text;
-    [SerializeField] private UI_Config_So customConfig;
-
-    [SerializeField] private bool scaleWidth = true;
-    [SerializeField] private int maxWidth;
-    [SerializeField] private bool scaleHeight = true;
-    [SerializeField] private int maxHeight;
-    [SerializeField] private int heightOffset;
-
-    protected override void Init()
+    public class UI_Fitter : UI_Extension
     {
-        rect = GetComponent<RectTransform>();
-        if (text == null) text = GetComponent<Text>();
-        base.Init();
-    }
+        private UI_Config defaultConfig;
 
-    public override int GetOrder()
-    {
-        return 100;
-    }
+        private RectTransform rect;
 
-    public override void Execute()
-    {
-        base.Execute();
+        [SerializeField] private Text text;
+        [SerializeField] private UI_Config_So customConfig;
 
-        if (!init) Init();
+        [SerializeField] private bool scaleWidth = true;
+        [SerializeField] private int maxWidth;
+        [SerializeField] private bool scaleHeight = true;
+        [SerializeField] private int maxHeight;
+        [SerializeField] private int heightOffset;
 
-        (Text text, RectTransform rect, UI_Config config) = GetRefs();
-
-        if (scaleWidth)
+        protected override void Init()
         {
-            float _maxWidth = Mathf.Clamp(text.preferredWidth, 0, maxWidth == 0 ? Mathf.Infinity : maxWidth);
-            rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _maxWidth + config.GetMargin());
+            rect = GetComponent<RectTransform>();
+            if (text == null) text = GetComponent<Text>();
+            base.Init();
         }
-        if (scaleHeight)
+
+        public override int GetOrder()
         {
-            float _maxHeight = Mathf.Clamp(text.preferredHeight, 0, maxHeight == 0 ? Mathf.Infinity : maxHeight);
-            rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, _maxHeight + config.GetMargin() + heightOffset);
+            return 100;
         }
-    }
 
-    private (Text, RectTransform, UI_Config) GetRefs()
-    {
-        if (!Application.isPlaying)
+        public override void Execute()
         {
-            UI_Manager manager = FindFirstObjectByType<UI_Manager>();
+            base.Execute();
 
-            Text text = this.text != null ? this.text : GetComponent<Text>();
-            RectTransform rect = this.rect != null ? this.rect : GetComponent<RectTransform>();
+            if (!init) Init();
 
-            defaultConfig = new(1);
+            (Text text, RectTransform rect, UI_Config config) = GetRefs();
 
-            if (manager == null)
+            if (scaleWidth)
             {
-                return (text, rect, defaultConfig);
+                float _maxWidth = Mathf.Clamp(text.preferredWidth, 0, maxWidth == 0 ? Mathf.Infinity : maxWidth);
+                rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _maxWidth + config.GetMargin());
+            }
+            if (scaleHeight)
+            {
+                float _maxHeight = Mathf.Clamp(text.preferredHeight, 0, maxHeight == 0 ? Mathf.Infinity : maxHeight);
+                rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, _maxHeight + config.GetMargin() + heightOffset);
+            }
+        }
+
+        private (Text, RectTransform, UI_Config) GetRefs()
+        {
+            if (!Application.isPlaying)
+            {
+                UI_Manager manager = FindFirstObjectByType<UI_Manager>();
+
+                Text text = this.text != null ? this.text : GetComponent<Text>();
+                RectTransform rect = this.rect != null ? this.rect : GetComponent<RectTransform>();
+
+                defaultConfig = new(1);
+
+                if (manager == null)
+                {
+                    return (text, rect, defaultConfig);
+                }
+                else
+                {
+                    return (text, rect, customConfig != null ? customConfig.config : manager.GetDefaultUIConfig().config != null ? manager.GetDefaultUIConfig().config : defaultConfig);
+                }
             }
             else
             {
-                return (text, rect, customConfig != null ? customConfig.config : manager.GetDefaultUIConfig().config != null ? manager.GetDefaultUIConfig().config : defaultConfig);
-            }
-        }
-        else
-        {
-            UI_Config config = null;
+                UI_Config config = null;
 
-            if (customConfig != null) config = customConfig.config;
-            else
-            {
-                if (UI_Manager.Instance != null) config = UI_Manager.Instance.GetDefaultUIConfig().config;
-                else config = defaultConfig;
-            }
+                if (customConfig != null) config = customConfig.config;
+                else
+                {
+                    if (UI_Manager.Instance != null) config = UI_Manager.Instance.GetDefaultUIConfig().config;
+                    else config = defaultConfig;
+                }
 
-            return (text, rect, config);
+                return (text, rect, config);
+            }
         }
     }
+
 }

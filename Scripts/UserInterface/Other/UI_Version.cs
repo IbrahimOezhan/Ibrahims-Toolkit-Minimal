@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     public class UI_Version : MonoBehaviour
     {

@@ -1,77 +1,79 @@
 using System;
 using System.Collections.Generic;
-using TemplateTools;
+using IbrahKit;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
-public class Menu_Pause_Instance : MonoBehaviour
+namespace IbrahKit
 {
-    private UI_Input input;
-    private string stateBeforePause;
-
-    [SerializeField, Dropdown("States")] private string pausedState;
-    [SerializeField] private List<AllowPause> allowPause = new();
-    [SerializeField] private UI_Menu_Basic Menu;
-
-    public static bool paused;
-    public static event Action<bool> OnPause;
-    public static Menu_Pause_Instance Instance;
-
-    private void Awake()
+    public class Menu_Pause_Instance : MonoBehaviour
     {
-        Instance = this;
-        input = new();
-        input.Enable();
-        input.Map.Pause.performed += Pause;
-    }
+        private UI_Input input;
+        private string stateBeforePause;
 
-    private void OnDestroy()
-    {
-        if (input != null)
+        [SerializeField, Dropdown("States")] private string pausedState;
+        [SerializeField] private List<AllowPause> allowPause = new();
+        [SerializeField] private UI_Menu_Basic Menu;
+
+        public static bool paused;
+        public static event Action<bool> OnPause;
+        public static Menu_Pause_Instance Instance;
+
+        private void Awake()
         {
-            input.Map.Pause.performed -= Pause;
-            input.Disable();
+            Instance = this;
+            input = new();
+            input.Enable();
+            input.Map.Pause.performed += Pause;
         }
-    }
 
-    public void Pause()
-    {
-        Pause(new());
-    }
-
-    public void Pause(InputAction.CallbackContext _context)
-    {
-        string currentState = State_Manager.Instance.GetCurrentState();
-
-        AllowPause allow = allowPause.Find(x => x.state == currentState);
-
-        if (allow.allow)
+        private void OnDestroy()
         {
-            bool _paused = !paused;
-
-            if (_paused)
+            if (input != null)
             {
-                Menu.Enable(null);
-                stateBeforePause = currentState;
-                State_Manager.Instance.SetCurrentState(pausedState);
-                paused = _paused;
+                input.Map.Pause.performed -= Pause;
+                input.Disable();
             }
-            else if (!_paused && Menu.IsEnabled())
-            {
-                Menu.Disable();
-                State_Manager.Instance.SetCurrentState(stateBeforePause);
-                paused = _paused;
-            }
-
-            Time.timeScale = paused ? 0 : 1;
-            OnPause.Invoke(paused);
         }
-    }
 
-    [Serializable]
-    private class AllowPause
-    {
-        public bool allow;
-        [Dropdown("States")] public string state;
+        public void Pause()
+        {
+            Pause(new());
+        }
+
+        public void Pause(InputAction.CallbackContext _context)
+        {
+            string currentState = State_Manager.Instance.GetCurrentState();
+
+            AllowPause allow = allowPause.Find(x => x.state == currentState);
+
+            if (allow.allow)
+            {
+                bool _paused = !paused;
+
+                if (_paused)
+                {
+                    Menu.Enable(null);
+                    stateBeforePause = currentState;
+                    State_Manager.Instance.SetCurrentState(pausedState);
+                    paused = _paused;
+                }
+                else if (!_paused && Menu.IsEnabled())
+                {
+                    Menu.Disable();
+                    State_Manager.Instance.SetCurrentState(stateBeforePause);
+                    paused = _paused;
+                }
+
+                Time.timeScale = paused ? 0 : 1;
+                OnPause.Invoke(paused);
+            }
+        }
+
+        [Serializable]
+        private class AllowPause
+        {
+            public bool allow;
+            [Dropdown("States")] public string state;
+        }
     }
 }

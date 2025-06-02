@@ -1,6 +1,7 @@
-using TemplateTools;
-
-public abstract class UI_Text_Setter : UI_Extension
+namespace IbrahKit
 {
-    public abstract void SetText(string text);
+    public abstract class UI_Text_Setter : UI_Extension
+    {
+        public abstract void SetText(string text);
+    }
 }

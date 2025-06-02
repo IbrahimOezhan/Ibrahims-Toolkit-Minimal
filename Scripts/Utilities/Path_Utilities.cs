@@ -1,42 +1,44 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-
 using UnityEngine;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-public class Path_Utilities
+namespace IbrahKit
 {
-    private const string myGames = "My Games";
+    public class Path_Utilities
+    {
+        private const string myGames = "My Games";
 
 #if UNITY_EDITOR
-    [MenuItem("Template/OpenPath")]
-    public static void OpenPath()
-    {
-        Process.Start(GetGamePath());
-    }
+        [MenuItem("Template/OpenPath")]
 #endif
-
-    public static string GetGamePath()
-    {
-        string gamePath;
-
-        if (!Application.isMobilePlatform)
+        public static void OpenPath()
         {
-            gamePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), myGames);
-        }
-        else
-        {
-            gamePath = Application.persistentDataPath;
+            Process.Start(GetGamePath());
         }
 
-        gamePath = Path.Combine(gamePath, Application.productName);
+        public static string GetGamePath()
+        {
+            string gamePath;
 
-        if (!Directory.Exists(gamePath)) Directory.CreateDirectory(gamePath);
+            if (!Application.isMobilePlatform)
+            {
+                gamePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), myGames);
+            }
+            else
+            {
+                gamePath = Application.persistentDataPath;
+            }
 
-        return gamePath;
+            gamePath = Path.Combine(gamePath, Application.productName);
+
+            if (!Directory.Exists(gamePath)) Directory.CreateDirectory(gamePath);
+
+            return gamePath;
+        }
     }
 }

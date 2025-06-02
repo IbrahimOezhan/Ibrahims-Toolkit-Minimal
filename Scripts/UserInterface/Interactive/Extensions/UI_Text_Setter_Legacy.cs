@@ -1,22 +1,25 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_Text_Setter_Legacy : UI_Text_Setter
+namespace IbrahKit
 {
-    [SerializeField] private Text text;
-
-    protected override void Init()
+    public class UI_Text_Setter_Legacy : UI_Text_Setter
     {
-        if (text == null) text = GetComponent<Text>();
-        base.Init();
-    }
+        [SerializeField] private Text text;
 
-    public override void SetText(string text)
-    {
-        if (!init) Init();
+        protected override void Init()
+        {
+            if (text == null) text = GetComponent<Text>();
+            base.Init();
+        }
 
-        this.text.text = text;
+        public override void SetText(string text)
+        {
+            if (!init) Init();
 
-        UpdateUI();
+            this.text.text = text;
+
+            UpdateUI();
+        }
     }
 }

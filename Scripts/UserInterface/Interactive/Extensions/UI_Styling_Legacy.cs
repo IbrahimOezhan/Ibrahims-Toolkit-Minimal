@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     public class UI_Styling_Legacy : UI_Extension
     {

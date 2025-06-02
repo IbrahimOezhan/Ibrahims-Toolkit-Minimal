@@ -1,5 +1,9 @@
-public enum SettingsInterfaceType
+namespace IbrahKit
 {
-    KEY,
-    LOCAL,
+    public enum SettingsInterfaceType
+    {
+        KEY,
+        LOCAL,
+        LOCALREFERENCE,
+    }
 }

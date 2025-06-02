@@ -1,7 +1,7 @@
 using System.Text;
 using UnityEngine;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     public class Debug
     {

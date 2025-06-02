@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     public abstract class Menu_Item_Base
     {

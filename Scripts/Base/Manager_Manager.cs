@@ -9,7 +9,7 @@ using System.Collections;
 using UnityEditor;
 #endif
 
-namespace TemplateTools
+namespace IbrahKit
 {
     [ExecuteInEditMode]
     public class Manager_Manager : MonoBehaviour

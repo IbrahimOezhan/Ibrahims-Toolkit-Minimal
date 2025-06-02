@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     public class UI_Navigation_Manager : MonoBehaviour
     {

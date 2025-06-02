@@ -2,7 +2,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     public class UI_Setting_Range : UI_Setting
     {

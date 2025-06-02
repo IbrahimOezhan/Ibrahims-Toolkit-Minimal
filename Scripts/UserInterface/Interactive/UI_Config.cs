@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     [System.Serializable]
     public class UI_Config

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     [System.Serializable]
     public class UI_Style

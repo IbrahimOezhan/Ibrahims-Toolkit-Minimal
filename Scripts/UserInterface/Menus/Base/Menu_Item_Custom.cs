@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     [System.Serializable]
     public class Menu_Item_Custom : Menu_Item

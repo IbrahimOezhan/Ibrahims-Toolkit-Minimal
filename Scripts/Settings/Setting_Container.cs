@@ -3,53 +3,41 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TemplateTools;
+using IbrahKit;
 using UnityEngine;
 
-[Serializable]
-public class Setting_Container
+namespace IbrahKit
 {
-    [SerializeField, SerializeReference] private Setting setting;
-
-    [SerializeField, OnValueChanged("OnValueChanged"), ValueDropdown("GetAllSubtypes")] private string extension = "None";
-    public Setting GetSetting()
+    [Serializable]
+    public class Setting_Container : MonoBehaviour
     {
-        return setting;
-    }
+        [SerializeField, OnValueChanged("OnValueChanged"), ValueDropdown("GetAllTypesDropdownFormat")]
+        private string selectSetting = "None";
 
-    private Type[] GetDerivedTypes()
-    {
-        var baseType = typeof(Setting);
+        [SerializeField, SerializeReference]
+        private Setting setting;
 
-        return AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(assembly => assembly.GetTypes())
-            .Where(t => t.IsClass
-                        && !t.IsAbstract
-                        && baseType.IsAssignableFrom(t)).ToArray();
-    }
-
-    private IEnumerable GetAllSubtypes()
-    {
-        List<string> subtypes = GetDerivedTypes().Select(x => x.Name).ToList();
-        subtypes.Sort((a, b) => 
+        public Setting GetSetting()
         {
-            return a.CompareTo(b);
-            });
-        subtypes.Insert(0, "None");
-        return subtypes;
-    }
-
-    public void OnValueChanged()
-    {
-        List<Type> types = GetDerivedTypes().ToList();
-
-        Type type = types.Find(x => x.Name == extension);
-
-        if (type != null)
-        {
-            setting = (Setting)Activator.CreateInstance(type);
+            return setting;
         }
 
-        extension = "None";
+        //Invoked by Odin
+        private IEnumerable GetAllTypesDropdownFormat() { return Type_Utilities.GetAllTypesDropdownFormat(typeof(Setting)); }
+
+        //Invoked by Odin
+        private void OnValueChanged()
+        {
+            List<Type> types = Type_Utilities.GetAllTypes(typeof(Setting)).ToList();
+
+            Type type = types.Find(x => x.Name == selectSetting);
+
+            if (type != null)
+            {
+                setting = (Setting)Activator.CreateInstance(type);
+            }
+
+            selectSetting = "None";
+        }
     }
 }

@@ -1,6 +1,10 @@
-public enum SettingsType
+namespace IbrahKit
 {
-    BUTTON,
-    SLIDER,
-    RANGE,
+    public enum SettingsType
+    {
+        BUTTON,
+        SLIDER,
+        RANGE,
+    }
 }
+

@@ -1,4 +1,7 @@
-public interface IMenuUpdate
+namespace IbrahKit
 {
-    public void MenuUpdate();
+    public interface IMenuUpdate
+    {
+        public void MenuUpdate();
+    }
 }

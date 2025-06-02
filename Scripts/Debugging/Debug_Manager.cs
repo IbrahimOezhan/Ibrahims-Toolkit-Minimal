@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     public class Debug_Manager : MonoBehaviour
     {

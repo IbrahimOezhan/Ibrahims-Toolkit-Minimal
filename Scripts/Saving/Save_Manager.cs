@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     /// <summary>
     /// A script that manages loading data on game start and saving it when you close the game
     /// </summary>
-    [DefaultExecutionOrder(-5)]
+    [DefaultExecutionOrder(Execution_Order.save)]
     public partial class Save_Manager : Manager_Base
     {
         private const string encryptionKey = "a3c9e7r3gf3d5e7";

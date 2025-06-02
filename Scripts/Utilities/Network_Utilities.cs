@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     public class Network_Utilities
     {

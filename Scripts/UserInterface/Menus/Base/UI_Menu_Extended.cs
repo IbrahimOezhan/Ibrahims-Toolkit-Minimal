@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     /// <summary>
     /// The base for all menus for containing UI

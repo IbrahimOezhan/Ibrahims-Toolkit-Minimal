@@ -1,6 +1,6 @@
 using UnityEngine.EventSystems;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     public class UI_Audio : UI_Extension, IPointerDownHandler, IPointerEnterHandler
     {

@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     /// <summary>
     /// Provides the base functionality for all elements that the game can have

@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     public class UI_Styling_TMP : UI_Extension
     {

@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEditor.UI;
 using UnityEngine;
 
-namespace TemplateTools
+namespace IbrahKit
 {
 
     [CustomEditor(typeof(UI_CursorHandler))]

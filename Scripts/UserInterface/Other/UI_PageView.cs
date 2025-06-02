@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     public class UI_PageView : MonoBehaviour
     {

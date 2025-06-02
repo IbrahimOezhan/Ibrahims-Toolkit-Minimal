@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     public class File_Utilities
     {

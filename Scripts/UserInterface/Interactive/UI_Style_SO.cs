@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     [CreateAssetMenu(fileName = "NewStyle", menuName = "ScriptableObjects/UI_Style")]
     public class UI_Style_SO : ScriptableObject

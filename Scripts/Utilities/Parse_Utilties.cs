@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     public class Parse_Utilties
     {

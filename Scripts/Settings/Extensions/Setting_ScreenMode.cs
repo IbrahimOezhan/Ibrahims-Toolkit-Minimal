@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     public class Setting_ScreenMode : Setting
     {

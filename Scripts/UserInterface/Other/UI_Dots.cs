@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     public class UI_Dots : MonoBehaviour
     {

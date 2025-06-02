@@ -1,87 +1,90 @@
 using Sirenix.OdinInspector;
 using System;
-using TemplateTools;
+using IbrahKit;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
-[DefaultExecutionOrder(-1)]
-public class Input_Manager : Manager_Base
+namespace IbrahKit
 {
-    [SerializeField, ReadOnly] private InputType currentInputType;
-
-    public Action<InputType> OnInputChanged;
-
-    public static Input_Manager Instance;
-
-    private void Awake()
+    [DefaultExecutionOrder(Execution_Order.input)]
+    public class Input_Manager : Manager_Base
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
+        [SerializeField, ReadOnly] private InputType currentInputType;
 
-        }
-    }
+        public Action<InputType> OnInputChanged;
 
-    private void Update()
-    {
-        InputType type = currentInputType;
+        public static Input_Manager Instance;
 
-        for (int i = 0; i < InputSystem.devices.Count; i++)
+        private void Awake()
         {
-            foreach (InputControl control in InputSystem.devices[i].allControls)
+            if (Instance != null && Instance != this)
             {
-                switch (control)
-                {
-                    case KeyControl key:
-                        if (key.wasPressedThisFrame)
-                        {
-                            currentInputType = InputType.KEYBOARD;
-                        }
-                        break;
-                    case ButtonControl button:
-                        if (button.wasPressedThisFrame)
-                        {
-                            if (IsMouseButton(button))
-                            {
-                                currentInputType = InputType.MOUSE;
-                            }
-                            else currentInputType = InputType.GAMEPAD;
-                        }
-                        break;
-                    case TouchControl touch:
-                        if (touch.press.wasPressedThisFrame)
-                        {
-                            currentInputType = InputType.TOUCHSCREEN;
-                        }
-                        break;
-                }
+                Destroy(gameObject);
+            }
+            else
+            {
+                Instance = this;
+
             }
         }
 
-        if (currentInputType != type) InputUpdate();
-    }
+        private void Update()
+        {
+            InputType type = currentInputType;
 
-    private bool IsMouseButton(ButtonControl button)
-    {
-        Mouse mouse = Mouse.current;
-        return mouse != null &&
-               (button == mouse.leftButton ||
-                button == mouse.rightButton ||
-                button == mouse.middleButton);
-    }
+            for (int i = 0; i < InputSystem.devices.Count; i++)
+            {
+                foreach (InputControl control in InputSystem.devices[i].allControls)
+                {
+                    switch (control)
+                    {
+                        case KeyControl key:
+                            if (key.wasPressedThisFrame)
+                            {
+                                currentInputType = InputType.KEYBOARD;
+                            }
+                            break;
+                        case ButtonControl button:
+                            if (button.wasPressedThisFrame)
+                            {
+                                if (IsMouseButton(button))
+                                {
+                                    currentInputType = InputType.MOUSE;
+                                }
+                                else currentInputType = InputType.GAMEPAD;
+                            }
+                            break;
+                        case TouchControl touch:
+                            if (touch.press.wasPressedThisFrame)
+                            {
+                                currentInputType = InputType.TOUCHSCREEN;
+                            }
+                            break;
+                    }
+                }
+            }
 
-    public InputType GetInputType()
-    {
-        return currentInputType;
-    }
+            if (currentInputType != type) InputUpdate();
+        }
 
-    public void InputUpdate()
-    {
-        OnInputChanged?.Invoke(currentInputType);
+        private bool IsMouseButton(ButtonControl button)
+        {
+            Mouse mouse = Mouse.current;
+            return mouse != null &&
+                   (button == mouse.leftButton ||
+                    button == mouse.rightButton ||
+                    button == mouse.middleButton);
+        }
+
+        public InputType GetInputType()
+        {
+            return currentInputType;
+        }
+
+        public void InputUpdate()
+        {
+            OnInputChanged?.Invoke(currentInputType);
+        }
     }
 }

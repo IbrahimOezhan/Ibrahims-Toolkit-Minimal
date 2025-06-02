@@ -1,17 +1,20 @@
 using System;
 
-public class Savable
+namespace IbrahKit
 {
-    public string fullName;
-
-    public Savable()
+    public class Savable
     {
-        Type ty = this.GetType();
+        public string fullName;
 
-        string assemblyName = ty.Assembly.GetName().Name;
+        public Savable()
+        {
+            Type ty = this.GetType();
 
-        string qualifiedName = $"{ty.FullName}, {assemblyName}";
+            string assemblyName = ty.Assembly.GetName().Name;
 
-        fullName = qualifiedName;
+            string qualifiedName = $"{ty.FullName}, {assemblyName}";
+
+            fullName = qualifiedName;
+        }
     }
 }

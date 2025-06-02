@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     [RequireComponent(typeof(UI_Interactive))]
     public abstract class UI_Extension : MonoBehaviour

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace TemplateTools
+namespace IbrahKit
 {
-    [DefaultExecutionOrder(-1)]
+    [DefaultExecutionOrder(Execution_Order.ui)]
     public class UI_Manager : Manager_Base
     {
         private bool hidden;

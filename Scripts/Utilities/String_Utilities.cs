@@ -5,7 +5,7 @@ using System.Text;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     public class String_Utilities
     {

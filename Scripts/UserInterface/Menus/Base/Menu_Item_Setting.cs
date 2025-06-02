@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     [System.Serializable]
     public class Menu_Item_Setting : Menu_Item_Base

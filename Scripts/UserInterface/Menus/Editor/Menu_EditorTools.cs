@@ -1,9 +1,9 @@
-using TemplateTools;
+using IbrahKit;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     public class Menu_EditorTools
     {

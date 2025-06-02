@@ -5,7 +5,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     [CustomPropertyDrawer(typeof(DropdownAttribute))]
     public class DropdownDrawer : PropertyDrawer

@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     public class Template_Utilities
     {

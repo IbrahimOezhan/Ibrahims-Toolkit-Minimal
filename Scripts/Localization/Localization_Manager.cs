@@ -7,9 +7,9 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TemplateTools
+namespace IbrahKit
 {
-    [DefaultExecutionOrder(-1)]
+    [DefaultExecutionOrder(Execution_Order.local)]
     public class Localization_Manager : Manager_Base
     {
         public const string loc = "Localization";

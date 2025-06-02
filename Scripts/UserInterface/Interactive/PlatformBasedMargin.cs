@@ -1,4 +1,4 @@
-﻿namespace TemplateTools
+﻿namespace IbrahKit
 {
     [System.Serializable]
     public class PlatformBasedMargin : PlatformBased

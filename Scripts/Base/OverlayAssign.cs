@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     [RequireComponent(typeof(Camera))]
     public class OverlayAssign : MonoBehaviour

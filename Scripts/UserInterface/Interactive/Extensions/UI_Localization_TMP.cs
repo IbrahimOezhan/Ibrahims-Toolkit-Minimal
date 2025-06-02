@@ -2,7 +2,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
-namespace TemplateTools
+namespace IbrahKit
 {
     public class UI_Localization_TMP : UI_Localization
     {
