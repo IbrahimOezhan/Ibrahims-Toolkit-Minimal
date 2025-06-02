@@ -3,16 +3,16 @@
     "version": "1.0.0",
     "displayName": "IbrahKit",
     "description": "A toolkit",
-    "unity": "2020.3", // minimum Unity version supported
+    "unity": "2020.3",
     "keywords": [ "plugin", "utility" ],
     "author": {
-        "name": "Ibrahim �zhan",
+        "name": "Ibrahim Özhan",
         "email": "contact@ibrahimoezhan.com",
         "url": "https://ibrahimoezhan.com"
     },
     "dependencies": {
-        "com.unity.textmeshpro": "3.0.6", // example dependency from Unity registry
-        "com.unity.addressables": "2.5.0", // example dependency from Unity registry
+        "com.unity.textmeshpro": "3.0.6",
+        "com.unity.addressables": "2.5.0",
         "com.glitchenzo.nugetforunity": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity"
     }
 }
