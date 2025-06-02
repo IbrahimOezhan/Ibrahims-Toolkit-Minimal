@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace IbrahKit
 {
-    public class Color_Utilities
+    public static class Color_Utilities
     {
         public static bool ColorDifference(Color color1, Color color2, float tolerance)
         {
@@ -15,7 +15,18 @@ namespace IbrahKit
 
         public static Color ColorBlend(List<Color> colors)
         {
-            if (colors.Count == 0) return Color.white;
+            if (colors == null)
+            {
+                Debug.LogWarning("Color list is null");
+                return Color.white;
+            }
+
+            if (colors.Count == 0)
+            {
+                Debug.LogWarning("Color list is empty");
+                return Color.white;
+            }
+
             if (colors.Count == 1) return colors[0];
 
             Color newCol = colors[0];

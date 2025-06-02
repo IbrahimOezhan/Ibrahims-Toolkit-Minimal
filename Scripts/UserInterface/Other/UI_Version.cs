@@ -10,7 +10,7 @@ namespace IbrahKit
         {
             if (localization == null)
             {
-                if(!TryGetComponent(out localization))
+                if (!TryGetComponent(out localization))
                 {
                     return;
                 }

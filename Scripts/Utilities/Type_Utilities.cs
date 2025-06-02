@@ -9,6 +9,12 @@ namespace IbrahKit
     {
         public static Type[] GetAllTypes(Type baseType)
         {
+            if(baseType == null)
+            {
+                Debug.LogWarning("Base type is null");
+                return new Type[0];
+            }
+
             return AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly => assembly.GetTypes())
                 .Where(t => t.IsClass

@@ -4,11 +4,11 @@ namespace IbrahKit
 {
     public class PlatformBased
     {
-        public RuntimePlatform platform;
+        [SerializeField] private RuntimePlatform platform;
 
         public bool IsPlatform()
         {
-            return (Application.platform == platform);
+            return Application.platform == platform;
         }
     }
 }

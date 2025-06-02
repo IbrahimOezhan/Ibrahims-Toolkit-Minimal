@@ -11,7 +11,7 @@ namespace IbrahKit
         {
             if (text == null)
             {
-                if(!TryGetComponent(out text))
+                if (!TryGetComponent(out text))
                 {
                     return;
                 }

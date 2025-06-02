@@ -12,12 +12,15 @@ namespace IbrahKit
     [DefaultExecutionOrder(Execution_Order.local)]
     public class Localization_Manager : Manager_Base
     {
-        public const string loc = "Localization";
+        public const string localizationKey = "Localization";
         private const string langSettKey = "language";
+        private const string langDropdownKey = "Language";
+        private const string saveDataKey = "LocalizationManager";
+
         private SaveData data;
 
         [SerializeField] private bool attemptSetToSystemLanguage = true;
-        [Dropdown("Language"), SerializeField] private string defaultLanguage;
+        [SerializeField, Dropdown(langDropdownKey)] private string defaultLanguage;
         [SerializeField] private TextAsset[] textLocalization;
         [SerializeField] private List<Localization_Language> languages = new();
         [SerializeField] private Dictionary<string, Dictionary<int, string>> textLocalizationData = new();
@@ -35,20 +38,20 @@ namespace IbrahKit
 
                 Initialize();
 
-                data = (SaveData)Save_Manager.currentFolder.LoadObject("LocalizationManager", new SaveData());
+                data = (SaveData)Save_Manager.currentFolder.LoadObject(saveDataKey, new SaveData());
 
-                if (data.first)
+                if (!data.first)
                 {
                     if (attemptSetToSystemLanguage) SetWindowsLanguage();
                     else GetLanguageSetting().SetValue(GetDefaultLanguage());
-                    data.first = false;
+                    data.first = true;
                 }
             }
         }
 
         private void OnDestroy()
         {
-            if (Save_Manager.Instance && Instance == this) Save_Manager.currentFolder.SaveObject("LocalizationManager", data);
+            if (Instance == this) Save_Manager.currentFolder.SaveObject(saveDataKey, data);
         }
 
         private void OnValidate()
@@ -143,17 +146,19 @@ namespace IbrahKit
                 }
             }
 
-            String_Utilities.CreateDropdown(textLocalizationData.Keys.Select(x => x.ToString()).ToList(), "Localization");
-            String_Utilities.CreateDropdown(_langNames, "Language");
+            String_Utilities.CreateDropdown(textLocalizationData.Keys.Select(x => x.ToString()).ToList(), localizationKey);
+            String_Utilities.CreateDropdown(_langNames, langDropdownKey);
         }
 
         private int GetAmountOfSeperators(string s)
         {
             int count = 0;
+
             for (int j = 0; j < s.Length; j++)
             {
                 if (s[j] == ';') count++;
             }
+
             return count;
         }
 
@@ -167,7 +172,7 @@ namespace IbrahKit
                 SystemLanguage language = (SystemLanguage)Enum.Parse(typeof(SystemLanguage), _sysLangNames[i]);
 
                 Localization_Language _lang = new(_langNames[i], language);
-                if (_lang != null && languages.Find(x => x.sysLanguage == _lang.sysLanguage) == null) languages.Add(_lang);
+                if (_lang != null && languages.Find(x => x.GetSystemLanguage() == _lang.GetSystemLanguage()) == null) languages.Add(_lang);
             }
 
             if (languages.Count > _langNames.Count) languages.RemoveAt(languages.Count - 1);
@@ -177,10 +182,10 @@ namespace IbrahKit
         {
             for (int i = 0; i < languages.Count; i++)
             {
-                SystemLanguage language = languages[i].sysLanguage;
+                SystemLanguage language = languages[i].GetSystemLanguage();
                 SystemLanguage actualSystemLanguage = Application.systemLanguage;
 
-                if (language == actualSystemLanguage && languages[i].used)
+                if (language == actualSystemLanguage && languages[i].IsUsed())
                 {
                     SetLanguage(i);
                     break;
@@ -197,6 +202,39 @@ namespace IbrahKit
         public void UpdateLanguage()
         {
             OnLanguageChanged?.Invoke();
+        }
+
+        private Localization_Language GetLanguage(int _index)
+        {
+            try
+            {
+                return languages[_index];
+            }
+            catch
+            {
+                Debug.LogError("Index out of Bounds when trying to get language with the index " + _index);
+                return null;
+            }
+        }
+
+        public Setting GetLanguageSetting()
+        {
+            if ((Application.isPlaying ? Settings_Manager.Instance : FindAnyObjectByType<Settings_Manager>()).GetSetting(langSettKey, out Setting setting))
+            {
+                return setting;
+            }
+
+            return null;
+        }
+
+        public SystemLanguage GetCurrentSysLanguage()
+        {
+            return GetLanguage((int)GetLanguageSetting().GetValue()).GetSystemLanguage();
+        }
+
+        public string GetCurrentLanguageName()
+        {
+            return GetLanguage((int)GetLanguageSetting().GetValue()).GetName();
         }
 
         public string[] GetLocalizedString(string[] _keys, string _fallbackText = " ", params object[] _variables)
@@ -245,9 +283,26 @@ namespace IbrahKit
             return _input;
         }
 
+        public int GetNextUsableLanguage(int i)
+        {
+            int _next = i + 1;
+            if (_next >= languages.Count) _next = 0;
+
+            if (languages[i].IsUsed())
+            {
+                return i;
+            }
+            return GetNextUsableLanguage(_next);
+        }
+
+        public int GetUsedLanguageAmount()
+        {
+            return languages.FindAll(x => x.IsUsed()).Count;
+        }
+
         private int GetDefaultLanguage()
         {
-            return languages.IndexOf(languages.Find(x => x.name == defaultLanguage));
+            return languages.IndexOf(languages.Find(x => x.Equals(defaultLanguage)));
         }
 
         private bool IsStringEmpty(string _string)
@@ -255,72 +310,42 @@ namespace IbrahKit
             return String_Utilities.IsEmpty(_string);
         }
 
-        private Localization_Language GetLanguage(int _index)
-        {
-            try
-            {
-                return languages[_index];
-            }
-            catch
-            {
-                Debug.LogError("Index out of Bounds when trying to get language with the index " + _index);
-                return null;
-            }
-        }
-
-        public string GetCurrentLanguageName()
-        {
-            return GetLanguage((int)GetLanguageSetting().GetValue()).name;
-        }
-
-        public SystemLanguage GetCurrentSysLanguage()
-        {
-            return GetLanguage((int)GetLanguageSetting().GetValue()).sysLanguage;
-        }
-
-        public int GetNextUsableLanguage(int i)
-        {
-            int _next = i + 1;
-            if (_next >= languages.Count) _next = 0;
-
-            if (languages[i].used)
-            {
-                return i;
-            }
-            return GetNextUsableLanguage(_next);
-        }
-
-        public Setting GetLanguageSetting()
-        {
-            if ((Application.isPlaying ? Settings_Manager.Instance : FindAnyObjectByType<Settings_Manager>()).GetSetting(langSettKey, out Setting setting))
-            {
-                return setting;
-            }
-
-            return null;
-        }
-
-        public int GetUsedLanguageAmount()
-        {
-            return languages.FindAll(x => x.used).Count;
-        }
-
         private class SaveData : Savable
         {
-            public bool first = true;
+            public bool first = false;
         }
 
         [Serializable]
         private class Localization_Language
         {
-            public string name;
-            public SystemLanguage sysLanguage;
-            public bool used = true;
+            [SerializeField] private bool used = true;
+            [SerializeField] private string name;
+            [SerializeField] private SystemLanguage sysLanguage;
 
             public Localization_Language(string _name, SystemLanguage _systemLanguage)
             {
                 name = _name;
                 sysLanguage = _systemLanguage;
+            }
+
+            public SystemLanguage GetSystemLanguage()
+            {
+                return sysLanguage;
+            }
+
+            public string GetName()
+            {
+                return name;
+            }
+
+            public bool Equals(string lang)
+            {
+                return name.Equals(lang);
+            }
+
+            public bool IsUsed()
+            {
+                return used;
             }
         }
     }

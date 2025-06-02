@@ -122,7 +122,7 @@ namespace IbrahKit
         [Button]
         public void SortManangers()
         {
-            Transform_Utilities.SortTransformsOfParent(spawnedManagers);
+            Transform_Utilities.SortGameobjects(spawnedManagers);
         }
 #endif
     }

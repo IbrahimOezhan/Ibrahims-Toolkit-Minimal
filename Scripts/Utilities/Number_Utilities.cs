@@ -5,8 +5,31 @@ namespace IbrahKit
 {
     public static class Number_Utilities
     {
+        public static float Map(float _x, float _in_min, float _in_max, float _out_min, float _out_max)
+        {
+            return (_x - _in_min) * (_out_max - _out_min) / (_in_max - _in_min) + _out_min;
+        }
+
         public static int GetRandomEvent(List<int> chances)
         {
+            if(chances == null )
+            {
+                Debug.LogWarning("Passed chances list is null");
+                return -1;
+            }
+
+            if (chances.Count == 0)
+            {
+                Debug.LogWarning("Passed chances list is empty");
+                return -1;
+            }
+
+            if (chances.Count == 1)
+            {
+                Debug.Log("Returned the only element");
+                return 0;
+            } 
+
             List<int> startAt = new();
 
             int totalValue = -1;
@@ -28,11 +51,6 @@ namespace IbrahKit
             }
 
             return Random.Range(0, chances.Count);
-        }
-
-        public static float Map(float _x, float _in_min, float _in_max, float _out_min, float _out_max)
-        {
-            return (_x - _in_min) * (_out_max - _out_min) / (_in_max - _in_min) + _out_min;
         }
 
         public static int LoopNumber(int number, int min, int max)

@@ -5,10 +5,17 @@ namespace IbrahKit
 {
     public static class Transform_Utilities
     {
-        public static List<T> GetChildren<T>(Transform tr)
+        public static List<T> GetChildren<T>(Transform transform)
         {
+            if(transform == null)
+            {
+                Debug.LogWarning("Transform is null");
+                return new(0);
+            }
+
             List<T> elements = new();
-            foreach (Transform child in tr)
+
+            foreach (Transform child in transform)
             {
                 T[] compArray = child.GetComponents<T>();
 
@@ -17,18 +24,26 @@ namespace IbrahKit
                     elements.Add(comp);
                 }
 
-                if (child.childCount > 0) elements.AddRange(GetChildren<T>(child));
+                if (child.childCount > 0)
+                {
+                    elements.AddRange(GetChildren<T>(child));
+                }
             }
+
             return elements;
         }
 
-        public static T GetParent<T>(Transform tr)
+        public static T GetParent<T>(Transform transform)
         {
-            if (tr.parent != null)
+            if (transform.parent != null)
             {
-                if (tr.parent.TryGetComponent<T>(out var element)) return element;
-                else return GetParent<T>(tr.parent);
+                if (transform.parent.TryGetComponent<T>(out var element))
+                {
+                    return element;
+                }
+                else return GetParent<T>(transform.parent);
             }
+
             return default;
         }
 
@@ -51,16 +66,30 @@ namespace IbrahKit
             rect.offsetMax = Vector2.zero; // Right, Top
         }
 
-        public static void SortTransformsOfParent(List<GameObject> children)
+        public static void SortGameobjects(List<GameObject> list)
         {
-            children.Sort((GameObject one, GameObject two) =>
+            if(list == null)
+            {
+                Debug.LogWarning("List is null");
+
+                return;
+            }
+
+            if (list.Count == 0)
+            {
+                Debug.LogWarning("List is empty");
+
+                return;
+            }
+
+            list.Sort((GameObject one, GameObject two) =>
             {
                 return one.name.CompareTo(two.name);
             });
 
-            for (int i = 0; i < children.Count; i++)
+            for (int i = 0; i < list.Count; i++)
             {
-                children[i].transform.SetSiblingIndex(i);
+                list[i].transform.SetSiblingIndex(i);
             }
         }
     }

@@ -26,12 +26,18 @@ public class Server : MonoBehaviour
 
             try
             {
-                udpClient = new UdpClient();
-                udpClient.EnableBroadcast = true;
-                remoteEndPoint = new IPEndPoint(IPAddress.Broadcast, 8888);
+                udpClient = new()
+                {
+                    EnableBroadcast = true
+                };
 
-                receiveThread = new Thread(new ThreadStart(ReceiveResponses));
-                receiveThread.IsBackground = true;
+                remoteEndPoint = new(IPAddress.Broadcast, 8888);
+
+                receiveThread = new(new ThreadStart(ReceiveResponses))
+                {
+                    IsBackground = true
+                };
+
                 receiveThread.Start();
             }
             catch
@@ -60,8 +66,8 @@ public class Server : MonoBehaviour
     {
         try
         {
-            UdpClient responseClient = new UdpClient(8889);
-            IPEndPoint clientEndPoint = new IPEndPoint(IPAddress.Any, 0);
+            UdpClient responseClient = new(8889);
+            IPEndPoint clientEndPoint = new(IPAddress.Any, 0);
 
             while (true)
             {
