@@ -1,0 +1,18 @@
+{
+    "name": "IbrahKit-Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:401f0f9378216c747839245522ea5da4"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
