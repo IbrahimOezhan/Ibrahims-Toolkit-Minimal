@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 namespace IbrahKit
@@ -27,13 +26,13 @@ namespace IbrahKit
         [BoxGroup("Setting"), ShowIf("interfaceType", SettingsInterfaceType.KEY), Dropdown("Settings"), SerializeField]
         private string settingKey;
 
-        [BoxGroup("Setting"), ShowIf("interfaceType", SettingsInterfaceType.LOCALREFERENCE) , SerializeField]
+        [BoxGroup("Setting"), ShowIf("interfaceType", SettingsInterfaceType.LOCALREFERENCE), SerializeField]
         protected Setting_Container localReference;
 
-        [BoxGroup("Setting"), ShowIf("interfaceType", SettingsInterfaceType.LOCAL), SerializeField, OnValueChanged("OnValueChanged"), ValueDropdown("GetAllTypesDropdownFormat")] 
+        [BoxGroup("Setting"), ShowIf("interfaceType", SettingsInterfaceType.LOCAL), SerializeField, OnValueChanged("OnValueChanged"), ValueDropdown("GetAllTypesDropdownFormat")]
         private string extension = "None";
 
-        [BoxGroup("Setting"), ShowIf("interfaceType", SettingsInterfaceType.LOCAL), SerializeField,SerializeReference]
+        [BoxGroup("Setting"), ShowIf("interfaceType", SettingsInterfaceType.LOCAL), SerializeField, SerializeReference]
         protected Setting localSetting;
 
         [BoxGroup("UI"), SerializeField]
@@ -83,7 +82,7 @@ namespace IbrahKit
 
         public virtual bool Initialize()
         {
-            switch(interfaceType)
+            switch (interfaceType)
             {
                 case SettingsInterfaceType.LOCALREFERENCE:
                     setting = localReference.GetSetting();
@@ -109,7 +108,7 @@ namespace IbrahKit
 
             Setting_Local_Json settingLocal = setting.GetLocal();
 
-            if(settingLocal == null)
+            if (settingLocal == null)
             {
                 Debug.LogWarning("Local json is null");
                 return false;
@@ -123,12 +122,12 @@ namespace IbrahKit
                 Debug.LogWarning("Title is empty");
             }
 
-            if(titleNull)
+            if (titleNull)
             {
                 Debug.LogWarning("Title is null");
             }
 
-            if(!titleEmpty && !titleNull)
+            if (!titleEmpty && !titleNull)
             {
                 title.SetText(settingLocal.title);
             }

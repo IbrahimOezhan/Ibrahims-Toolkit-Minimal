@@ -1,4 +1,3 @@
-using IbrahKit;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -102,7 +101,7 @@ namespace IbrahKit
 
             VerticalLayoutGroup layoutGroup = menuItemList.AddComponent<VerticalLayoutGroup>();
 
-            extendedMenu.SetParams(enabledGroup,hiddenGroup, menuItemList.transform);
+            extendedMenu.SetParams(enabledGroup, hiddenGroup, menuItemList.transform);
 
             layoutGroup.childForceExpandWidth = false;
             layoutGroup.childForceExpandHeight = false;

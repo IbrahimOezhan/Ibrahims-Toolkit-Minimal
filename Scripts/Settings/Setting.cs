@@ -92,7 +92,7 @@ namespace IbrahKit
 
         public virtual string GetDisplayValue()
         {
-            switch(displayMode)
+            switch (displayMode)
             {
                 case DisplayMode.RAW:
                     return value.ToString("0.0");

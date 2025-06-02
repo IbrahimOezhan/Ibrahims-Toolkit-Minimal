@@ -8,7 +8,7 @@ namespace IbrahKit
         public override void ApplyChanges()
         {
             base.ApplyChanges();
-            ((UniversalRenderPipelineAsset) GraphicsSettings.defaultRenderPipeline).renderScale = value;
+            ((UniversalRenderPipelineAsset)GraphicsSettings.defaultRenderPipeline).renderScale = value;
         }
     }
 }

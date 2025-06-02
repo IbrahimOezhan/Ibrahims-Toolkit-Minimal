@@ -42,11 +42,11 @@ namespace IbrahKit
         {
             extensions.RemoveAll(x => x == null);
 
-           List<Type> types = GetDerivedTypes().ToList();
+            List<Type> types = GetDerivedTypes().ToList();
 
             Type type = types.Find(x => x.Name == extension);
 
-            if(type != null)
+            if (type != null)
             {
                 UI_Extension extensionToAdd = gameObject.AddComponent(type) as UI_Extension;
                 extensions.Add(extensionToAdd);

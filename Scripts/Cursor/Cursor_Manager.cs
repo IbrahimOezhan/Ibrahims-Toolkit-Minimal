@@ -107,7 +107,7 @@ namespace IbrahKit
 
             if (mainCamera == null) mainCamera = Camera.main;
 
-            if(mainCamera == null)
+            if (mainCamera == null)
             {
                 Debug.LogWarning("Main Camera is null");
 
@@ -116,7 +116,7 @@ namespace IbrahKit
 
             EventSystem eventSystem = EventSystem.current;
 
-            if(eventSystem == null)
+            if (eventSystem == null)
             {
                 Debug.LogWarning("Event System is null");
 

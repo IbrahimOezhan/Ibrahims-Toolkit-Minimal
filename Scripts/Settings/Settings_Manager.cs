@@ -13,12 +13,12 @@ namespace IbrahKit
     {
         private SaveData data;
 
-        [SerializeField, OnValueChanged("OnValueChanged"), ValueDropdown("GetAllTypesDropdownFormat")] 
+        [SerializeField, OnValueChanged("OnValueChanged"), ValueDropdown("GetAllTypesDropdownFormat")]
         private string addSetting = "None";
 
-        [SerializeField,SerializeReference]
+        [SerializeField, SerializeReference]
         private List<Setting> settings;
-        
+
         public static Settings_Manager Instance;
 
         private void Awake()
@@ -37,7 +37,7 @@ namespace IbrahKit
         {
             if (Instance == this)
             {
-                data = (SaveData) Save_Manager.currentFolder.LoadObject("Settings", new SaveData());
+                data = (SaveData)Save_Manager.currentFolder.LoadObject("Settings", new SaveData());
 
                 for (int i = 0; i < settings.Count; i++)
                 {
@@ -66,7 +66,7 @@ namespace IbrahKit
 
         //Invoked by Odin
         private IEnumerable GetAllTypesDropdownFormat() { return Type_Utilities.GetAllTypesDropdownFormat(typeof(Setting)); }
-       
+
         //Invoked by Odin
         private void OnValueChanged()
         {
@@ -84,7 +84,7 @@ namespace IbrahKit
             addSetting = "None";
         }
 
-        [Button(Name ="Validate")]
+        [Button(Name = "Validate")]
         private void OnValidate()
         {
             String_Utilities.CreateDropdown(settings.Select(x => x.GetKey()).ToList(), "Settings");
@@ -130,7 +130,7 @@ namespace IbrahKit
 
             public string GetValue(string key)
             {
-                if(data.TryGetValue(key, out string value))
+                if (data.TryGetValue(key, out string value))
                 {
                     return value;
                 }
