@@ -11,6 +11,8 @@ namespace IbrahKit
     [Serializable]
     public class Setting
     {
+        protected bool init;
+
         [BoxGroup("Base"), SerializeField, Dropdown("Localization")] private string settingsKey;
 
         [BoxGroup("Value"), SerializeField] private float defaultValue;
@@ -27,21 +29,17 @@ namespace IbrahKit
         [BoxGroup("Other Properties"), SerializeField, ShowIf("type", SettingsType.RANGE)] protected float steps;
         [BoxGroup("Other Properties"), SerializeField] private UnityEvent OnValueChange;
 
-        protected virtual void Init()
+        public virtual void Init(string initialValue)
         {
+            if (init) return;
 
-        }
-
-        public virtual void LoadSetting(string _value)
-        {
-            Init();
-            if (!float.TryParse(_value, out value)) value = defaultValue;
-        }
-
-        public void LoadDefault()
-        {
-            ChangeValue(defaultValue - value);
+            if (!float.TryParse(initialValue, out value))
+            {
+                value = defaultValue;
+            }
             ApplyChanges();
+
+            init = true;
         }
 
         public virtual void ChangeValue(float _value)

@@ -42,8 +42,7 @@ namespace IbrahKit
                 for (int i = 0; i < settings.Count; i++)
                 {
                     string key = settings[i].GetKey();
-                    settings[i].LoadSetting(data.GetValue(key));
-                    settings[i].ApplyChanges();
+                    settings[i].Init(data.GetValue(key));
                 }
             }
         }

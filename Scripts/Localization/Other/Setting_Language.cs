@@ -2,9 +2,9 @@ namespace IbrahKit
 {
     public class Setting_Language : Setting
     {
-        protected override void Init()
+        public override void Init(string initialValue)
         {
-            base.Init();
+            base.Init(initialValue);
             maxValue = Localization_Manager.Instance.GetUsedLanguageAmount() - 1;
         }
 

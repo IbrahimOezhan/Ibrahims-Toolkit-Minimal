@@ -5,9 +5,9 @@ namespace IbrahKit
 {
     public class Setting_ScreenMode : Setting
     {
-        protected override void Init()
+        public override void Init(string initialValue)
         {
-            base.Init();
+            base.Init(initialValue);
             maxValue = Enum.GetNames(typeof(FullScreenMode)).Length - 1;
         }
 

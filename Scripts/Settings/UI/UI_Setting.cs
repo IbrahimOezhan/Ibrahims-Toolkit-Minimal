@@ -59,12 +59,17 @@ namespace IbrahKit
             this.settingKey = settingKey;
         }
 
-        public void Setup(Setting setting)
+        public void Setup(Setting_Container setting)
         {
-            this.setting = setting;
+            this.setting = setting.GetSetting();
         }
 
         private IEnumerable GetAllTypesDropdownFormat() { return Type_Utilities.GetAllTypesDropdownFormat(typeof(Setting)); }
+
+        public Setting GetSetting()
+        {
+            return setting;
+        }
 
         private void OnValueChanged()
         {
@@ -99,6 +104,8 @@ namespace IbrahKit
             {
                 return false;
             }
+
+            setting.Init("");
 
             if (!subscribed)
             {

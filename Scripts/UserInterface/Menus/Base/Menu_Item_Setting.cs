@@ -10,7 +10,7 @@ namespace IbrahKit
         [SerializeField] private SettingsInterfaceType settingType;
 
         [ShowIf("settingType", SettingsInterfaceType.LOCAL), SerializeField]
-        private Setting reference;
+        private Setting_Container reference;
 
         [ShowIf("settingType", SettingsInterfaceType.KEY), Dropdown("Settings"), SerializeField]
         private string settingsKey;
@@ -26,7 +26,7 @@ namespace IbrahKit
 
             UI_Setting setting = config.GetSettingsPrefab(_foundSetting.GetSettingsType());
 
-            UI_Setting settingInstance = GameObject.Instantiate(setting, parent);
+            UI_Setting settingInstance = Object.Instantiate(setting, parent);
 
             spawnedObject = settingInstance.gameObject;
 
@@ -35,7 +35,7 @@ namespace IbrahKit
                 case SettingsInterfaceType.KEY:
                     settingInstance.Setup(settingsKey);
                     break;
-                case SettingsInterfaceType.LOCAL:
+                case SettingsInterfaceType.LOCALREFERENCE:
                     settingInstance.Setup(reference);
                     break;
             }
