@@ -13,12 +13,13 @@ namespace IbrahKit
         private string currentState;
         private bool found;
         private bool isVisible;
-        private CursorInput input;
-        private Camera mainCamera;
 
         private CursorState cursorState;
         private CursorState preCursorState;
         private InputType inputType;
+
+        private CursorInput input;
+        private Camera mainCamera;
 
         [SerializeField] private bool enableCustomCursor;
         [ShowIf("enableCustomCursor"), SerializeField] private Sprite noneCursor;

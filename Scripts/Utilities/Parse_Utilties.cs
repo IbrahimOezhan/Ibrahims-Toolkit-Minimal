@@ -2,7 +2,7 @@ using System.Text.Json;
 
 namespace IbrahKit
 {
-    public class Parse_Utilties
+    public static class Parse_Utilties
     {
         public static float Parse(string input, float defaultValue = 0)
         {

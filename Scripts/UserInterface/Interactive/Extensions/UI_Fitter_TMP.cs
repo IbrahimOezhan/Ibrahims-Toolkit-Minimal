@@ -66,12 +66,12 @@ namespace IbrahKit
                 }
                 else
                 {
-                    return (text, rect, customConfig != null ? customConfig.config : manager.GetDefaultUIConfig().config != null ? manager.GetDefaultUIConfig().config : defaultConfig);
+                    return (text, rect, customConfig != null ? customConfig.GetConfig() : manager.GetDefaultUIConfig().GetConfig() != null ? manager.GetDefaultUIConfig().GetConfig() : defaultConfig);
                 }
             }
             else
             {
-                return (text, rect, customConfig != null ? customConfig.config : UI_Manager.Instance.GetDefaultUIConfig().config != null ? UI_Manager.Instance.GetDefaultUIConfig().config : defaultConfig);
+                return (text, rect, customConfig != null ? customConfig.GetConfig() : UI_Manager.Instance.GetDefaultUIConfig().GetConfig() != null ? UI_Manager.Instance.GetDefaultUIConfig().GetConfig() : defaultConfig);
             }
         }
     }

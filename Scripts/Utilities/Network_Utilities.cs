@@ -5,7 +5,7 @@ using System.Net.Sockets;
 
 namespace IbrahKit
 {
-    public class Network_Utilities
+    public static class Network_Utilities
     {
         public static string GetLocalIPv4()
         {

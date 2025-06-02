@@ -67,17 +67,19 @@ namespace IbrahKit
                 }
                 else
                 {
-                    return (text, rect, customConfig != null ? customConfig.config : manager.GetDefaultUIConfig().config != null ? manager.GetDefaultUIConfig().config : defaultConfig);
+                    return (text, rect, customConfig != null ?
+                        customConfig.GetConfig() : manager.GetDefaultUIConfig().GetConfig() != null ?
+                        manager.GetDefaultUIConfig().GetConfig() : defaultConfig);
                 }
             }
             else
             {
                 UI_Config config = null;
 
-                if (customConfig != null) config = customConfig.config;
+                if (customConfig != null) config = customConfig.GetConfig();
                 else
                 {
-                    if (UI_Manager.Instance != null) config = UI_Manager.Instance.GetDefaultUIConfig().config;
+                    if (UI_Manager.Instance != null) config = UI_Manager.Instance.GetDefaultUIConfig().GetConfig();
                     else config = defaultConfig;
                 }
 

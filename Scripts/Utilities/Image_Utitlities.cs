@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace IbrahKit
 {
-    public class Image_Utitlities
+    public static class Image_Utitlities
     {
         public static byte[] ImageToByteArray(Sprite sprite)
         {
@@ -14,7 +14,7 @@ namespace IbrahKit
             return texture.EncodeToPNG();
         }
 
-        public Sprite ByteArrayToSprite(byte[] bytes, Vector2Int size)
+        public static Sprite ByteArrayToSprite(byte[] bytes, Vector2Int size)
         {
             Texture2D texture = new(size.x, size.y, TextureFormat.RGBA32, false);
             texture.LoadRawTextureData(bytes);
@@ -24,7 +24,7 @@ namespace IbrahKit
             return sprite;
         }
 
-        public Texture ByteArrayToTexture(byte[] bytes, Vector2Int size)
+        public static Texture ByteArrayToTexture(byte[] bytes, Vector2Int size)
         {
             Texture2D texture = new(size.x, size.y, TextureFormat.RGBA32, false);
             texture.LoadRawTextureData(bytes);

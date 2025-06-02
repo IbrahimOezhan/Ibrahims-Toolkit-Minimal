@@ -9,7 +9,14 @@ namespace IbrahKit
 
         protected override void Init()
         {
-            if (text == null) text = GetComponent<Text>();
+            if (text == null)
+            {
+                if(!text.TryGetComponent(out text))
+                {
+                    return;
+                }
+            }
+
             base.Init();
         }
 

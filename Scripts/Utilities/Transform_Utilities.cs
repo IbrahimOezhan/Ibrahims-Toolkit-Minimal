@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace IbrahKit
 {
-    public class Transform_Utilities
+    public static class Transform_Utilities
     {
         public static List<T> GetChildren<T>(Transform tr)
         {

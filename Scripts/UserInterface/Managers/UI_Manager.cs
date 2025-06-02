@@ -61,11 +61,6 @@ namespace IbrahKit
             if (Instance != this) return;
         }
 
-        private void Hide(InputAction.CallbackContext _callbackContext)
-        {
-            Hide();
-        }
-
         private void Hide()
         {
             hidden = !hidden;

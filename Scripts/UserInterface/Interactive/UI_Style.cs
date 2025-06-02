@@ -7,30 +7,22 @@ namespace IbrahKit
     [System.Serializable]
     public class UI_Style
     {
-        public UI_Style(Font font, TMP_FontAsset fontAsset, int fontSize, Color fontColor)
-        {
-            this.TMP_Font = fontAsset;
-            this.font = font;
-            this.fontColor = fontColor;
-        }
-
         public UI_Style()
         {
 
         }
 
-        [SerializeField] private Font font;
-        [SerializeField] private TMP_FontAsset TMP_Font;
-        [SerializeField] private Color fontColor;
-
-        [SerializeField] private List<ReplacementFont> replacementFonts = new();
-
-        private class ReplacementFont
+        public UI_Style(Font font, TMP_FontAsset fontAsset, int fontSize, Color fontColor)
         {
-            public Font font;
-            public TMP_FontAsset TMP_Font;
-            [Dropdown("SysLanguage")] public string language;
+            this.fontAsset = fontAsset;
+            this.font = font;
+            this.fontColor = fontColor;
         }
+
+        [SerializeField] private Color fontColor;
+        [SerializeField] private Font font;
+        [SerializeField] private TMP_FontAsset fontAsset;
+        [SerializeField] private List<ReplacementFont> replacementFonts = new();
 
         public (Font, Color) GetFont()
         {
@@ -45,8 +37,15 @@ namespace IbrahKit
         {
             ReplacementFont font = replacementFonts.Find(x => Localization_Manager.Instance.GetCurrentSysLanguage().ToString() == x.language);
 
-            if (font != null) return (font.TMP_Font, fontColor);
-            else return (this.TMP_Font, fontColor);
+            if (font != null) return (font.fontAsset, fontColor);
+            else return (fontAsset, fontColor);
+        }
+
+        private class ReplacementFont
+        {
+            public Font font;
+            public TMP_FontAsset fontAsset;
+            [Dropdown("SysLanguage")] public string language;
         }
     }
 }

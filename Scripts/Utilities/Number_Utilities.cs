@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace IbrahKit
 {
-    public class Number_Utilities
+    public static class Number_Utilities
     {
         public static int GetRandomEvent(List<int> chances)
         {

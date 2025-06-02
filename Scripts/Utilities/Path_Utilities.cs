@@ -9,7 +9,7 @@ using UnityEditor;
 
 namespace IbrahKit
 {
-    public class Path_Utilities
+    public static class Path_Utilities
     {
         private const string myGames = "My Games";
 

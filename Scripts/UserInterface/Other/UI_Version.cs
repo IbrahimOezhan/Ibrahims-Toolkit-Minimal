@@ -8,7 +8,14 @@ namespace IbrahKit
 
         private void Awake()
         {
-            if (localization == null) localization = GetComponent<UI_Localization>();
+            if (localization == null)
+            {
+                if(!TryGetComponent(out localization))
+                {
+                    return;
+                }
+            }
+
             localization.SetParam(new() { Application.version });
         }
     }

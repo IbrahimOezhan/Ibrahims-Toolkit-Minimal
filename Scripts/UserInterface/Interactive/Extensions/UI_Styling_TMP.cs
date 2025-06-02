@@ -12,7 +12,14 @@ namespace IbrahKit
 
         protected override void Init()
         {
-            if (text == null) text = GetComponent<TextMeshProUGUI>();
+            if (text == null)
+            {
+                if(!TryGetComponent(out text))
+                {
+                    return;
+                }
+            }
+
             base.Init();
         }
 

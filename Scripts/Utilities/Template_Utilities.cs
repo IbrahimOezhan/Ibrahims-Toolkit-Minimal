@@ -6,9 +6,8 @@ using UnityEngine;
 
 namespace IbrahKit
 {
-    public class Template_Utilities
+    public static class Template_Utilities
     {
-        // Miscellaneous
         public static List<T> ShuffleList<T>(List<T> list)
         {
             for (int i = 0; i < list.Count; i++)
