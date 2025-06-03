@@ -67,11 +67,7 @@ namespace IbrahKit
 
                     isVisible = IsVisible(currentState);
 
-                    if (enableCustomCursor)
-                    {
-                        if (!OnCustomCursor()) OnDefaultCursor();
-                    }
-                    else
+                    if (!enableCustomCursor || !OnCustomCursor())
                     {
                         OnDefaultCursor();
                     }
