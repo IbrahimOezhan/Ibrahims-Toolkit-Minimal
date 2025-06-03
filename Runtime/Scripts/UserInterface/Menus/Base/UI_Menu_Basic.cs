@@ -16,7 +16,6 @@ namespace IbrahKit
         [FoldoutGroup("MenuSettings", order: -2), SerializeField] protected CanvasGroup enabledGroup;
         [FoldoutGroup("MenuSettings", order: -1), SerializeField] protected CanvasGroup hiddenGroup;
 
-        [FoldoutGroup("MenuSettings", order: -1), SerializeField] protected Button defaultButton;
         [FoldoutGroup("MenuSettings", order: -1), SerializeField] protected bool hideOnPause;
         [FoldoutGroup("MenuSettings", order: -1), SerializeField] protected bool preventHideByButton;
         [FoldoutGroup("MenuSettings", order: -1), SerializeField] protected bool disableOnStart;
@@ -229,13 +228,5 @@ namespace IbrahKit
             enabledGroup = enabled;
             hiddenGroup = hidden;
         }
-    }
-
-    [System.Serializable]
-    public class MenuTransition
-    {
-        public UI_Menu_Basic menu;
-        public float fadeTime;
-        public FadeMode mode;
     }
 }

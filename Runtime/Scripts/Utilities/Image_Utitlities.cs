@@ -6,7 +6,7 @@ namespace IbrahKit
     {
         public static byte[] ImageToByteArray(Sprite sprite)
         {
-            if(sprite == null)
+            if (sprite == null)
             {
                 Debug.LogWarning("Sprite is null");
                 return new byte[0];
@@ -28,10 +28,10 @@ namespace IbrahKit
 
         public static Sprite ByteArrayToSprite(byte[] bytes, Vector2Int size)
         {
-            if(bytes == null)
+            if (bytes == null)
             {
                 Debug.LogWarning("Bytes array is null");
-                return Sprite.Create(new(0,0),new(0,0,0,0),new(0,0));
+                return Sprite.Create(new(0, 0), new(0, 0, 0, 0), new(0, 0));
             }
 
             if (bytes.Length == 0)
@@ -52,7 +52,7 @@ namespace IbrahKit
             if (bytes == null)
             {
                 Debug.LogWarning("Bytes array is null");
-                return new(0,0);
+                return new(0, 0);
             }
 
             if (bytes.Length == 0)
@@ -70,7 +70,7 @@ namespace IbrahKit
 
         public static Sprite GrayscaleSprite(Sprite _sprite)
         {
-            if(_sprite == null)
+            if (_sprite == null)
             {
                 Debug.LogWarning("Sprite is empty");
                 return Sprite.Create(new(0, 0), new(0, 0, 0, 0), new(0, 0));

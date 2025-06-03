@@ -12,7 +12,7 @@ namespace IbrahKit
 
         public static int GetRandomEvent(List<int> chances)
         {
-            if(chances == null )
+            if (chances == null)
             {
                 Debug.LogWarning("Passed chances list is null");
                 return -1;
@@ -28,7 +28,7 @@ namespace IbrahKit
             {
                 Debug.Log("Returned the only element");
                 return 0;
-            } 
+            }
 
             List<int> startAt = new();
 

@@ -9,7 +9,7 @@ namespace IbrahKit
     {
         public static Type[] GetAllTypes(Type baseType)
         {
-            if(baseType == null)
+            if (baseType == null)
             {
                 Debug.LogWarning("Base type is null");
                 return new Type[0];

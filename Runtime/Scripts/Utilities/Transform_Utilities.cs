@@ -7,7 +7,7 @@ namespace IbrahKit
     {
         public static List<T> GetChildren<T>(Transform transform)
         {
-            if(transform == null)
+            if (transform == null)
             {
                 Debug.LogWarning("Transform is null");
                 return new(0);
@@ -68,7 +68,7 @@ namespace IbrahKit
 
         public static void SortGameobjects(List<GameObject> list)
         {
-            if(list == null)
+            if (list == null)
             {
                 Debug.LogWarning("List is null");
 
