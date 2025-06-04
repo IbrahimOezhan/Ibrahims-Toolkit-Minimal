@@ -77,6 +77,40 @@ namespace IbrahKit
 
         public static void CreateDropdown(List<string> input, string fileName)
         {
+            if(input == null)
+            {
+                Debug.LogWarning("Passed input list is null");
+                return;
+            }
+
+            if (input.Count == 0)
+            {
+                Debug.LogWarning("Passed input list is empty. Possible error");
+                return;
+            }
+
+            if(IsEmpty(fileName))
+            {
+                Debug.LogWarning("File name is empty or null");
+                return;
+            }
+
+            List<string> distinct = input.Distinct().ToList();
+
+            if (input.Count != distinct.Count)
+            {
+                Debug.LogError("Duplicate keys found in input");
+
+                List<string> duplicates = input.Except(distinct).ToList();
+
+                for (int i = 0; i < duplicates.Count;i++)
+                {
+                    Debug.LogError("Duplicate: " + duplicates[i]);
+                }
+
+                return;
+            }
+
             string _dir = "Assets/Resources/DropdownFiles/";
             fileName += ".txt";
             string _filePath = _dir + fileName;
