@@ -16,8 +16,7 @@ namespace IbrahKit
         [SerializeField, OnValueChanged("OnValueChanged"), ValueDropdown("GetAllTypesDropdownFormat")]
         private string addSetting = "None";
 
-        [SerializeField, SerializeReference]
-        private List<Setting> settings;
+        [SerializeReference] private List<Setting> settings = new();
 
         public static Settings_Manager Instance;
 
@@ -62,6 +61,11 @@ namespace IbrahKit
             }
         }
 
+        [Button(Name = "Validate")]
+        private void OnValidate()
+        {
+            String_Utilities.CreateDropdown(settings.Select(x => x.GetKey()).ToList(), "Settings");
+        }
 
         //Invoked by Odin
         private IEnumerable GetAllTypesDropdownFormat() { return Type_Utilities.GetAllTypesDropdownFormat(typeof(Setting)); }
@@ -81,12 +85,6 @@ namespace IbrahKit
             }
 
             addSetting = "None";
-        }
-
-        [Button(Name = "Validate")]
-        private void OnValidate()
-        {
-            String_Utilities.CreateDropdown(settings.Select(x => x.GetKey()).ToList(), "Settings");
         }
 
         public void OpenSettings(UI_Menu_Basic _origin)
