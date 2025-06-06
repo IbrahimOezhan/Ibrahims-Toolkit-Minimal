@@ -6,9 +6,9 @@ using UnityEngine;
 
 namespace IbrahKit
 {
-    public static class Template_Utilities
+    public static class Collection_Utilities
     {
-        public static List<T> ShuffleList<T>(List<T> list)
+        public static List<T> Shuffle<T>(List<T> list)
         {
             for (int i = 0; i < list.Count; i++)
             {
@@ -18,15 +18,31 @@ namespace IbrahKit
             return list;
         }
 
-        public static void Screenshot()
+        public static T[] Shuffle<T>(T[] list)
         {
-            string fileName = "Screenshot-" + DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss") + ".png";
-            string screenshotsPath = Path.Combine(Path_Utilities.GetGamePath(), "Screenshots");
-            if (!Directory.Exists(screenshotsPath)) Directory.CreateDirectory(screenshotsPath);
-            ScreenCapture.CaptureScreenshot(Path.Combine(screenshotsPath, fileName));
+            T[] result = new T[list.Length];
+
+            for(int i = 0; i < list.Length; i++)
+            {
+                result[i] = list[i];
+            }
+
+            for (int i = 0; i < result.Length; i++)
+            {
+                int randomIndex = UnityEngine.Random.Range(i, result.Length);
+                (result[randomIndex], result[i]) = (result[i], result[randomIndex]);
+            }
+
+            return result;
         }
 
-        public static string[,] GetTable(string _text)
+        public static T GetClampedArrayElement<T>(T[] array, int index)
+        {
+            if (array.Length == 0) return default;
+            return array[Mathf.Clamp(index, 0, array.Length - 1)];
+        }
+
+        public static string[,] GetAsMatrix(string _text)
         {
             List<string> lineSplit = _text.Split('\n').ToList();
 

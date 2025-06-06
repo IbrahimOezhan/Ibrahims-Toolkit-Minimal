@@ -89,7 +89,7 @@ namespace IbrahKit
 
         public void Screenshot()
         {
-            Template_Utilities.Screenshot();
+            Basic_Utilities.Screenshot();
         }
 
         public void ScreenshotNoUI()
@@ -103,7 +103,7 @@ namespace IbrahKit
 
             await Task.Yield();
 
-            Template_Utilities.Screenshot();
+            Basic_Utilities.Screenshot();
 
             await Task.Yield();
 
