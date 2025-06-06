@@ -77,7 +77,7 @@ namespace IbrahKit
 
         public static void CreateDropdown(List<string> input, string fileName)
         {
-            if(input == null)
+            if (input == null)
             {
                 Debug.LogWarning("Passed input list is null");
                 return;
@@ -89,7 +89,7 @@ namespace IbrahKit
                 return;
             }
 
-            if(IsEmpty(fileName))
+            if (IsEmpty(fileName))
             {
                 Debug.LogWarning("File name is empty or null");
                 return;
@@ -103,7 +103,7 @@ namespace IbrahKit
 
                 List<string> duplicates = input.Except(distinct).ToList();
 
-                for (int i = 0; i < duplicates.Count;i++)
+                for (int i = 0; i < duplicates.Count; i++)
                 {
                     Debug.LogError("Duplicate: " + duplicates[i]);
                 }

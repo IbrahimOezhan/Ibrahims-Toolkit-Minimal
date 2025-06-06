@@ -1,80 +1,111 @@
+using System;
+using System.Runtime.CompilerServices;
 using System.Text;
-using UnityEngine;
 
 namespace IbrahKit
 {
-    public class Debug
+    public static class Debug
     {
         private static StringBuilder buffer = new();
 
-        public static void Log(object message, GameObject context = null)
+        public static bool BufferLogs { get; private set; } = false;
+
+        public static bool DisableLogs { get; set; } = false;
+
+        private static void AddToBuffer(string message)
         {
-            if (IsDisabled()) return;
-
-            if (Debug_Manager.bufferLogs)
-            {
-                string msg = "<color=white>" + message + "</color>";
-
-                AddToBuffer(msg);
-
-                return;
-            }
-
-            UnityEngine.Debug.Log(message, context);
-        }
-
-        public static void LogWarning(object message, GameObject context = null)
-        {
-            if (IsDisabled()) return;
-
-            if (Debug_Manager.bufferLogs)
-            {
-                string msg = "<color=yellow>" + message + "</color>";
-
-                AddToBuffer(msg);
-
-                return;
-            }
-
-            UnityEngine.Debug.LogWarning(message, context);
-        }
-
-        public static void LogError(object message, GameObject context = null)
-        {
-            if (IsDisabled()) return;
-
-            if (Debug_Manager.bufferLogs)
-            {
-                string msg = "<color=red>" + message + "</color>";
-
-                AddToBuffer(msg);
-
-                return;
-            }
-
-            UnityEngine.Debug.LogError(message, context);
-        }
-
-        private static void AddToBuffer(object msg)
-        {
-            buffer.AppendLine(msg.ToString());
+            buffer.AppendLine(message);
         }
 
         public static void ReleaseBuffer()
         {
-            UnityEngine.Debug.Log(buffer);
-            buffer = new();
+            if (buffer.Length > 0)
+            {
+                UnityEngine.Debug.Log(buffer.ToString());
+                buffer.Clear();
+            }
         }
 
-        public static bool IsDisabled()
+        public static void SetBuffering(bool enable)
         {
-            return Debug_Manager.s_disableLogs;
+            BufferLogs = enable;
+            if (!enable)
+                ReleaseBuffer();
+            else
+                buffer.Clear();
         }
 
-        public static void Buffer(bool value)
+        public static void Log(object message, UnityEngine.Object context = null,
+            [CallerMemberName] string caller = null)
         {
-            Debug_Manager.bufferLogs = value;
-            buffer = new();
+            if (DisableLogs) return;
+
+            string formattedMsg = $"[Log] {message} (Caller: {caller})";
+
+            if (BufferLogs)
+            {
+                AddToBuffer(formattedMsg);
+                return;
+            }
+
+            if (context != null)
+                UnityEngine.Debug.Log(formattedMsg, context);
+            else
+                UnityEngine.Debug.Log(formattedMsg);
+        }
+
+        public static void LogWarning(object message, UnityEngine.Object context = null,
+            [CallerMemberName] string caller = null)
+        {
+            if (DisableLogs) return;
+
+            string formattedMsg = $"<color=yellow>[Warning] {message} (Caller: {caller})</color>";
+
+            if (BufferLogs)
+            {
+                AddToBuffer(formattedMsg);
+                return;
+            }
+
+            if (context != null)
+                UnityEngine.Debug.LogWarning(formattedMsg, context);
+            else
+                UnityEngine.Debug.LogWarning(formattedMsg);
+        }
+
+        public static void LogError(object message, UnityEngine.Object context = null,
+            [CallerMemberName] string caller = null)
+        {
+            if (DisableLogs) return;
+
+            string formattedMsg = $"<color=red>[Error] {message} (Caller: {caller})</color>";
+
+            if (BufferLogs)
+            {
+                AddToBuffer(formattedMsg);
+                return;
+            }
+
+            if (context != null)
+                UnityEngine.Debug.LogError(formattedMsg, context);
+            else
+                UnityEngine.Debug.LogError(formattedMsg);
+        }
+
+        public static void LogException(Exception exception, UnityEngine.Object context = null)
+        {
+            if (DisableLogs) return;
+
+            if (BufferLogs)
+            {
+                AddToBuffer($"<color=red>[Exception] {exception}</color>");
+                return;
+            }
+
+            if (context != null)
+                UnityEngine.Debug.LogException(exception, context);
+            else
+                UnityEngine.Debug.LogException(exception);
         }
     }
 }

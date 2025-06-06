@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -22,7 +20,7 @@ namespace IbrahKit
         {
             T[] result = new T[list.Length];
 
-            for(int i = 0; i < list.Length; i++)
+            for (int i = 0; i < list.Length; i++)
             {
                 result[i] = list[i];
             }
