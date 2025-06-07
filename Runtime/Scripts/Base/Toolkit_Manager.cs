@@ -1,28 +1,24 @@
+using Sirenix.OdinInspector;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using System.Collections.Generic;
-using Sirenix.OdinInspector;
-using System.Collections;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace IbrahKit
 {
     [ExecuteInEditMode]
-    public class Manager_Manager : MonoBehaviour
+    public class Toolkit_Manager : MonoBehaviour
     {
-#if UNITY_EDITOR
+        [HorizontalGroup("Add"), HideLabel, Dropdown("TemplateManagers"), SerializeField]
+        private string ManagerToAdd;
+
         [ReadOnly, SerializeField] private List<GameObject> managers = new();
         [ReadOnly, SerializeField] private List<string> names = new();
 
         [ListDrawerSettings(OnTitleBarGUI = "DrawRefreshButton"), ReadOnly, SerializeField]
         private List<GameObject> spawnedManagers = new();
-
-        [HorizontalGroup("Add"), HideLabel, Dropdown("TemplateManagers"), SerializeField]
-        private string ManagerToAdd;
 
         private void OnValidate()
         {
@@ -39,9 +35,11 @@ namespace IbrahKit
                         }
                         else
                         {
-                            GameObject sOb = (GameObject)PrefabUtility.InstantiatePrefab(ob, transform);
+#if UNITY_EDITOR
+                            GameObject sOb = (GameObject)UnityEditor.PrefabUtility.InstantiatePrefab(ob, transform);
                             spawnedManagers.Add(sOb);
                             sOb.name = ManagerToAdd;
+#endif
                         }
                     }
                 }
@@ -53,14 +51,6 @@ namespace IbrahKit
         private void OnTransformChildrenChanged()
         {
             StartCoroutine(DelayedUpdate());
-        }
-
-        [Button]
-        public void Initialize()
-        {
-            managers.Clear();
-            names.Clear();
-            Addressables.LoadAssetsAsync<GameObject>("IbrahTemplate", OnAssetLoaded).Completed += OnAllAssetsLoaded;
         }
 
         private void OnAssetLoaded(GameObject loadedAsset)
@@ -95,7 +85,7 @@ namespace IbrahKit
             String_Utilities.CreateDropdown(names, "TemplateManagers");
         }
 
-        public void DrawRefreshButton()
+        private void DrawRefreshButton()
         {
             if (gameObject.activeInHierarchy)
             {
@@ -105,6 +95,20 @@ namespace IbrahKit
             {
                 Debug.Log("Object not active");
             }
+        }
+
+        [Button]
+        public void Initialize()
+        {
+            managers.Clear();
+            names.Clear();
+            Addressables.LoadAssetsAsync<GameObject>("IbrahTemplate", OnAssetLoaded).Completed += OnAllAssetsLoaded;
+        }
+
+        [Button]
+        public void SortManangers()
+        {
+            Transform_Utilities.SortGameobjects(spawnedManagers);
         }
 
         private IEnumerator DelayedUpdate()
@@ -118,12 +122,5 @@ namespace IbrahKit
                 spawnedManagers.Add(child.gameObject);
             }
         }
-
-        [Button]
-        public void SortManangers()
-        {
-            Transform_Utilities.SortGameobjects(spawnedManagers);
-        }
-#endif
     }
 }
