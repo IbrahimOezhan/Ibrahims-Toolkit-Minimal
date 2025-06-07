@@ -3,38 +3,24 @@ using UnityEngine;
 namespace IbrahKit
 {
     [RequireComponent(typeof(UI_Interactive))]
+    [AddComponentMenu("")]
     public abstract class UI_Extension : MonoBehaviour
     {
         protected bool init;
 
-        private void Awake()
-        {
-            OnAwake();
-        }
-
-        private void OnDestroy()
-        {
-            OnOnDestroy();
-        }
-
-        protected virtual void OnOnDestroy()
-        {
-
-        }
-
-        protected virtual void OnAwake()
+        protected virtual void Awake()
         {
             Init();
+        }
+
+        protected virtual void OnDestroy()
+        {
+
         }
 
         protected virtual void Init()
         {
             init = true;
-        }
-
-        public virtual int GetOrder()
-        {
-            return 0;
         }
 
         public virtual void Execute()
@@ -45,6 +31,11 @@ namespace IbrahKit
         public void UpdateUI()
         {
             GetComponent<UI_Interactive>().UpdateUI();
+        }
+
+        public virtual int GetOrder()
+        {
+            return 0;
         }
     }
 }

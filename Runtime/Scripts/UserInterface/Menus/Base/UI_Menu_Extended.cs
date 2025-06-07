@@ -11,8 +11,6 @@ namespace IbrahKit
     /// </summary>
     public partial class UI_Menu_Extended : UI_Menu_Basic
     {
-        private List<UI_Selectable> selectables = new();
-
         protected List<GameObject> spawnedMenuItems = new();
         protected List<GameObject> spawnedListMenuItems = new();
         protected List<GameObject> spawnedCustomMenuItems = new();
@@ -45,32 +43,6 @@ namespace IbrahKit
             base.OnEnable();
 
             if (reloadOnOpen) ReloadMenu();
-        }
-
-        protected override void OnMenuDisable()
-        {
-            base.OnMenuDisable();
-
-            foreach (UI_Selectable selectable in selectables)
-            {
-                UI_Navigation_Manager.Instance.RemoveSelectable(selectable);
-            }
-
-            UI_Navigation_Manager.Instance.UpdateSelectables();
-        }
-
-        protected override void OnMenuEnabled()
-        {
-            base.OnMenuEnabled();
-
-            selectables = Transform_Utilities.GetChildren<UI_Selectable>(transform);
-
-            foreach (UI_Selectable selectable in selectables)
-            {
-                UI_Navigation_Manager.Instance.AddSelectable(selectable);
-            }
-
-            UI_Navigation_Manager.Instance.UpdateSelectables();
         }
 
         public void ReloadMenu()

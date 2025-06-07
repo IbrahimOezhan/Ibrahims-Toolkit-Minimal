@@ -24,7 +24,7 @@ namespace IbrahKit
         [SerializeField] private TMP_FontAsset fontAsset;
         [SerializeField] private List<ReplacementFont> replacementFonts = new();
 
-        public (Font, Color) GetFont()
+        public (Font, Color) GetStyle()
         {
             ReplacementFont font = replacementFonts.Find(x => Localization_Manager.Instance.GetCurrentSysLanguage().ToString() == x.language);
 
@@ -33,7 +33,7 @@ namespace IbrahKit
         }
 
 
-        public (TMP_FontAsset, Color) GetFontTMP()
+        public (TMP_FontAsset, Color) GetStyleTMP()
         {
             ReplacementFont font = replacementFonts.Find(x => Localization_Manager.Instance.GetCurrentSysLanguage().ToString() == x.language);
 

@@ -4,31 +4,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace IbrahKit
 {
     public class UI_Selectable : UI_Base, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, ICursorHandler
     {
-        [SerializeField] private SelectedState selectedState;
+        [BoxGroup("Transition"), SerializeField] private SelectedState selectedState;
+        [BoxGroup("Transition"), SerializeReference] private List<SelectableTransition> transitions = new();
 
-        [SerializeField] private AnimationState animState;
-
-        [ShowIf("animState", AnimationState.Colors), SerializeField] private ColorTransition colorTransition = new();
-        [ShowIf("animState", AnimationState.Animation), SerializeField] private AnimationTransition animationTransition = new();
-        [ShowIf("animState", AnimationState.Scale), SerializeField] private ScaleTransition scaleTransition = new();
-
-        [SerializeField, FoldoutGroup("Navigation")] private UI_Selectable up;
-        [SerializeField, FoldoutGroup("Navigation")] private UI_Selectable down;
-        [SerializeField, FoldoutGroup("Navigation")] private UI_Selectable left;
-        [SerializeField, FoldoutGroup("Navigation")] private UI_Selectable right;
-        [SerializeField, FoldoutGroup("Navigation")] private RectTransform rect;
+        [BoxGroup("Navigation"), SerializeField] private UI_Selectable up;
+        [BoxGroup("Navigation"),SerializeField] private UI_Selectable down;
+        [BoxGroup("Navigation"), SerializeField] private UI_Selectable left;
+        [BoxGroup("Navigation"), SerializeField] private UI_Selectable right;
+        [BoxGroup("Navigation"), SerializeField] private RectTransform rect;
+        [BoxGroup("Navigation"), SerializeField] private float alignmentTolerance = 0.1f;
+        [BoxGroup("Navigation"), SerializeField] public bool interactable;
 
         [SerializeField] public UnityEvent OnClickEvent;
-        [SerializeField] public Action OnClickAction;
-        [SerializeField] public bool interactable;
 
-        public float alignmentTolerance = 0.1f;
+        public Action OnClickAction;
 
         public static UI_Selectable currentlySelected;
 
@@ -37,11 +31,22 @@ namespace IbrahKit
             if (rect == null) rect = GetComponent<RectTransform>();
         }
 
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+
+            UI_Navigation_Manager.Instance.AddSelectable(this);
+            UI_Navigation_Manager.Instance.UpdateSelectables();
+        }
+
         protected override void OnDisable()
         {
             selectedState = SelectedState.None;
             Visualize();
             DeSelect();
+
+            UI_Navigation_Manager.Instance.RemoveSelectable(this);
+            UI_Navigation_Manager.Instance.UpdateSelectables();
         }
 
         public void SetupNavigation(List<UI_Selectable> list)
@@ -199,17 +204,9 @@ namespace IbrahKit
 
         public void Visualize()
         {
-            switch (animState)
+            for (int i = 0; i < transitions.Count; i++)
             {
-                case AnimationState.Colors:
-                    colorTransition.Apply(selectedState, gameObject);
-                    break;
-                case AnimationState.Animation:
-                    animationTransition.Apply(selectedState, gameObject);
-                    break;
-                case AnimationState.Scale:
-                    scaleTransition.Apply(selectedState, gameObject);
-                    break;
+                transitions[i].Apply(selectedState, gameObject);
             }
         }
 
@@ -248,118 +245,30 @@ namespace IbrahKit
             Visualize();
         }
 
-        [Serializable]
-        protected class AnimationTransition : SelectableTransition
+        public abstract class SelectableTransition
         {
-            [SerializeField] private Animator animator;
-            [SerializeField] private string none = "None";
-            [SerializeField] private string hovering = "Hovering";
-            [SerializeField] private string pressed = "Pressed";
-
-            public override void Apply(SelectedState state, GameObject go)
+            public void Apply(SelectedState state, GameObject go)
             {
-                base.Apply(state, go);
-
                 switch (state)
                 {
-                    case SelectedState.Hovering:
-                        animator.Play(hovering);
-                        break;
                     case SelectedState.None:
-                        animator.Play(none);
+                        OnNone(go);
+                        break;
+                    case SelectedState.Hovering:
+                        OnHovering(go);
                         break;
                     case SelectedState.Pressed:
-                        animator.Play(pressed);
+                        OnPressed(go);
                         break;
                 }
             }
-        }
 
-        [Serializable]
-        protected class ColorTransition : SelectableTransition
-        {
-            [SerializeField] private Graphic graphic;
-            [SerializeField] private Color none;
-            [SerializeField] private Color hovering;
-            [SerializeField] private Color pressed;
+            protected abstract void OnNone(GameObject go);
 
-            public override void Apply(SelectedState state, GameObject go)
-            {
-                base.Apply(state, go);
+            protected abstract void OnHovering(GameObject go);
 
-                Color c = new();
+            protected abstract void OnPressed(GameObject go);
 
-                switch (state)
-                {
-                    case SelectedState.Hovering:
-                        c = hovering;
-                        break;
-                    case SelectedState.Pressed:
-                        c = pressed;
-                        break;
-                    case SelectedState.None:
-                        c = none;
-                        break;
-                }
-
-                graphic.color = c;
-            }
-        }
-
-        [Serializable]
-        protected class ScaleTransition : SelectableTransition
-        {
-            [SerializeField] private RectTransform rect;
-            [SerializeField] private float none;
-            [SerializeField] private float hovering;
-            [SerializeField] private float pressed;
-
-            public override void Apply(SelectedState state, GameObject go)
-            {
-                base.Apply(state, go);
-
-                if (rect == null) rect = go.GetComponent<RectTransform>();
-
-                Vector3 scale = new();
-
-                switch (state)
-                {
-                    case SelectedState.Hovering:
-                        scale = new(hovering, hovering);
-                        break;
-                    case SelectedState.Pressed:
-                        scale = new(pressed, pressed);
-                        break;
-                    case SelectedState.None:
-                        scale = new(none, none);
-                        break;
-                }
-
-                rect.localScale = scale;
-            }
-        }
-
-        protected class SelectableTransition
-        {
-            public virtual void Apply(SelectedState state, GameObject go)
-            {
-
-            }
-        }
-
-        protected enum SelectedState
-        {
-            None,
-            Hovering,
-            Pressed,
-        }
-
-        protected enum AnimationState
-        {
-            None,
-            Colors,
-            Animation,
-            Scale,
         }
     }
 }

@@ -3,10 +3,8 @@ using UnityEngine.UI;
 
 namespace IbrahKit
 {
-    public class UI_Styling_Legacy : UI_Extension
+    public class UI_Styling_Legacy : UI_Styling
     {
-        private UI_Style defaultStyle;
-
         [SerializeField] private Text text;
         [SerializeField] private UI_Style_SO style;
 
@@ -26,12 +24,10 @@ namespace IbrahKit
         {
             if (!init) Init();
 
-            (Text _text, UI_Style _style) = GetTextAndStyle();
+            Text _text = GetText();
+            UI_Style _style = GetResolvedStyle(_text.fontSize, text.color);
 
-            (Font font, Color color) = _style.GetFont();
-
-            _text.font = font;
-            _text.color = color;
+            (_text.font, _text.color) = _style.GetStyle();
         }
 
         public override int GetOrder()
@@ -39,29 +35,9 @@ namespace IbrahKit
             return 1;
         }
 
-        public (Text, UI_Style) GetTextAndStyle()
+        public Text GetText()
         {
-            if (!Application.isPlaying)
-            {
-                UI_Manager manager = FindFirstObjectByType<UI_Manager>();
-
-                Text text = this.text != null ? this.text : GetComponent<Text>();
-
-                defaultStyle = new(Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"), null, text.fontSize, text.color);
-
-                if (manager == null)
-                {
-                    return (text, defaultStyle);
-                }
-                else
-                {
-                    return (text, style != null ? style.style : manager.GetDefaultStyle() != null ? manager.GetDefaultStyle().style : defaultStyle);
-                }
-            }
-            else
-            {
-                return (text, style != null ? style.style : UI_Manager.Instance.GetDefaultStyle() != null ? UI_Manager.Instance.GetDefaultStyle().style : defaultStyle);
-            }
+            return text != null ? text : GetComponent<Text>();
         }
     }
 }

@@ -9,9 +9,9 @@ namespace IbrahKit
 {
     public class UI_Interactive : UI_Base, IMenuUpdate
     {
-        [SerializeField, ReadOnly] private List<UI_Extension> extensions = new();
-
         [SerializeField, OnValueChanged("OnValueChanged"), ValueDropdown("GetAllSubtypes")] private string extension = "None";
+
+        [SerializeField, ReadOnly] private List<UI_Extension> extensions = new();
 
         protected override void OnEnable()
         {
@@ -19,38 +19,21 @@ namespace IbrahKit
             UpdateUI();
         }
 
-        private Type[] GetDerivedTypes()
-        {
-            var baseType = typeof(UI_Extension);
-
-            return AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes())
-                .Where(t => t.IsClass
-                            && !t.IsAbstract
-                            && baseType.IsAssignableFrom(t)).ToArray();
-        }
-
-        private IEnumerable GetAllSubtypes()
-        {
-            List<string> subtypes = GetDerivedTypes().Select(x => x.Name).ToList();
-            subtypes.Insert(0, "None");
-
-            return subtypes;
-        }
-
         public void OnValueChanged()
         {
-            extensions.RemoveAll(x => x == null);
+            SortList();
 
-            List<Type> types = GetDerivedTypes().ToList();
+            Type[] types = Type_Utilities.GetAllTypes(typeof(UI_Extension));
 
-            Type type = types.Find(x => x.Name == extension);
-
-            if (type != null)
+            for (int i = 0; i < types.Length; i++)
             {
-                UI_Extension extensionToAdd = gameObject.AddComponent(type) as UI_Extension;
-                extensions.Add(extensionToAdd);
-                SortList();
+                if (types[i].Name == extension)
+                {
+                    UI_Extension extensionToAdd = gameObject.AddComponent(types[i]) as UI_Extension;
+                    extensions.Add(extensionToAdd);
+                    SortList();
+                    break;
+                }
             }
 
             extension = "None";
@@ -58,6 +41,8 @@ namespace IbrahKit
 
         private void SortList()
         {
+            extensions.RemoveAll(x => x == null);
+
             extensions.Sort((a, b) =>
             {
                 return a.GetOrder().CompareTo(b.GetOrder());
@@ -77,6 +62,8 @@ namespace IbrahKit
         [Button]
         public void UpdateUI()
         {
+            SortList();
+
             List<UI_Interactive> children = Transform_Utilities.GetChildren<UI_Interactive>(transform);
 
             foreach (UI_Interactive child in children)
@@ -93,6 +80,11 @@ namespace IbrahKit
         public void MenuUpdate()
         {
             UpdateUI();
+        }
+
+        private IEnumerable GetAllSubtypes()
+        {
+            return Type_Utilities.GetAllTypesDropdownFormat(typeof(UI_Extension));
         }
     }
 }

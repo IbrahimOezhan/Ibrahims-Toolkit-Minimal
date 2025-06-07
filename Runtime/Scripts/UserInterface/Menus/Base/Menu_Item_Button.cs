@@ -11,7 +11,7 @@ namespace IbrahKit
 
         public override void Spawn(RectTransform parent, UI_Menu_Extended menu)
         {
-            spawnedButton = Object.Instantiate(menu.GetMenuConfig().menuButtonPrefab, parent);
+            spawnedButton = Object.Instantiate(menu.GetMenuConfig().GetMenuButton(), parent);
             spawnedObject = spawnedButton.gameObject;
         }
     }

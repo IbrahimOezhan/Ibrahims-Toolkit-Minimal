@@ -12,16 +12,14 @@ namespace IbrahKit
     {
         private bool hidden;
 
-        [SerializeField] private UI_Config_So defaultConfig;
+        [SerializeField] private UI_Config_SO defaultConfig;
         [SerializeField] private UI_Menu_Config defaultMenuConfig;
         [SerializeField] private UI_Style_SO defaultUIStyle;
 
         [SerializeField] private int[] uiLayouts;
         [SerializeField] private List<UI_Menu_Basic> activeMenus = new();
 
-        [SerializeField] private Key screenshotKey;
-        [SerializeField] private Key screenshotNoUIKey;
-        [SerializeField] private Key hideKey;
+        [SerializeField] private KeyMap keyMap;
 
         public Action<bool> OnHide;
         public Action OnHover;
@@ -42,15 +40,15 @@ namespace IbrahKit
 
         private void Update()
         {
-            if (Keyboard.current[screenshotKey].wasPressedThisFrame)
+            if (Keyboard.current[keyMap.screenshot].wasPressedThisFrame)
             {
                 Screenshot();
             }
-            if (Keyboard.current[screenshotNoUIKey].wasPressedThisFrame)
+            if (Keyboard.current[keyMap.screenshotNoUI].wasPressedThisFrame)
             {
                 ScreenshotNoUI();
             }
-            if (Keyboard.current[hideKey].wasPressedThisFrame)
+            if (Keyboard.current[keyMap.hideUI].wasPressedThisFrame)
             {
                 Hide();
             }
@@ -222,7 +220,7 @@ namespace IbrahKit
             return defaultMenuConfig;
         }
 
-        public UI_Config_So GetDefaultUIConfig()
+        public UI_Config_SO GetDefaultUIConfig()
         {
             return defaultConfig;
         }

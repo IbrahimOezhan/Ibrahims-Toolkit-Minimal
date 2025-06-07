@@ -14,15 +14,15 @@ namespace IbrahKit
         [SerializeField]
         protected List<string> parameters = new();
 
-        protected override void OnAwake()
+        protected override void Awake()
         {
-            base.OnAwake();
+            base.Awake();
             if (Localization_Manager.Instance != null) Localization_Manager.Instance.OnLanguageChanged += UpdateUI;
         }
 
-        protected override void OnOnDestroy()
+        protected override void OnDestroy()
         {
-            base.OnOnDestroy();
+            base.OnDestroy();
             if (Localization_Manager.Instance != null) Localization_Manager.Instance.OnLanguageChanged -= UpdateUI;
         }
 

@@ -14,7 +14,7 @@ namespace IbrahKit
         [SerializeField] private Text debugContent;
 
         [SerializeField] private GameObject debugContainer;
-        [SerializeField] private Key debugKey;
+        [SerializeField] private KeyMap keyMap;
 
         public bool disableLogs;
 
@@ -37,7 +37,7 @@ namespace IbrahKit
 
         private void Update()
         {
-            if (Keyboard.current[debugKey].wasPressedThisFrame)
+            if (Keyboard.current[keyMap.debugMenu].wasPressedThisFrame)
             {
                 if (debugContainer.activeInHierarchy)
                 {
@@ -89,17 +89,6 @@ namespace IbrahKit
         {
             items.Remove(item);
             debugs.Remove(debug);
-        }
-    }
-
-    public class Debug_Item
-    {
-        public StringBuilder content = new();
-        public int order;
-
-        public Debug_Item(int order)
-        {
-            this.order = order;
         }
     }
 }
