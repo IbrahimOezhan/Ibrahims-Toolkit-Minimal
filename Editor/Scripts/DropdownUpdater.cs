@@ -1,4 +1,3 @@
-#if UNITY_EDITOR
 
 using UnityEditor;
 
@@ -12,5 +11,3 @@ public class DropdownUpdater : AssetPostprocessor
         }
     }
 }
-
-#endif

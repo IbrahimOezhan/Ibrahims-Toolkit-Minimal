@@ -1,5 +1,3 @@
-#if UNITY_EDITOR
-
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -20,7 +18,7 @@ namespace IbrahKit
 
             DropdownAttribute dropdownAttribute = (DropdownAttribute)attribute;
 
-            List<string> dropdownOptions = new List<string>();
+            List<string> dropdownOptions = new();
 
             // Read strings from the specified text file
             string path = dropdownAttribute.filePath;
@@ -49,5 +47,3 @@ namespace IbrahKit
         }
     }
 }
-
-#endif
