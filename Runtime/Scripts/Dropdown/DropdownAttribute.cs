@@ -13,6 +13,8 @@ namespace IbrahKit
 
         public DropdownAttribute(string filePath)
         {
+            filePath = "Assets/Resources/DropdownFiles/" + filePath + ".txt";
+
             if (!File.Exists(filePath))
             {
                 error = (true, "File doesnt exist");
