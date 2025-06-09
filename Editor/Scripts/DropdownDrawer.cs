@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -20,30 +19,18 @@ namespace IbrahKit
 
             List<string> dropdownOptions = new();
 
-            // Read strings from the specified text file
-            string path = dropdownAttribute.filePath;
-
-            if (File.Exists(path))
+            if (dropdownAttribute.error.Item1)
             {
-                string[] lines = File.ReadAllLines(path);
-                dropdownOptions.AddRange(lines);
-            }
-            else
-            {
-                EditorGUI.LabelField(position, label.text, "File not found");
+                EditorGUI.LabelField(position, label.text,dropdownAttribute.error.Item2);
                 return;
+
             }
 
-            if (dropdownOptions.Count > 0)
-            {
-                int selectedIndex = Mathf.Max(0, dropdownOptions.IndexOf(property.stringValue));
-                selectedIndex = EditorGUI.Popup(position, label.text, selectedIndex, dropdownOptions.ToArray());
-                property.stringValue = dropdownOptions[selectedIndex];
-            }
-            else
-            {
-                EditorGUI.LabelField(position, label.text, "No options available");
-            }
+            dropdownOptions.AddRange(dropdownAttribute.dropdownInput);
+
+            int selectedIndex = Mathf.Max(0, dropdownOptions.IndexOf(property.stringValue));
+            selectedIndex = EditorGUI.Popup(position, label.text, selectedIndex, dropdownOptions.ToArray());
+            property.stringValue = dropdownOptions[selectedIndex];
         }
     }
 }

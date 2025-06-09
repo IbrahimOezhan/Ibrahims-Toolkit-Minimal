@@ -112,15 +112,34 @@ namespace IbrahKit
             }
 
             string _dir = "Assets/Resources/DropdownFiles/";
+
             fileName += ".txt";
-            string _filePath = _dir + fileName;
+
+            string _filePath =  _dir + fileName;
 
             if (!Directory.Exists(_dir)) Directory.CreateDirectory(_dir);
-            if (!File.Exists(_filePath)) File.Create(_filePath).Close();
 
-            StringBuilder sb = new();
-            for (int i = 0; i < input.Count; i++) sb.Append(input[i] + "\n");
-            File.WriteAllText(_dir + fileName, sb.ToString());
+            using (StreamWriter sw = new StreamWriter(_filePath))
+            {
+                for (int i = 0; i < input.Count; i++)
+                {
+                    sw.WriteLine(input[i]);
+                }
+            }
+        }
+
+        public static List<string> GetDropdown(string filePath)
+        {
+            List<string> dropdownInput = new();
+
+            using StreamReader sr = new(filePath);
+
+            while (!sr.EndOfStream)
+            {
+                dropdownInput.Add(sr.ReadLine());
+            }
+
+            return dropdownInput;
         }
 
         public static bool IsEmpty(string value)
