@@ -21,8 +21,8 @@ namespace IbrahKit
         {
             base.UpdateUI();
             if (setting.GetLoop()) return;
-            sub.interactable = setting.GetValue() >= setting.GetMinMax().x;
-            add.interactable = setting.GetValue() <= setting.GetMinMax().y;
+            sub.SetInteractable(setting.GetValue() >= setting.GetMinMax().x);
+            add.SetInteractable( setting.GetValue() <= setting.GetMinMax().y);
         }
     }
 }

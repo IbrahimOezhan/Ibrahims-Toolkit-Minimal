@@ -13,7 +13,7 @@ namespace IbrahKit
         [BoxGroup("Transition"), SerializeReference] private List<SelectableTransition> transitions = new();
 
         [BoxGroup("Navigation"), SerializeField] private UI_Selectable up;
-        [BoxGroup("Navigation"),SerializeField] private UI_Selectable down;
+        [BoxGroup("Navigation"), SerializeField] private UI_Selectable down;
         [BoxGroup("Navigation"), SerializeField] private UI_Selectable left;
         [BoxGroup("Navigation"), SerializeField] private UI_Selectable right;
         [BoxGroup("Navigation"), SerializeField] private RectTransform rect;
@@ -243,32 +243,6 @@ namespace IbrahKit
         {
             selectedState = SelectedState.Hovering;
             Visualize();
-        }
-
-        public abstract class SelectableTransition
-        {
-            public void Apply(SelectedState state, GameObject go)
-            {
-                switch (state)
-                {
-                    case SelectedState.None:
-                        OnNone(go);
-                        break;
-                    case SelectedState.Hovering:
-                        OnHovering(go);
-                        break;
-                    case SelectedState.Pressed:
-                        OnPressed(go);
-                        break;
-                }
-            }
-
-            protected abstract void OnNone(GameObject go);
-
-            protected abstract void OnHovering(GameObject go);
-
-            protected abstract void OnPressed(GameObject go);
-
         }
     }
 }
