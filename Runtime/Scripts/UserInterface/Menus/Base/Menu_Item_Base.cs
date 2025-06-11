@@ -2,6 +2,7 @@
 
 namespace IbrahKit
 {
+    [System.Serializable]
     public abstract class Menu_Item_Base
     {
         protected GameObject spawnedObject;

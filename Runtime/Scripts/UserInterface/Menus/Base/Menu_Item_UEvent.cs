@@ -1,10 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace IbrahKit
 {
-    [System.Serializable]
-    public class Menu_Item_Custom1 : Menu_Item_Button
+    public class Menu_Item_UEvent : Menu_Item_Button
     {
         [SerializeField] private UnityEvent unityEvent;
 
@@ -14,4 +13,6 @@ namespace IbrahKit
             spawnedButton.Initialize(localizationKey).AddListener(() => { unityEvent.Invoke(); });
         }
     }
+
 }
+

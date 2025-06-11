@@ -23,7 +23,7 @@ namespace IbrahKit
 
         [FoldoutGroup("MenuItems"), SerializeField] private List<Menu_Item> listMenuItems = new();
 
-        [FoldoutGroup("MenuItems"), SerializeField] private Menu_Item_Custom[] customMenuItems;
+        [FoldoutGroup("MenuItems"), SerializeField] private Custom_Menu_Item[] customMenuItems;
 
         [FoldoutGroup("MenuItems"), SerializeField] private UI_Menu_Config customConfig;
 
@@ -97,7 +97,7 @@ namespace IbrahKit
 
         private void SpawnCustomMenuItems(List<Setting> _settings)
         {
-            foreach (Menu_Item_Custom menuItem in customMenuItems)
+            foreach (Custom_Menu_Item menuItem in customMenuItems)
             {
                 if (SpawnMenuItem(menuItem, hiddenGroup.transform as RectTransform, out GameObject _instance))
                 {

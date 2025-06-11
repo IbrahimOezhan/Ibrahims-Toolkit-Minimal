@@ -1,23 +1,17 @@
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Events;
 
 namespace IbrahKit
 {
     [System.Serializable]
-    public class Menu_Item_Custom : Menu_Item
+    public class Menu_Item_Custom : Menu_Item_Button
     {
-        [SerializeField] private Vector2 position;
-        [SerializeField] private Vector2 xAnchor;
-        [SerializeField] private Vector2 yAnchor;
-        [SerializeField] private Vector2 pivot;
+        //[SerializeField] private UnityEvent unityEvent;
 
-        public void SetRectTransform(RectTransform rectTransform)
+        public override void Spawn(RectTransform parent, UI_Menu_Extended menu)
         {
-            rectTransform.localPosition = position;
-            rectTransform.localRotation = Quaternion.identity;
-            rectTransform.anchorMin = new(xAnchor.x, yAnchor.x);
-            rectTransform.anchorMax = new(xAnchor.y, yAnchor.y);
-            rectTransform.pivot = pivot;
+            //base.Spawn(parent, menu);
+            //spawnedButton.Initialize(localizationKey).AddListener(() => { unityEvent.Invoke(); });
         }
     }
 }
-
