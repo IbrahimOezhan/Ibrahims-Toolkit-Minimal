@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using static IbrahKit.UI_Selectable;
 
 namespace IbrahKit
 {

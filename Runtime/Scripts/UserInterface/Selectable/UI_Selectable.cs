@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -243,6 +244,16 @@ namespace IbrahKit
         {
             selectedState = SelectedState.Hovering;
             Visualize();
+        }
+
+        public void SetInteractable(bool value)
+        {
+            interactable = value;
+        }
+
+        public bool GetInteractable()
+        {
+            return interactable;
         }
     }
 }

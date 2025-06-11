@@ -2,7 +2,8 @@ using UnityEngine;
 
 namespace IbrahKit
 {
-    public abstract class SelectableTransition
+    [System.Serializable]
+    public class SelectableTransition
     {
         public void Apply(SelectedState state, GameObject go)
         {
@@ -14,8 +15,17 @@ namespace IbrahKit
             }
         }
 
-        protected abstract void OnNone(GameObject go);
-        protected abstract void OnHovering(GameObject go);
-        protected abstract void OnPressed(GameObject go);
+        protected virtual void OnNone(GameObject go)
+        {
+
+        }
+        protected virtual void OnHovering(GameObject go)
+        {
+
+        }
+        protected virtual void OnPressed(GameObject go)
+        {
+
+        }
     }
 }
