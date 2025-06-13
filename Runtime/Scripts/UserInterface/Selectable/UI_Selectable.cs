@@ -1,5 +1,4 @@
 using Sirenix.OdinInspector;
-using Sirenix.Serialization;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -45,11 +44,15 @@ namespace IbrahKit
         protected override void OnDisable()
         {
             selectedState = SelectedState.None;
+
             Visualize();
             DeSelect();
 
-            UI_Navigation_Manager.Instance.RemoveSelectable(this);
-            UI_Navigation_Manager.Instance.UpdateSelectables();
+            if (UI_Navigation_Manager.Instance != null)
+            {
+                UI_Navigation_Manager.Instance.RemoveSelectable(this);
+                UI_Navigation_Manager.Instance.UpdateSelectables();
+            }
         }
 
         public void SetupNavigation(List<UI_Selectable> list)
@@ -212,7 +215,7 @@ namespace IbrahKit
                 transitions[i].Apply(selectedState, gameObject);
             }
 
-            if(interactable)
+            if (interactable)
             {
                 for (int i = 0; i < transitionsInteractable.Count; i++)
                 {
@@ -242,7 +245,10 @@ namespace IbrahKit
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            Press();
+            if(interactable)
+            {
+                Press();
+            }
         }
 
         public void OnPointerUp(PointerEventData eventData)
@@ -256,10 +262,12 @@ namespace IbrahKit
             selectedState = SelectedState.Pressed;
             Visualize();
             OnClickEvent.Invoke();
+            UI_Manager.Instance.OnUIClick();
         }
 
         public void Hover()
         {
+            UI_Manager.Instance.OnUIHover();
             selectedState = SelectedState.Hovering;
             Visualize();
         }
@@ -267,6 +275,7 @@ namespace IbrahKit
         public void SetInteractable(bool value)
         {
             interactable = value;
+            Visualize();
         }
 
         public bool GetInteractable()

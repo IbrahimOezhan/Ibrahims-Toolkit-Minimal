@@ -21,7 +21,7 @@ public class UI_Fitter_Legacy : UI_Fitter
 
         (Text text, RectTransform rect, UI_Config config) = (GetText(), GetRect(), GetConfig());
 
-        if(text == null)
+        if (text == null)
         {
             Debug.LogWarning("Text reference is null");
             return;

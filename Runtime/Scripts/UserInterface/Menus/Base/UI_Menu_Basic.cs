@@ -9,29 +9,34 @@ namespace IbrahKit
 {
     public class UI_Menu_Basic : MonoBehaviour
     {
+        [TabGroup("Runtime Data"), ShowInInspector, ReadOnly]
         protected InputType lastInputType;
+
+        [TabGroup("Runtime Data"), ShowInInspector, ReadOnly]
         protected UI_Menu_Basic previousMenu;
+
+        [TabGroup("Runtime Data"), ShowInInspector, ReadOnly]
         protected List<UI_Base> menuUI;
 
-        [FoldoutGroup("Menu Settings", order: -2), SerializeField, Tooltip("CanvasGroup controlling menu visibility and interactivity")]
+        [TabGroup("Menu Settings", order: 0), SerializeField, Tooltip("CanvasGroup controlling menu visibility and interactivity")]
         protected CanvasGroup enabledGroup;
 
-        [FoldoutGroup("Menu Settings", order: -1), SerializeField, Tooltip("CanvasGroup used when menu is hidden")]
+        [TabGroup("Menu Settings", order: 0), SerializeField, Tooltip("CanvasGroup used when menu is hidden")]
         protected CanvasGroup hiddenGroup;
 
-        [FoldoutGroup("Menu Settings", order: -1), SerializeField, Tooltip("Whether menu should hide automatically on pause")]
+        [TabGroup("Menu Settings", order: 0), SerializeField, Tooltip("Whether menu should hide automatically on pause")]
         protected bool hideOnPause;
 
-        [FoldoutGroup("Menu Settings", order: -1), SerializeField, Tooltip("Prevents menu from hiding when a button is pressed")]
+        [TabGroup("Menu Settings", order: 0), SerializeField, Tooltip("Prevents menu from hiding when a button is pressed")]
         protected bool preventHideByButton;
 
-        [FoldoutGroup("Menu Settings", order: -1), SerializeField, Tooltip("Disable menu on start")]
+        [TabGroup("Menu Settings", order: 0), SerializeField, Tooltip("Disable menu on start")]
         protected bool disableOnStart;
 
-        [FoldoutGroup("Transitions", order: 0), SerializeField, Tooltip("Menu to switch to when back action is triggered")]
+        [TabGroup("Transitions", order: 1), SerializeField, Tooltip("Menu to switch to when back action is triggered")]
         protected UI_Menu_Basic overrideBackMenu;
 
-        [FoldoutGroup("Transitions", order: 0), SerializeField, Tooltip("Available transitions from this menu")]
+        [TabGroup("Transitions", order: 1), SerializeField, Tooltip("Available transitions from this menu")]
         private List<MenuTransition> transitions;
 
         public static Action<MenuTransition, UI_Menu_Basic> OnMenuTransition;
@@ -206,8 +211,7 @@ namespace IbrahKit
         public void MenuTransition(UI_Menu_Basic _menu, UI_Menu_Basic _overrideBackMenu = null)
         {
             if (_overrideBackMenu != null) _menu.overrideBackMenu = _overrideBackMenu;
-            _menu.Enable(this);
-            Disable();
+            UI_Manager.Instance.Transition(this, _menu, FadeMode.None, 0);
         }
 
         public void MenuTransition(int _index)

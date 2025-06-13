@@ -9,7 +9,7 @@ namespace IbrahKit
     public class DropdownAttribute : PropertyAttribute
     {
         public List<string> dropdownInput = new();
-        public (bool,string) error;
+        public (bool, string) error;
 
         public DropdownAttribute(string filePath)
         {
@@ -22,7 +22,7 @@ namespace IbrahKit
 
             dropdownInput = String_Utilities.GetDropdown(filePath);
 
-            if(dropdownInput.Count == 0)
+            if (dropdownInput.Count == 0)
             {
                 error = (true, "No options");
             }

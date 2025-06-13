@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[CreateAssetMenu(fileName = "NewKeyMap", menuName ="IbrahKit/Keymap")]
+[CreateAssetMenu(fileName = "NewKeyMap", menuName = "IbrahKit/Keymap")]
 public class KeyMap : ScriptableObject
 {
     public Key debugMenu;

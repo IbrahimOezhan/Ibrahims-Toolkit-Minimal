@@ -115,7 +115,7 @@ namespace IbrahKit
 
             fileName += ".txt";
 
-            string _filePath =  _dir + fileName;
+            string _filePath = _dir + fileName;
 
             if (!Directory.Exists(_dir)) Directory.CreateDirectory(_dir);
 

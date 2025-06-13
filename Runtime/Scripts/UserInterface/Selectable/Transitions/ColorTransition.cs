@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using static IbrahKit.UI_Selectable;
 
 namespace IbrahKit
 {
@@ -15,7 +14,7 @@ namespace IbrahKit
 
         protected override void OnHovering(GameObject go)
         {
-            if(graphic == null)
+            if (graphic == null)
             {
                 graphic = go.GetComponent<Graphic>();
             }

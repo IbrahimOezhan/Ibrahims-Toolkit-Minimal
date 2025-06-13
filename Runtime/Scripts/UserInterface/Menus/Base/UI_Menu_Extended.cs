@@ -11,44 +11,44 @@ namespace IbrahKit
     /// </summary>
     public partial class UI_Menu_Extended : UI_Menu_Basic
     {
-        [FoldoutGroup("Title")]
-        [Tooltip("Localization component for the menu title.")]
-        [SerializeField] private UI_Localization title;
+        [TabGroup("Title"), Tooltip("Localization component for the menu title.")]
+        [SerializeField]
+        private UI_Localization title;
 
         [ShowIf("@title != null")]
-        [FoldoutGroup("Title")]
-        [Dropdown("Localization"), Tooltip("Key used to localize the menu title.")]
-        [SerializeField] private string titleKey;
+        [TabGroup("Title"), Dropdown("Localization"), Tooltip("Key used to localize the menu title.")]
+        [SerializeField]
+        private string titleKey;
 
-        [FoldoutGroup("MenuItems")]
-        [Tooltip("Parent transform for list menu items.")]
-        [SerializeField] private Transform list;
+        [TabGroup("Menu Items"), Tooltip("Parent transform for list menu items.")]
+        [SerializeField]
+        private Transform list;
+
+        [TabGroup("Menu Items"), Tooltip("Custom menu configuration, optional.")]
+        [SerializeField]
+        private UI_Menu_Config customConfig;
 
         [ShowIf("@list != null")]
-        [FoldoutGroup("MenuItems")]
-        [Tooltip("List of predefined menu items.")]
-        [SerializeField] private List<Menu_Item> listMenuItems = new();
+        [TabGroup("Menu Items"), Tooltip("List of predefined menu items.")]
+        [SerializeField]
+        private List<Menu_Item> listMenuItems = new();
 
-        [FoldoutGroup("MenuItems")]
-        [Tooltip("Array of custom menu items.")]
-        [SerializeField] private Custom_Menu_Item[] customMenuItems;
+        [TabGroup("Menu Items"), Tooltip("Array of custom menu items.")]
+        [SerializeField]
+        private Custom_Menu_Item[] customMenuItems;
 
-        [FoldoutGroup("MenuItems")]
-        [Tooltip("Custom menu configuration, optional.")]
-        [SerializeField] private UI_Menu_Config customConfig;
-
-        [FoldoutGroup("Settings")]
-        [Tooltip("If true, reload menu items every time the menu is opened.")]
-        [SerializeField] private bool reloadOnOpen;
+        [TabGroup("Settings"), Tooltip("If true, reload menu items every time the menu is opened.")]
+        [SerializeField]
+        private bool reloadOnOpen;
 
         // Internal spawned items tracking
-        [ShowInInspector, ReadOnly, FoldoutGroup("Spawned Items")]
+        [TabGroup("Spawned Items"), ShowInInspector, ReadOnly]
         protected List<GameObject> spawnedMenuItems = new();
 
-        [ShowInInspector, ReadOnly, FoldoutGroup("Spawned Items")]
+        [TabGroup("Spawned Items"), ShowInInspector, ReadOnly]
         protected List<GameObject> spawnedListMenuItems = new();
 
-        [ShowInInspector, ReadOnly, FoldoutGroup("Spawned Items")]
+        [TabGroup("Spawned Items"), ShowInInspector, ReadOnly]
         protected List<GameObject> spawnedCustomMenuItems = new();
 
         private void OnDrawGizmos()

@@ -1,3 +1,6 @@
+using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
@@ -38,7 +41,9 @@ namespace IbrahKit
             Camera cam = Camera.main;
             UniversalAdditionalCameraData baseCameraData = cam.GetUniversalAdditionalCameraData();
 
-            if (!baseCameraData.cameraStack.Contains(overlayCam))
+            List<Camera> list = baseCameraData.cameraStack;
+
+            if (!list.Contains(overlayCam))
             {
                 overlayCam.allowMSAA = cam.allowMSAA;
                 overlayCam.allowHDR = cam.allowHDR;
@@ -47,9 +52,9 @@ namespace IbrahKit
                 overlayCam.clearFlags = CameraClearFlags.Depth;
                 overlayCam.targetTexture = null;
 
-                baseCameraData.cameraStack.Add(overlayCam);
+                list.Add(overlayCam);
 
-                baseCameraData.cameraStack.Sort((a, b) =>
+                list.Sort((a, b) =>
                 {
                     if (a.TryGetComponent(out OverlayAssign overlayA))
                     {
@@ -68,6 +73,8 @@ namespace IbrahKit
                     }
                 });
             }
+
+            list = list.Distinct().ToList();
         }
     }
 }

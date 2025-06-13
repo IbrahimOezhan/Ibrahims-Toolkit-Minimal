@@ -54,23 +54,7 @@ namespace IbrahKit
             if (Localization_Manager.Instance) Localization_Manager.Instance.OnLanguageChanged -= UpdateUI;
         }
 
-        public void Setup(string settingKey)
-        {
-            this.settingKey = settingKey;
-        }
-
-        public void Setup(Setting_Container setting)
-        {
-            this.setting = setting.GetSetting();
-        }
-
-        private IEnumerable GetAllTypesDropdownFormat() { return Type_Utilities.GetAllTypesDropdownFormat(typeof(Setting)); }
-
-        public Setting GetSetting()
-        {
-            return setting;
-        }
-
+        //Invoked by ODIN
         private void OnValueChanged()
         {
             List<Type> types = Type_Utilities.GetAllTypes(typeof(Setting)).ToList();
@@ -83,6 +67,44 @@ namespace IbrahKit
             }
 
             extension = "None";
+        }
+
+        //Invoked by ODIN
+        private IEnumerable GetAllTypesDropdownFormat() { return Type_Utilities.GetAllTypesDropdownFormat(typeof(Setting)); }
+
+        public void Setup(string settingKey)
+        {
+            this.settingKey = settingKey;
+        }
+
+        public void Setup(Setting_Container setting)
+        {
+            this.setting = setting.GetSetting();
+        }
+
+        public virtual void ChangeValue(float _value)
+        {
+            setting.ChangeValue(_value);
+            setting.ApplyChanges();
+            UpdateUI();
+        }
+
+        public virtual void UpdateUI()
+        {
+            if (Initialize())
+            {
+                value.SetText(setting.GetDisplayValue());
+            }
+        }
+
+        public Setting GetSetting()
+        {
+            return setting;
+        }
+
+        public SettingsType GetSettingsType()
+        {
+            return settingType;
         }
 
         public virtual bool Initialize()
@@ -145,27 +167,6 @@ namespace IbrahKit
             }
 
             return true;
-        }
-
-        public virtual void ChangeValue(float _value)
-        {
-            setting.ChangeValue(_value);
-            setting.ApplyChanges();
-            UpdateUI();
-        }
-
-        public virtual void UpdateUI()
-        {
-            if (Initialize())
-            {
-                value.GetComponent<Text>().text = setting.GetDisplayValue();
-                value.UpdateUI();
-            }
-        }
-
-        public SettingsType GetSettingsType()
-        {
-            return settingType;
         }
     }
 }

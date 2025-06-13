@@ -20,9 +20,8 @@ namespace IbrahKit
         public override void UpdateUI()
         {
             base.UpdateUI();
-            if (setting.GetLoop()) return;
-            sub.SetInteractable(setting.GetValue() >= setting.GetMinMax().x);
-            add.SetInteractable( setting.GetValue() <= setting.GetMinMax().y);
+            sub.SetInteractable((setting.GetValue() > setting.GetMinMax().x) || setting.GetLoop());
+            add.SetInteractable((setting.GetValue() < setting.GetMinMax().y) || setting.GetLoop());
         }
     }
 }
