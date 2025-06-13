@@ -6,7 +6,6 @@ namespace IbrahKit
 {
     public class UI_Menu_Button : MonoBehaviour
     {
-        [SerializeField] private Button button;
         [SerializeField] private UI_Selectable selec;
         [SerializeField] private UI_Localization localization;
 

@@ -15,6 +15,11 @@ namespace IbrahKit
 
         protected override void OnHovering(GameObject go)
         {
+            if(graphic == null)
+            {
+                graphic = go.GetComponent<Graphic>();
+            }
+
             Color c = new();
             c = hovering;
             graphic.color = c;
@@ -22,6 +27,11 @@ namespace IbrahKit
 
         protected override void OnNone(GameObject go)
         {
+            if (graphic == null)
+            {
+                graphic = go.GetComponent<Graphic>();
+            }
+
             Color c = new();
             c = none;
             graphic.color = c;
@@ -30,6 +40,11 @@ namespace IbrahKit
 
         protected override void OnPressed(GameObject go)
         {
+            if (graphic == null)
+            {
+                graphic = go.GetComponent<Graphic>();
+            }
+
             Color c = new();
             c = pressed;
             graphic.color = c;

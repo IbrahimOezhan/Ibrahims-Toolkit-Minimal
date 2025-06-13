@@ -11,23 +11,53 @@ namespace IbrahKit
     /// </summary>
     public partial class UI_Menu_Extended : UI_Menu_Basic
     {
+        [FoldoutGroup("Title")]
+        [Tooltip("Localization component for the menu title.")]
+        [SerializeField] private UI_Localization title;
+
+        [ShowIf("@title != null")]
+        [FoldoutGroup("Title")]
+        [Dropdown("Localization"), Tooltip("Key used to localize the menu title.")]
+        [SerializeField] private string titleKey;
+
+        [FoldoutGroup("MenuItems")]
+        [Tooltip("Parent transform for list menu items.")]
+        [SerializeField] private Transform list;
+
+        [ShowIf("@list != null")]
+        [FoldoutGroup("MenuItems")]
+        [Tooltip("List of predefined menu items.")]
+        [SerializeField] private List<Menu_Item> listMenuItems = new();
+
+        [FoldoutGroup("MenuItems")]
+        [Tooltip("Array of custom menu items.")]
+        [SerializeField] private Custom_Menu_Item[] customMenuItems;
+
+        [FoldoutGroup("MenuItems")]
+        [Tooltip("Custom menu configuration, optional.")]
+        [SerializeField] private UI_Menu_Config customConfig;
+
+        [FoldoutGroup("Settings")]
+        [Tooltip("If true, reload menu items every time the menu is opened.")]
+        [SerializeField] private bool reloadOnOpen;
+
+        // Internal spawned items tracking
+        [ShowInInspector, ReadOnly, FoldoutGroup("Spawned Items")]
         protected List<GameObject> spawnedMenuItems = new();
+
+        [ShowInInspector, ReadOnly, FoldoutGroup("Spawned Items")]
         protected List<GameObject> spawnedListMenuItems = new();
+
+        [ShowInInspector, ReadOnly, FoldoutGroup("Spawned Items")]
         protected List<GameObject> spawnedCustomMenuItems = new();
 
-        [FoldoutGroup("Title"), SerializeField] private UI_Localization title;
-
-        [FoldoutGroup("Title"), Dropdown("Localization"), SerializeField] private string titleKey;
-
-        [FoldoutGroup("MenuItems"), SerializeField] private Transform list;
-
-        [FoldoutGroup("MenuItems"), SerializeField] private List<Menu_Item> listMenuItems = new();
-
-        [FoldoutGroup("MenuItems"), SerializeField] private Custom_Menu_Item[] customMenuItems;
-
-        [FoldoutGroup("MenuItems"), SerializeField] private UI_Menu_Config customConfig;
-
-        [SerializeField] private bool reloadOnOpen;
+        private void OnDrawGizmos()
+        {
+            for (int i = 0; i < customMenuItems.Length; i++)
+            {
+                customMenuItems[i].OnDrawGizmos(GetComponentInChildren<Canvas>());
+            }
+        }
 
         protected override void Awake()
         {
@@ -57,6 +87,9 @@ namespace IbrahKit
             {
                 Destroy(item);
             }
+            spawnedMenuItems.Clear();
+            spawnedListMenuItems.Clear();
+            spawnedCustomMenuItems.Clear();
         }
 
         private void LoadMenuItems()

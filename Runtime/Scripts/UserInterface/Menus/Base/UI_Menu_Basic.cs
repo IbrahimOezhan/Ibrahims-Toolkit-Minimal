@@ -13,15 +13,26 @@ namespace IbrahKit
         protected UI_Menu_Basic previousMenu;
         protected List<UI_Base> menuUI;
 
-        [FoldoutGroup("MenuSettings", order: -2), SerializeField] protected CanvasGroup enabledGroup;
-        [FoldoutGroup("MenuSettings", order: -1), SerializeField] protected CanvasGroup hiddenGroup;
+        [FoldoutGroup("Menu Settings", order: -2), SerializeField, Tooltip("CanvasGroup controlling menu visibility and interactivity")]
+        protected CanvasGroup enabledGroup;
 
-        [FoldoutGroup("MenuSettings", order: -1), SerializeField] protected bool hideOnPause;
-        [FoldoutGroup("MenuSettings", order: -1), SerializeField] protected bool preventHideByButton;
-        [FoldoutGroup("MenuSettings", order: -1), SerializeField] protected bool disableOnStart;
+        [FoldoutGroup("Menu Settings", order: -1), SerializeField, Tooltip("CanvasGroup used when menu is hidden")]
+        protected CanvasGroup hiddenGroup;
 
-        [FoldoutGroup("Transition", order: 0), SerializeField] protected UI_Menu_Basic overrideBackMenu;
-        [FoldoutGroup("Transition", order: 0), SerializeField] private List<MenuTransition> transitions;
+        [FoldoutGroup("Menu Settings", order: -1), SerializeField, Tooltip("Whether menu should hide automatically on pause")]
+        protected bool hideOnPause;
+
+        [FoldoutGroup("Menu Settings", order: -1), SerializeField, Tooltip("Prevents menu from hiding when a button is pressed")]
+        protected bool preventHideByButton;
+
+        [FoldoutGroup("Menu Settings", order: -1), SerializeField, Tooltip("Disable menu on start")]
+        protected bool disableOnStart;
+
+        [FoldoutGroup("Transitions", order: 0), SerializeField, Tooltip("Menu to switch to when back action is triggered")]
+        protected UI_Menu_Basic overrideBackMenu;
+
+        [FoldoutGroup("Transitions", order: 0), SerializeField, Tooltip("Available transitions from this menu")]
+        private List<MenuTransition> transitions;
 
         public static Action<MenuTransition, UI_Menu_Basic> OnMenuTransition;
 

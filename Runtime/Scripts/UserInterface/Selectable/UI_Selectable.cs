@@ -12,6 +12,8 @@ namespace IbrahKit
     {
         [BoxGroup("Transition"), SerializeField] private SelectedState selectedState;
         [BoxGroup("Transition"), SerializeReference] private List<SelectableTransition> transitions = new();
+        [BoxGroup("Transition"), SerializeReference] private List<SelectableTransition> transitionsInteractable = new();
+        [BoxGroup("Transition"), SerializeReference] private List<SelectableTransition> transitionsNotInteractable = new();
 
         [BoxGroup("Navigation"), SerializeField] private UI_Selectable up;
         [BoxGroup("Navigation"), SerializeField] private UI_Selectable down;
@@ -19,7 +21,7 @@ namespace IbrahKit
         [BoxGroup("Navigation"), SerializeField] private UI_Selectable right;
         [BoxGroup("Navigation"), SerializeField] private RectTransform rect;
         [BoxGroup("Navigation"), SerializeField] private float alignmentTolerance = 0.1f;
-        [BoxGroup("Navigation"), SerializeField] public bool interactable;
+        [BoxGroup("Navigation"), SerializeField] public bool interactable = true;
 
         [SerializeField] public UnityEvent OnClickEvent;
 
@@ -208,6 +210,22 @@ namespace IbrahKit
             for (int i = 0; i < transitions.Count; i++)
             {
                 transitions[i].Apply(selectedState, gameObject);
+            }
+
+            if(interactable)
+            {
+                for (int i = 0; i < transitionsInteractable.Count; i++)
+                {
+                    transitionsInteractable[i].Apply(selectedState, gameObject);
+                }
+
+            }
+            else
+            {
+                for (int i = 0; i < transitionsNotInteractable.Count; i++)
+                {
+                    transitionsNotInteractable[i].Apply(selectedState, gameObject);
+                }
             }
         }
 
