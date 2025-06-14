@@ -24,5 +24,11 @@ namespace IbrahKit
 
             return margin;
         }
+
+        [System.Serializable]
+        private class PlatformBasedMargin : PlatformBased
+        {
+            public float margin;
+        }
     }
 }

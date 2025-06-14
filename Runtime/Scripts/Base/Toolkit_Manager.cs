@@ -27,7 +27,7 @@ namespace IbrahKit
 
         private void Awake()
         {
-            if(Application.isPlaying)
+            if (Application.isPlaying)
             {
                 DontDestroyOnLoad(gameObject);
             }

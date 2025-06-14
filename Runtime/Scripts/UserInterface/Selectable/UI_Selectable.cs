@@ -268,7 +268,7 @@ namespace IbrahKit
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            if(interactable)
+            if (interactable)
             {
                 Press();
             }

@@ -18,13 +18,13 @@ namespace IbrahKit
             switch (changeType)
             {
                 case Menu_Change_Type.REFERENCE:
-                    spawnedButton.Initialize(localizationKey).AddListener(() =>
+                    spawnedButton.Initialize(value).AddListener(() =>
                     {
                         menu.MenuTransition(menuReference);
                     });
                     break;
                 case Menu_Change_Type.TRANSITION:
-                    spawnedButton.Initialize(localizationKey).AddListener(() =>
+                    spawnedButton.Initialize(value).AddListener(() =>
                     {
                         menu.MenuTransition(transitionReference);
                     });

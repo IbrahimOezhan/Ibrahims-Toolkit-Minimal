@@ -26,7 +26,7 @@ namespace IbrahKit
 
             TextMeshProUGUI _text = GetText();
 
-            UI_Style _style = GetResolvedStyle((int)text.fontSize, text.color);
+            UI_Styling_Config _style = GetResolvedStyle((int)text.fontSize, text.color);
 
             (_text.font, _text.color) = _style.GetStyleTMP();
         }

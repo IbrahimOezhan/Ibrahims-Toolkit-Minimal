@@ -5,14 +5,14 @@ using UnityEngine;
 namespace IbrahKit
 {
     [System.Serializable]
-    public class UI_Style
+    public class UI_Styling_Config
     {
-        public UI_Style()
+        public UI_Styling_Config()
         {
 
         }
 
-        public UI_Style(Font font, TMP_FontAsset fontAsset, int fontSize, Color fontColor)
+        public UI_Styling_Config(Font font, TMP_FontAsset fontAsset, int fontSize, Color fontColor)
         {
             this.fontAsset = fontAsset;
             this.font = font;
@@ -31,7 +31,6 @@ namespace IbrahKit
             if (font != null) return (font.font, fontColor);
             else return (this.font, fontColor);
         }
-
 
         public (TMP_FontAsset, Color) GetStyleTMP()
         {

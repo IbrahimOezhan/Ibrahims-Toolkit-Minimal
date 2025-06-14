@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,18 +14,17 @@ namespace IbrahKit
         private bool hidden;
 
         [SerializeField] private UI_Fitter_Config_SO defaultConfig;
-        [SerializeField] private UI_Menu_Config defaultMenuConfig;
-        [SerializeField] private UI_Style_SO defaultUIStyle;
+        [SerializeField] private UI_Menu_Config_SO defaultMenuConfig;
+        [SerializeField] private UI_Styling_Config_SO defaultUIStyle;
         [SerializeField] private KeyMap keyMap;
 
-        [SerializeField] private int[] uiLayouts;
+        [SerializeField, Dropdown("UILayouts")] private List<string> activeLayouts;
 
         [SerializeField] private List<UI_Menu_Basic> activeMenus = new();
 
         public Action<bool> OnHide;
         public Action OnHover;
         public Action OnClick;
-        public Action OnLayoutChanged;
         public Action<UI_Menu_Basic, StateMode> OnCustomTR;
 
         public static UI_Manager Instance;
@@ -70,19 +70,9 @@ namespace IbrahKit
             OnHide?.Invoke(hidden);
         }
 
-        public bool ShowLayout(List<int> layout)
+        public bool ShowLayout(List<string> layouts)
         {
-            bool show = false;
-
-            for (int i = 0; i < uiLayouts.Length; i++)
-            {
-                for (int j = 0; j < layout.Count; j++)
-                {
-                    if (layout[i] == uiLayouts[j]) show = true;
-                }
-            }
-
-            return show;
+            return activeLayouts.Intersect(layouts).Count() > 0;
         }
 
         public void Screenshot()
@@ -116,12 +106,6 @@ namespace IbrahKit
         public void OnUIClick()
         {
             OnClick?.Invoke();
-        }
-
-        public void ChangeLayout(int[] newLayouts)
-        {
-            uiLayouts = newLayouts;
-            OnLayoutChanged?.Invoke();
         }
 
         public void Transition(UI_Menu_Basic menuIn, UI_Menu_Basic menuOut, FadeMode fadeMode, float _fadeTime)
@@ -210,12 +194,12 @@ namespace IbrahKit
             activeMenus.Remove(menu);
         }
 
-        public UI_Style_SO GetDefaultStyle()
+        public UI_Styling_Config_SO GetDefaultStyle()
         {
             return defaultUIStyle;
         }
 
-        public UI_Menu_Config GetDefaultMenuConfig()
+        public UI_Menu_Config_SO GetDefaultMenuConfig()
         {
             return defaultMenuConfig;
         }

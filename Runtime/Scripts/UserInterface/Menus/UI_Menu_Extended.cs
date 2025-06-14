@@ -26,7 +26,7 @@ namespace IbrahKit
 
         [TabGroup("Menu Items"), Tooltip("Custom menu configuration, optional.")]
         [SerializeField]
-        private UI_Menu_Config customConfig;
+        private UI_Menu_Config_SO customConfig;
 
         [ShowIf("@list != null")]
         [TabGroup("Menu Items"), Tooltip("List of predefined menu items.")]
@@ -141,7 +141,7 @@ namespace IbrahKit
             }
         }
 
-        public UI_Menu_Config GetMenuConfig()
+        public UI_Menu_Config_SO GetMenuConfig()
         {
             return customConfig != null ? customConfig : UI_Manager.Instance.GetDefaultMenuConfig();
         }

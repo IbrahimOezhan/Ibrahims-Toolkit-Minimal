@@ -6,7 +6,7 @@ namespace IbrahKit
     public class UI_Styling_Legacy : UI_Styling
     {
         [SerializeField] private Text text;
-        [SerializeField] private UI_Style_SO style;
+        [SerializeField] private UI_Styling_Config_SO style;
 
         protected override void Init()
         {
@@ -25,7 +25,7 @@ namespace IbrahKit
             if (!init) Init();
 
             Text _text = GetText();
-            UI_Style _style = GetResolvedStyle(_text.fontSize, text.color);
+            UI_Styling_Config _style = GetResolvedStyle(_text.fontSize, text.color);
 
             (_text.font, _text.color) = _style.GetStyle();
         }

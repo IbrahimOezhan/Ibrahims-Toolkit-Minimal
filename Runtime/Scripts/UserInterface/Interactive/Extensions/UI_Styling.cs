@@ -5,16 +5,16 @@ namespace IbrahKit
 {
     public abstract class UI_Styling : UI_Extension
     {
-        [SerializeField] private UI_Style_SO customStyle;
+        [SerializeField] private UI_Styling_Config_SO customStyle;
 
-        public UI_Style GetResolvedStyle(int defaultSize, Color defaultColor)
+        public UI_Styling_Config GetResolvedStyle(int defaultSize, Color defaultColor)
         {
-            UI_Style defaultStyle = new UI_Style(
+            UI_Styling_Config defaultStyle = new UI_Styling_Config(
                 Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"),
                 TMP_Settings.defaultFontAsset, defaultSize, defaultColor
             );
 
-            UI_Style resolvedStyle = null;
+            UI_Styling_Config resolvedStyle = null;
 
             if (!Application.isPlaying)
             {

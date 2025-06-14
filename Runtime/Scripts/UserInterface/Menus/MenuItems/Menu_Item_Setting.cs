@@ -17,14 +17,14 @@ namespace IbrahKit
 
         public override void Spawn(RectTransform parent, UI_Menu_Extended menu)
         {
-            UI_Menu_Config config = menu.GetMenuConfig();
+            UI_Menu_Config_SO config = menu.GetMenuConfig();
 
             if (!Settings_Manager.Instance.GetSetting(settingsKey, out Setting _foundSetting))
             {
                 return;
             }
 
-            UI_Setting setting = config.GetSettingsPrefab(_foundSetting.GetSettingsType());
+            UI_Setting setting = config.GetConfig().GetSettingsPrefab(_foundSetting.GetSettingsType());
 
             UI_Setting settingInstance = Object.Instantiate(setting, parent);
 
