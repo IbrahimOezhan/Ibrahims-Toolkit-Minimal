@@ -11,14 +11,27 @@ namespace IbrahKit
     [ExecuteInEditMode]
     public class Toolkit_Manager : MonoBehaviour
     {
-        [HorizontalGroup("Add"), HideLabel, Dropdown("TemplateManagers"), SerializeField]
-        private string ManagerToAdd;
 
-        [ReadOnly, SerializeField] private List<GameObject> managers = new();
-        [ReadOnly, SerializeField] private List<string> names = new();
+
+        [ReadOnly, SerializeField]
+        private List<GameObject> managers = new();
+
+        [ReadOnly, SerializeField]
+        private List<string> names = new();
 
         [ListDrawerSettings(OnTitleBarGUI = "DrawRefreshButton"), ReadOnly, SerializeField]
         private List<GameObject> spawnedManagers = new();
+
+        [HorizontalGroup("Add"), HideLabel, Dropdown("TemplateManagers"), SerializeField]
+        private string ManagerToAdd;
+
+        private void Awake()
+        {
+            if(Application.isPlaying)
+            {
+                DontDestroyOnLoad(gameObject);
+            }
+        }
 
         private void OnValidate()
         {
@@ -108,7 +121,7 @@ namespace IbrahKit
         [Button]
         public void SortManangers()
         {
-            Transform_Utilities.SortGameobjects(spawnedManagers);
+            Transform_Utilities.SortGameObjects(spawnedManagers);
         }
 
         private IEnumerator DelayedUpdate()

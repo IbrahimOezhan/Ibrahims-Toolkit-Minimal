@@ -7,7 +7,7 @@ namespace IbrahKit
     {
         protected RectTransform rect;
 
-        [SerializeField] protected UI_Config_SO customConfig;
+        [SerializeField] protected UI_Fitter_Config_SO customConfig;
 
         [SerializeField] protected bool scaleWidth = true;
         [SerializeField] protected int maxWidth;
@@ -21,7 +21,7 @@ namespace IbrahKit
             base.Init();
         }
 
-        protected void SetSize(float size, float max, float offset, UI_Config config, RectTransform.Axis axis)
+        protected void SetSize(float size, float max, float offset, UI_Fitter_Config config, RectTransform.Axis axis)
         {
             float _max = Mathf.Clamp(size, 0, GetMax(maxHeight));
             rect.SetSizeWithCurrentAnchors(axis, _max + config.GetMargin() + offset);
@@ -33,14 +33,14 @@ namespace IbrahKit
         }
 
 
-        protected UI_Config GetConfig()
+        protected UI_Fitter_Config GetConfig()
         {
             if (customConfig != null)
             {
                 return customConfig.GetConfig();
             }
 
-            UI_Config defaultConfig = null;
+            UI_Fitter_Config defaultConfig = null;
 
             if (!Application.isPlaying)
             {
@@ -52,7 +52,7 @@ namespace IbrahKit
                 if (UI_Manager.Instance != null) defaultConfig = UI_Manager.Instance.GetDefaultUIConfig()?.GetConfig();
             }
 
-            return defaultConfig ?? new UI_Config(0);
+            return defaultConfig ?? new UI_Fitter_Config(0);
         }
 
         protected RectTransform GetRect()

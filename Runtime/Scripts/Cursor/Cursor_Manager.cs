@@ -22,13 +22,15 @@ namespace IbrahKit
         private Camera mainCamera;
 
         [SerializeField] private bool enableCustomCursor;
+
         [ShowIf("enableCustomCursor"), SerializeField] private Sprite noneCursor;
         [ShowIf("enableCustomCursor"), SerializeField] private Sprite hoveringCursor;
         [ShowIf("enableCustomCursor"), SerializeField] private Sprite downCursor;
 
-        [SerializeField] private List<CursorVisibilty> cursorVisibility;
         [SerializeField] private Image customCursor;
         [SerializeField] private RectTransform canvas;
+
+        [SerializeField] private List<CursorVisibilty> cursorVisibility;
 
         public static Cursor_Manager Instance;
 

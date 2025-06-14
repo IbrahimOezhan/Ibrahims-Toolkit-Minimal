@@ -9,23 +9,46 @@ namespace IbrahKit
 {
     public class UI_Selectable : UI_Base, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, ICursorHandler
     {
-        [BoxGroup("Transition"), SerializeField] private SelectedState selectedState;
-        [BoxGroup("Transition"), SerializeReference] private List<SelectableTransition> transitions = new();
-        [BoxGroup("Transition"), SerializeReference] private List<SelectableTransition> transitionsInteractable = new();
-        [BoxGroup("Transition"), SerializeReference] private List<SelectableTransition> transitionsNotInteractable = new();
+        [TabGroup("Transition Settings"), SerializeField]
+        private SelectedState selectedState;
 
-        [BoxGroup("Navigation"), SerializeField] private UI_Selectable up;
-        [BoxGroup("Navigation"), SerializeField] private UI_Selectable down;
-        [BoxGroup("Navigation"), SerializeField] private UI_Selectable left;
-        [BoxGroup("Navigation"), SerializeField] private UI_Selectable right;
-        [BoxGroup("Navigation"), SerializeField] private RectTransform rect;
-        [BoxGroup("Navigation"), SerializeField] private float alignmentTolerance = 0.1f;
-        [BoxGroup("Navigation"), SerializeField] public bool interactable = true;
+        [TabGroup("Transition Settings"), SerializeReference]
+        private List<SelectableTransition> transitions = new();
 
-        [SerializeField] public UnityEvent OnClickEvent;
+        [TabGroup("Transition Settings"), SerializeReference]
+        private List<SelectableTransition> transitionsInteractable = new();
 
+        [TabGroup("Transition Settings"), SerializeReference]
+        private List<SelectableTransition> transitionsNotInteractable = new();
+
+        [TabGroup("Navigation Settings"), SerializeField]
+        private UI_Selectable up;
+
+        [TabGroup("Navigation Settings"), SerializeField]
+        private UI_Selectable down;
+
+        [TabGroup("Navigation Settings"), SerializeField]
+        private UI_Selectable left;
+
+        [TabGroup("Navigation Settings"), SerializeField]
+        private UI_Selectable right;
+
+        [TabGroup("Navigation Settings"), SerializeField]
+        private RectTransform rect;
+
+        [TabGroup("Navigation Settings"), SerializeField]
+        private float alignmentTolerance = 0.1f;
+
+        [TabGroup("Navigation Settings"), SerializeField]
+        public bool interactable = true;
+
+        [TabGroup("Events"), SerializeField]
+        public UnityEvent OnClickEvent;
+
+        [NonSerialized]
         public Action OnClickAction;
 
+        [NonSerialized]
         public static UI_Selectable currentlySelected;
 
         protected override void Awake()

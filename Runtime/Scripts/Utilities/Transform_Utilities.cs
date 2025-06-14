@@ -66,7 +66,7 @@ namespace IbrahKit
             rect.offsetMax = Vector2.zero; // Right, Top
         }
 
-        public static void SortGameobjects(List<GameObject> list)
+        public static void SortGameObjects(List<GameObject> list)
         {
             if (list == null)
             {

@@ -12,14 +12,14 @@ namespace IbrahKit
     {
         private bool hidden;
 
-        [SerializeField] private UI_Config_SO defaultConfig;
+        [SerializeField] private UI_Fitter_Config_SO defaultConfig;
         [SerializeField] private UI_Menu_Config defaultMenuConfig;
         [SerializeField] private UI_Style_SO defaultUIStyle;
+        [SerializeField] private KeyMap keyMap;
 
         [SerializeField] private int[] uiLayouts;
-        [SerializeField] private List<UI_Menu_Basic> activeMenus = new();
 
-        [SerializeField] private KeyMap keyMap;
+        [SerializeField] private List<UI_Menu_Basic> activeMenus = new();
 
         public Action<bool> OnHide;
         public Action OnHover;
@@ -220,7 +220,7 @@ namespace IbrahKit
             return defaultMenuConfig;
         }
 
-        public UI_Config_SO GetDefaultUIConfig()
+        public UI_Fitter_Config_SO GetDefaultUIConfig()
         {
             return defaultConfig;
         }

@@ -19,7 +19,7 @@ public class UI_Fitter_Legacy : UI_Fitter
 
         if (!init) Init();
 
-        (Text text, RectTransform rect, UI_Config config) = (GetText(), GetRect(), GetConfig());
+        (Text text, RectTransform rect, UI_Fitter_Config config) = (GetText(), GetRect(), GetConfig());
 
         if (text == null)
         {

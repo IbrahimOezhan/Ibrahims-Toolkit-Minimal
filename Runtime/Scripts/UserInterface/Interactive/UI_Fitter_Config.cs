@@ -4,9 +4,9 @@ using UnityEngine;
 namespace IbrahKit
 {
     [System.Serializable]
-    public class UI_Config
+    public class UI_Fitter_Config
     {
-        public UI_Config(float margin)
+        public UI_Fitter_Config(float margin)
         {
             this.margin = margin;
         }
