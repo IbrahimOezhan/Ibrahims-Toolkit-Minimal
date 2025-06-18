@@ -139,16 +139,8 @@ namespace IbrahKit
 
         public static List<string> GetDropdown(string filePath)
         {
-            List<string> dropdownInput = new();
+           return File.ReadAllLines(filePath).ToList();
 
-            using StreamReader sr = new(filePath);
-
-            while (!sr.EndOfStream)
-            {
-                dropdownInput.Add(sr.ReadLine());
-            }
-
-            return dropdownInput;
         }
 
         public static bool IsEmpty(string value)

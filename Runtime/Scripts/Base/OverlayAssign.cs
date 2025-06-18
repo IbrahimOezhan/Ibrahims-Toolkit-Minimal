@@ -38,6 +38,13 @@ namespace IbrahKit
         private void Assign()
         {
             Camera cam = Camera.main;
+
+            if(cam == null)
+            {
+                Debug.LogWarning("No camera with tag MainCamera found");
+                return;
+            }
+
             UniversalAdditionalCameraData baseCameraData = cam.GetUniversalAdditionalCameraData();
 
             List<Camera> list = baseCameraData.cameraStack;
