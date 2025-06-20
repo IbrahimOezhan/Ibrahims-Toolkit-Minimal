@@ -244,7 +244,6 @@ namespace IbrahKit
                 {
                     transitionsInteractable[i].Apply(selectedState, gameObject);
                 }
-
             }
             else
             {
@@ -262,8 +261,7 @@ namespace IbrahKit
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            selectedState = SelectedState.None;
-            Visualize();
+            Exit();
         }
 
         public void OnPointerDown(PointerEventData eventData)
@@ -277,27 +275,41 @@ namespace IbrahKit
         public void OnPointerUp(PointerEventData eventData)
         {
             selectedState = SelectedState.None;
+
             Visualize();
         }
 
         public void Press()
         {
             selectedState = SelectedState.Pressed;
+
             Visualize();
+
             OnClickEvent.Invoke();
+
             UI_Manager.Instance.OnUIClick();
         }
 
         public void Hover()
         {
-            UI_Manager.Instance.OnUIHover();
             selectedState = SelectedState.Hovering;
+
+            UI_Manager.Instance.OnUIHover();
+
+            Visualize();
+        }
+
+        public void Exit()
+        {
+            selectedState = SelectedState.None;
+
             Visualize();
         }
 
         public void SetInteractable(bool value)
         {
             interactable = value;
+
             Visualize();
         }
 

@@ -11,6 +11,16 @@ namespace IbrahKit
         [SerializeField] private float hovering;
         [SerializeField] private float pressed;
 
+        protected override void OnNone(GameObject go)
+        {
+            if (rect == null) rect = go.GetComponent<RectTransform>();
+
+            Vector3 scale = new();
+
+            scale = new(none, none);
+            rect.localScale = scale;
+        }
+
         protected override void OnHovering(GameObject go)
         {
             if (rect == null) rect = go.GetComponent<RectTransform>();
@@ -21,23 +31,13 @@ namespace IbrahKit
             rect.localScale = scale;
         }
 
-        protected override void OnNone(GameObject go)
-        {
-            if (rect == null) rect = go.GetComponent<RectTransform>();
-
-            Vector3 scale = new();
-
-            scale = new(pressed, pressed);
-            rect.localScale = scale;
-        }
-
         protected override void OnPressed(GameObject go)
         {
             if (rect == null) rect = go.GetComponent<RectTransform>();
 
             Vector3 scale = new();
 
-            scale = new(none, none);
+            scale = new(pressed, pressed);
             rect.localScale = scale;
         }
     }
