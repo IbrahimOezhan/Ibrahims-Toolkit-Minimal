@@ -62,6 +62,8 @@ namespace IbrahKit
 
             UI_Navigation_Manager.Instance.AddSelectable(this);
             UI_Navigation_Manager.Instance.UpdateSelectables();
+
+            Visualize();
         }
 
         protected override void OnDisable()
