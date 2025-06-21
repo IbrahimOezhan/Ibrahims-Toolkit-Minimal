@@ -11,8 +11,6 @@ namespace IbrahKit
     [ExecuteInEditMode]
     public class Toolkit_Manager : MonoBehaviour
     {
-
-
         [ReadOnly, SerializeField]
         private List<GameObject> managers = new();
 

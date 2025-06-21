@@ -19,11 +19,20 @@ namespace IbrahKit
 
         private SaveData data;
 
+        [BoxGroup("Language Settings"), LabelText("Use System Language"), Tooltip("If true, attempts to set the game's language to the system language.")]
         [SerializeField] private bool attemptSetToSystemLanguage = true;
+
+        [BoxGroup("Language Settings"), LabelText("Default Language"), Tooltip("Language used if system language not found.")]
         [SerializeField, Dropdown(langDropdownKey)] private string defaultLanguage;
+
+        [BoxGroup("Localization Assets"), LabelText("Text Files"), Tooltip("Text assets containing localization data.")]
         [SerializeField] private TextAsset[] textLocalization;
+
+        [BoxGroup("Localization Assets"), LabelText("Available Languages"), Tooltip("List of supported languages.")]
         [SerializeField] private List<Localization_Language> languages = new();
-        [SerializeField] private Dictionary<string, Dictionary<int, string>> textLocalizationData = new();
+
+        [BoxGroup("Runtime Data"), LabelText("Parsed Localization Data"), ReadOnly, ShowInInspector]
+        private Dictionary<string, Dictionary<int, string>> textLocalizationData = new();
 
         public Action OnLanguageChanged;
 
@@ -290,12 +299,12 @@ namespace IbrahKit
 
                 Debug.Log(_input);
 
-                for(int i = 0 ; i < _variables.Length; i++)
+                for (int i = 0; i < _variables.Length; i++)
                 {
                     Debug.LogError(_variables[i]);
                 }
             }
-           
+
             return _input;
         }
 

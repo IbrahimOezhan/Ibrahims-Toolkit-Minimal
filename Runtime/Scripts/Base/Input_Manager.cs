@@ -24,7 +24,6 @@ namespace IbrahKit
             else
             {
                 Instance = this;
-
             }
         }
 

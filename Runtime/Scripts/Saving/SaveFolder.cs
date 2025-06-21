@@ -17,10 +17,9 @@ namespace IbrahKit
         private const string saveExtension = ".save";
         private const string saveFileRegex = ".*\\.save";
 
-        private string[] outdatedFiles;
-
         private string encryptionKey;
         private string folderPath;
+        private string[] outdatedFiles;
 
         private Dictionary<string, string> genericData = new();
 
@@ -235,13 +234,13 @@ namespace IbrahKit
 
         private Savable GetDerivedSavable(string json, Savable type)
         {
-            if(String_Utilities.IsEmpty(json))
+            if (String_Utilities.IsEmpty(json))
             {
                 Debug.LogWarning("Passed json is null or empty");
                 return null;
             }
 
-            if(type == null)
+            if (type == null)
             {
                 Debug.LogWarning("Passed type is null");
                 return null;

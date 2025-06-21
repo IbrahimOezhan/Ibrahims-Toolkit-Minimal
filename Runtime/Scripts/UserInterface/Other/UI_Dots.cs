@@ -8,8 +8,8 @@ namespace IbrahKit
         private string dots = "";
         private const float waitInterval = 0.5f;
 
-        [SerializeField] private UI_Localization dotsText;
         [SerializeField] private float delay;
+        [SerializeField] private UI_Localization dotsText;
 
         private void Awake()
         {
@@ -23,13 +23,20 @@ namespace IbrahKit
 
         private IEnumerator DotsAnimator()
         {
-            yield return new WaitForSeconds(waitInterval);
-
-            while (true)
+            if (dotsText != null)
             {
-                dots = dots == "..." ? "" : dots + ".";
-                dotsText.SetParam(new() { dots });
-                yield return new WaitForSeconds(delay);
+                yield return new WaitForSeconds(waitInterval);
+
+                while (true)
+                {
+                    dots = dots == "..." ? "" : dots + ".";
+                    dotsText.SetParam(new() { dots });
+                    yield return new WaitForSeconds(delay);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("UI Localization reference is null");
             }
         }
     }

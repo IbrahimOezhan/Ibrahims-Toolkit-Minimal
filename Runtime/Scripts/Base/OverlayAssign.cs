@@ -39,7 +39,7 @@ namespace IbrahKit
         {
             Camera cam = Camera.main;
 
-            if(cam == null)
+            if (cam == null)
             {
                 Debug.LogWarning("No camera with tag MainCamera found");
                 return;

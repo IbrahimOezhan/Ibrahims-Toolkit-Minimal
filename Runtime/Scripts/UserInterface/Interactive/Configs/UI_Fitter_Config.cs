@@ -17,9 +17,16 @@ namespace IbrahKit
 
         public float GetMargin()
         {
-            for (int i = 0; i < marginOverride.Count; i++)
+            if (marginOverride != null)
             {
-                if (marginOverride[i].IsPlatform()) return marginOverride[i].margin;
+                for (int i = 0; i < marginOverride.Count; i++)
+                {
+                    if (marginOverride[i].IsPlatform()) return marginOverride[i].margin;
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Margin override list is null");
             }
 
             return margin;

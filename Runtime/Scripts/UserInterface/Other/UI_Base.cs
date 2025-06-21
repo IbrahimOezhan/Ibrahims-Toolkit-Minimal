@@ -32,6 +32,12 @@ namespace IbrahKit
 
         public void SetParentMenu(UI_Menu_Basic menu)
         {
+            if (menu == null)
+            {
+                Debug.LogWarning("Passed menu is null");
+                return;
+            }
+
             parentMenu = menu;
         }
 

@@ -139,7 +139,7 @@ namespace IbrahKit
 
         public static List<string> GetDropdown(string filePath)
         {
-           return File.ReadAllLines(filePath).ToList();
+            return File.ReadAllLines(filePath).ToList();
 
         }
 

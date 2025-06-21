@@ -60,8 +60,11 @@ namespace IbrahKit
         {
             base.OnEnable();
 
-            UI_Navigation_Manager.Instance.AddSelectable(this);
-            UI_Navigation_Manager.Instance.UpdateSelectables();
+            if(UI_Navigation_Manager.Instance != null)
+            {
+                UI_Navigation_Manager.Instance.AddSelectable(this);
+                UI_Navigation_Manager.Instance.UpdateSelectables();
+            }
 
             Visualize();
         }

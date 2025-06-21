@@ -11,17 +11,50 @@ namespace IbrahKit
         protected override void OnEnable()
         {
             base.OnEnable();
-            sub.OnClickEvent.RemoveAllListeners();
-            add.OnClickEvent.RemoveAllListeners();
-            sub.OnClickEvent.AddListener(() => ChangeValue(-setting.GetStep()));
-            add.OnClickEvent.AddListener(() => ChangeValue(setting.GetStep()));
+
+            if (setting == null)
+            {
+                Debug.LogWarning("Setting is null");
+                return;
+            }
+
+            if (sub != null)
+            {
+                sub.OnClickEvent.RemoveAllListeners();
+                sub.OnClickEvent.AddListener(() => ChangeValue(-setting.GetStep()));
+            }
+            else
+            {
+                Debug.LogWarning("Sub Selectable is null");
+            }
+
+            if (add != null)
+            {
+                add.OnClickEvent.RemoveAllListeners();
+                add.OnClickEvent.AddListener(() => ChangeValue(setting.GetStep()));
+            }
+            else
+            {
+                Debug.LogWarning("Add Selectable is null");
+            }
         }
 
         public override void UpdateUI()
         {
             base.UpdateUI();
-            sub.SetInteractable((setting.GetValue() > setting.GetMinMax().x) || setting.GetLoop());
-            add.SetInteractable((setting.GetValue() < setting.GetMinMax().y) || setting.GetLoop());
+
+            if (setting != null)
+            {
+                if (sub != null)
+                {
+                    sub.SetInteractable((setting.GetValue() > setting.GetMinMax().x) || setting.GetLoop());
+                }
+
+                if (add != null)
+                {
+                    add.SetInteractable((setting.GetValue() < setting.GetMinMax().y) || setting.GetLoop());
+                }
+            }
         }
     }
 }
