@@ -237,14 +237,14 @@ namespace IbrahKit
             return GetLanguage((int)GetLanguageSetting().GetValue()).GetName();
         }
 
-        public string[] GetLocalizedString(string[] _keys, string _fallbackText = " ", params object[] _variables)
+        public string[] GetLocalizedString(string[] _keys, string _fallbackText = "", params object[] _variables)
         {
             string[] strings = new string[_keys.Length];
             for (int i = 0; i < _keys.Length; i++) strings[i] = GetLocalizedString(_keys[i], _fallbackText, _variables);
             return strings;
         }
 
-        public string GetLocalizedString(string _key, string _fallbackText = " ", params object[] _variables)
+        public string GetLocalizedString(string _key, string _fallbackText = "", params object[] _variables)
         {
             if (IsStringEmpty(_key))
             {
@@ -279,7 +279,23 @@ namespace IbrahKit
         private string FormatText(string _input, params object[] _variables)
         {
             _input = _input.Replace("[Break]", "\n");
-            if (_variables != null && _variables.Length > 0) _input = string.Format(_input, _variables);
+
+            try
+            {
+                if (_variables != null && _variables.Length > 0) _input = string.Format(_input, _variables);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+
+                Debug.Log(_input);
+
+                for(int i = 0 ; i < _variables.Length; i++)
+                {
+                    Debug.LogError(_variables[i]);
+                }
+            }
+           
             return _input;
         }
 

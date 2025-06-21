@@ -18,20 +18,20 @@ namespace IbrahKit
 
         public bool disableLogs;
 
-        public static Debug_Manager instance;
+        public static Debug_Manager Instance;
 
         public static bool bufferLogs;
         public static bool s_disableLogs;
 
         private void Awake()
         {
-            if (instance != null && instance != this)
+            if (Instance != null && Instance != this)
             {
                 Destroy(gameObject);
             }
             else
             {
-                instance = this;
+                Instance = this;
             }
         }
 
