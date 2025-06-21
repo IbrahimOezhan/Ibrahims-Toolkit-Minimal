@@ -235,6 +235,18 @@ namespace IbrahKit
 
         private Savable GetDerivedSavable(string json, Savable type)
         {
+            if(String_Utilities.IsEmpty(json))
+            {
+                Debug.LogWarning("Passed json is null or empty");
+                return null;
+            }
+
+            if(type == null)
+            {
+                Debug.LogWarning("Passed type is null");
+                return null;
+            }
+
             JsonSerializerOptions genericOptions = new()
             {
                 IncludeFields = true,
