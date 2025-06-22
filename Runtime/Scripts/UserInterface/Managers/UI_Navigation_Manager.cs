@@ -74,16 +74,6 @@ namespace IbrahKit
             }
         }
 
-
-        [BoxGroup("Testing")] public UI_Selectable test1;
-        [BoxGroup("Testing")] public UI_Selectable test2;
-
-        [BoxGroup("Testing"), Button]
-        public void Test()
-        {
-            Debug.Log((test2.transform.position - test1.transform.position).ToString());
-        }
-
         private void OnKeyboardInput(InputAction.CallbackContext context)
         {
             Vector2 moveDir = context.ReadValue<Vector2>();

@@ -292,14 +292,14 @@ namespace IbrahKit
 
             OnClickEvent.Invoke();
 
-            UI_Manager.Instance.OnUIClick();
+            if (interactable) UI_Manager.Instance.OnUIClick();
         }
 
         public void Hover()
         {
             selectedState = SelectedState.Hovering;
 
-            UI_Manager.Instance.OnUIHover();
+            if(interactable) UI_Manager.Instance.OnUIHover();
 
             Visualize();
         }

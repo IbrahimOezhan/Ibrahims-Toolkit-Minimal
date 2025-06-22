@@ -255,8 +255,6 @@ namespace IbrahKit
 
             Type instanceType = Type.GetType(type.fullName);
 
-            Debug.Log(instanceType);
-
             object o = JsonSerializer.Deserialize(json, instanceType, genericOptions);
 
             return (Savable)o;
