@@ -5,7 +5,7 @@ namespace IbrahKit
 {
     public static class Transform_Utilities
     {
-        public static List<T> GetChildren<T>(Transform transform)
+        public static List<T> GetComponentsInChildren<T>(Transform transform, bool includeThis = false)
         {
             if (transform == null)
             {
@@ -14,6 +14,11 @@ namespace IbrahKit
             }
 
             List<T> elements = new();
+
+            if (includeThis)
+            {
+                elements.AddRange(transform.GetComponents<T>());
+            }
 
             foreach (Transform child in transform)
             {
@@ -26,7 +31,7 @@ namespace IbrahKit
 
                 if (child.childCount > 0)
                 {
-                    elements.AddRange(GetChildren<T>(child));
+                    elements.AddRange(GetComponentsInChildren<T>(child));
                 }
             }
 

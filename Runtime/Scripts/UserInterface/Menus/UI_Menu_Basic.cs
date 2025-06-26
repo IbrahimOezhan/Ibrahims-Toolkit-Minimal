@@ -129,7 +129,7 @@ namespace IbrahKit
 
         protected void InitMenuContent()
         {
-            menuUI = Transform_Utilities.GetChildren<UI_Base>(transform);
+            menuUI = Transform_Utilities.GetComponentsInChildren<UI_Base>(transform);
 
             foreach (UI_Base child in menuUI)
             {
