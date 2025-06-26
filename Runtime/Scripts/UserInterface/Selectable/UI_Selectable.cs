@@ -45,6 +45,9 @@ namespace IbrahKit
         [TabGroup("Events"), SerializeField]
         public UnityEvent OnClickEvent;
 
+        [TabGroup("Events"), SerializeField]
+        public UnityEvent OnClickNotInteractableEvent;
+
         [NonSerialized]
         public Action OnClickAction;
 
@@ -271,10 +274,7 @@ namespace IbrahKit
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            if (interactable)
-            {
-                Press();
-            }
+            Press();
         }
 
         public void OnPointerUp(PointerEventData eventData)
@@ -290,9 +290,15 @@ namespace IbrahKit
 
             Visualize();
 
-            OnClickEvent.Invoke();
-
-            if (interactable) UI_Manager.Instance.OnUIClick();
+            if (interactable)
+            {
+                OnClickEvent.Invoke();
+                UI_Manager.Instance.OnUIClick();
+            }
+            else
+            {
+                OnClickNotInteractableEvent.Invoke();
+            }
         }
 
         public void Hover()
