@@ -37,7 +37,7 @@ namespace IbrahKit
 
             if (!float.TryParse(initialValue, out value))
             {
-                value = defaultValue;
+                value = GetDefault();
             }
             ApplyChanges();
 
@@ -113,6 +113,11 @@ namespace IbrahKit
         public float GetStep()
         {
             return steps;
+        }
+
+        public virtual float GetDefault()
+        {
+            return defaultValue;
         }
 
         public float GetValue()

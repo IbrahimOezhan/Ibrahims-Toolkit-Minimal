@@ -63,7 +63,7 @@ namespace IbrahKit
         {
             base.OnEnable();
 
-            if(UI_Navigation_Manager.Instance != null)
+            if (UI_Navigation_Manager.Instance != null)
             {
                 UI_Navigation_Manager.Instance.AddSelectable(this);
                 UI_Navigation_Manager.Instance.UpdateSelectables();
@@ -305,7 +305,7 @@ namespace IbrahKit
         {
             selectedState = SelectedState.Hovering;
 
-            if(interactable) UI_Manager.Instance.OnUIHover();
+            if (interactable) UI_Manager.Instance.OnUIHover();
 
             Visualize();
         }
