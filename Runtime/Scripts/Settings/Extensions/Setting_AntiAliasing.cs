@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 namespace IbrahKit
 {
@@ -9,7 +11,8 @@ namespace IbrahKit
         public override void ApplyChanges()
         {
             base.ApplyChanges();
-            QualitySettings.antiAliasing = values[(int)value];
+            ((UniversalRenderPipelineAsset)GraphicsSettings.defaultRenderPipeline).msaaSampleCount = values[(int)value];
+            //QualitySettings.antiAliasing = values[(int)value];
         }
     }
 }
