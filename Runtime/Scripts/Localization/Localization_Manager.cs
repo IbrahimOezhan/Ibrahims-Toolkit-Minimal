@@ -335,6 +335,18 @@ namespace IbrahKit
             return String_Utilities.IsEmpty(_string);
         }
 
+        public static bool Exists(bool throwWarning = true)
+        {
+            bool exists = Instance != null && Instance.gameObject != null;
+
+            if(throwWarning && !exists)
+            {
+                Debug.LogWarning($"{nameof(Localization_Manager)} does not exist");
+            }
+
+            return exists;
+        }
+
         private class SaveData : Savable
         {
             public bool first = false;
