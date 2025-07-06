@@ -12,7 +12,7 @@ namespace IbrahKit
     [DefaultExecutionOrder(Execution_Order.local)]
     public class Localization_Manager : Manager_Base
     {
-        public const string localizationKey = "Localization";
+        public const string KEY = "Localization";
         private const string langSettKey = "language";
         private const string langDropdownKey = "Language";
         private const string saveDataKey = "LocalizationManager";
@@ -155,7 +155,7 @@ namespace IbrahKit
                 }
             }
 
-            String_Utilities.CreateDropdown(textLocalizationData.Keys.Select(x => x.ToString()).ToList(), localizationKey);
+            String_Utilities.CreateDropdown(textLocalizationData.Keys.Select(x => x.ToString()).ToList(), KEY);
             String_Utilities.CreateDropdown(_langNames, langDropdownKey);
         }
 

@@ -11,10 +11,13 @@ namespace IbrahKit
     [DefaultExecutionOrder(Execution_Order.settings)]
     public class Settings_Manager : Manager_Base
     {
+        public const string KEY = "Settings";
+        private const string NONE = "None";
+
         private SaveData data;
 
-        [SerializeField, OnValueChanged("OnValueChanged"), ValueDropdown("GetAllTypesDropdownFormat")]
-        private string addSetting = "None";
+        [SerializeField, OnValueChanged(nameof(OnValueChanged)), ValueDropdown(nameof(GetAllTypesDropdownFormat))]
+        private string addSetting = NONE;
 
         [SerializeReference] private List<Setting> settings = new();
 
@@ -36,7 +39,7 @@ namespace IbrahKit
         {
             if (Instance == this)
             {
-                data = (SaveData)Save_Manager.currentFolder.LoadObject("Settings", new SaveData());
+                data = (SaveData)Save_Manager.currentFolder.LoadObject(KEY, new SaveData());
 
                 for (int i = 0; i < settings.Count; i++)
                 {
@@ -57,23 +60,21 @@ namespace IbrahKit
                     data.SetValue(key, settings[i].GetValue().ToString());
                 }
 
-                Save_Manager.currentFolder.SaveObject("Settings", data);
+                Save_Manager.currentFolder.SaveObject(KEY, data);
             }
         }
 
         [Button(Name = "Validate")]
         private void OnValidate()
         {
-            String_Utilities.CreateDropdown(settings.Select(x => x.GetKey()).ToList(), "Settings");
+            String_Utilities.CreateDropdown(settings.Select(x => x.GetKey()).ToList(), KEY);
         }
 
-        //Invoked by Odin
         private IEnumerable GetAllTypesDropdownFormat() { return Type_Utilities.GetAllTypesDropdownFormat(typeof(Setting)); }
 
-        //Invoked by Odin
         private void OnValueChanged()
         {
-            if (addSetting == "None") return;
+            if (addSetting == NONE) return;
 
             List<Type> types = Type_Utilities.GetAllTypes(typeof(Setting)).ToList();
 
@@ -84,7 +85,7 @@ namespace IbrahKit
                 settings.Add((Setting)Activator.CreateInstance(type));
             }
 
-            addSetting = "None";
+            addSetting = NONE;
         }
 
         public void OpenSettings(UI_Menu_Basic _origin)
