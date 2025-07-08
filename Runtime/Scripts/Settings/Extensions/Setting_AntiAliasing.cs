@@ -10,7 +10,7 @@ namespace IbrahKit
         public override void ApplyChanges()
         {
             base.ApplyChanges();
-            ((UniversalRenderPipelineAsset)GraphicsSettings.defaultRenderPipeline).msaaSampleCount = values[(int)value];
+            ((UniversalRenderPipelineAsset)GraphicsSettings.defaultRenderPipeline).msaaSampleCount = values[(int)GetValue()];
             //QualitySettings.antiAliasing = values[(int)value];
         }
     }

@@ -84,7 +84,7 @@ namespace IbrahKit
 
         public virtual void ChangeValue(float _value)
         {
-            setting.ChangeValue(_value);
+            setting.SetValue(_value);
             setting.ApplyChanges();
             UpdateUI();
         }

@@ -7,7 +7,7 @@ namespace IbrahKit
         public override void ApplyChanges()
         {
             base.ApplyChanges();
-            switch (value)
+            switch (GetValue())
             {
                 case 0:
                     QualitySettings.anisotropicFiltering = AnisotropicFiltering.Disable;

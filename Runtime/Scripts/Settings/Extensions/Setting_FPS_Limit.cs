@@ -10,12 +10,12 @@ namespace IbrahKit
         public override void ApplyChanges()
         {
             base.ApplyChanges();
-            Application.targetFrameRate = targets[(int)value];
+            Application.targetFrameRate = targets[(int)GetValue()];
         }
 
         public override string GetDisplayValue()
         {
-            return values[(int)value];
+            return values[(int)GetValue()];
         }
     }
 }

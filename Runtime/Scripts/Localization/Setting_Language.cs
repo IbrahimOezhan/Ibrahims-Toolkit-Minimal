@@ -5,7 +5,7 @@ namespace IbrahKit
         public override void Init(string initialValue)
         {
             base.Init(initialValue);
-            maxValue = Localization_Manager.Instance.GetUsedLanguageAmount() - 1;
+            SetValueRange(new(GetValueRange().x, Localization_Manager.Instance.GetUsedLanguageAmount() - 1));
         }
 
         public override string GetDisplayValue()
@@ -17,7 +17,7 @@ namespace IbrahKit
         {
             base.ApplyChanges();
 
-            value = Localization_Manager.Instance.GetNextUsableLanguage((int)value);
+            SetValue(Localization_Manager.Instance.GetNextUsableLanguage((int)GetValue()));
             Localization_Manager.Instance.UpdateLanguage();
         }
     }

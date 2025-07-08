@@ -9,13 +9,13 @@ namespace IbrahKit
         public override void Init(string initialValue)
         {
             base.Init(initialValue);
-            maxValue = Enum.GetNames(typeof(UpscalingFilterSelection)).Length - 1;
+            SetValueRange(new(GetValueRange().x, Enum.GetNames(typeof(UpscalingFilterSelection)).Length - 1));
         }
 
         public override void ApplyChanges()
         {
             base.ApplyChanges();
-            ((UniversalRenderPipelineAsset)GraphicsSettings.defaultRenderPipeline).upscalingFilter = (UpscalingFilterSelection)value;
+            ((UniversalRenderPipelineAsset)GraphicsSettings.defaultRenderPipeline).upscalingFilter = (UpscalingFilterSelection)GetValue();
         }
 
         public override string GetDisplayValue()

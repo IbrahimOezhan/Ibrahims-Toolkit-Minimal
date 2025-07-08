@@ -24,8 +24,8 @@ namespace IbrahKit
         public override void UpdateUI()
         {
             base.UpdateUI();
-            slider.minValue = setting.GetMinMax().x;
-            slider.maxValue = setting.GetMinMax().y;
+            slider.minValue = setting.GetValueRange().x;
+            slider.maxValue = setting.GetValueRange().y;
             //slider.wholeNumbers = setting.GetIsWholeNumber();
             slider.value = setting.GetValue();
         }

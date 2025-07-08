@@ -13,22 +13,21 @@ namespace IbrahKit
     [Serializable]
     public class Setting
     {
-        protected bool init;
+        private bool init;
 
         [BoxGroup("Base"), SerializeField, Dropdown("Localization")] private string settingsKey;
 
         [BoxGroup("Value"), SerializeField] private float defaultValue;
-        [BoxGroup("Value"), SerializeField] protected float value;
+        [BoxGroup("Value"), SerializeField] private float value;
         [BoxGroup("Value"), SerializeField] private bool loop;
 
-        [BoxGroup("ValueRange"), SerializeField] protected float minValue;
-        [BoxGroup("ValueRange"), SerializeField] protected float maxValue;
+        [BoxGroup("ValueRange"), SerializeField] private Vector2 valueRange;
 
         [BoxGroup("Display"), SerializeField] private DisplayMode displayMode;
-        [BoxGroup("Display"), Dropdown("Localization"), SerializeField, ShowIf("displayMode", DisplayMode.KEY)] protected string[] keys;
+        [BoxGroup("Display"), Dropdown("Localization"), SerializeField, ShowIf("displayMode", DisplayMode.KEY)] private string[] keys;
 
         [BoxGroup("Other Properties"), SerializeField] private SettingsType type;
-        [BoxGroup("Other Properties"), SerializeField, ShowIf("type", SettingsType.RANGE)] protected float steps;
+        [BoxGroup("Other Properties"), SerializeField, ShowIf("type", SettingsType.RANGE)] private float steps;
         [BoxGroup("Other Properties"), SerializeField] private UnityEvent OnValueChange;
 
         public virtual void Init(string initialValue)
@@ -37,26 +36,41 @@ namespace IbrahKit
 
             if (!float.TryParse(initialValue, out value))
             {
-                value = GetDefault();
+                SetValue(GetDefault());
             }
             ApplyChanges();
 
             init = true;
         }
 
-        public virtual void ChangeValue(float _value)
+        public void IncrementValue()
         {
-            value += _value;
+            SetValue(GetValue() + 1);
+        }
+
+        public void DecrementValue()
+        {
+            SetValue(GetValue() - 1);
+        }
+
+        public void AddValue(float value)
+        {
+            SetValue(GetValue() + value);
+        }
+
+        public virtual void SetValue(float value)
+        {
+            this.value = value;
 
             if (loop)
             {
-                if (value < GetMinMax().x) value = GetMinMax().y;
-                if (value > GetMinMax().y) value = GetMinMax().x;
+                if (this.value < GetValueRange().x) this.value = GetValueRange().y;
+                if (this.value > GetValueRange().y) this.value = GetValueRange().x;
             }
             else
             {
-                if (value < GetMinMax().x) value = GetMinMax().x;
-                if (value > GetMinMax().y) value = GetMinMax().y;
+                if (this.value < GetValueRange().x) this.value = GetValueRange().x;
+                if (this.value > GetValueRange().y) this.value = GetValueRange().y;
             }
         }
 
@@ -65,9 +79,9 @@ namespace IbrahKit
             OnValueChange.Invoke();
         }
 
-        public void SetValue(float value)
+        public void SetValueRange(Vector2 newRange)
         {
-            this.value = value;
+            valueRange = newRange;
         }
 
         public UnityEvent GetEvent()
@@ -80,9 +94,9 @@ namespace IbrahKit
             return JsonUtility.FromJson<Setting_Local_Json>(Localization_Manager.Instance.GetLocalizedString(settingsKey));
         }
 
-        public virtual Vector2 GetMinMax()
+        public virtual Vector2 GetValueRange()
         {
-            return new Vector2(minValue, maxValue);
+            return valueRange;
         }
 
         public SettingsType GetSettingsType()

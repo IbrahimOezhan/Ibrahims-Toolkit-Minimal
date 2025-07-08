@@ -8,13 +8,13 @@ namespace IbrahKit
         public override void Init(string initialValue)
         {
             base.Init(initialValue);
-            maxValue = Enum.GetNames(typeof(FullScreenMode)).Length - 1;
+            SetValueRange(new(GetValueRange().x, Enum.GetNames(typeof(FullScreenMode)).Length - 1));
         }
 
         public override void ApplyChanges()
         {
             base.ApplyChanges();
-            Screen.fullScreenMode = (FullScreenMode)value;
+            Screen.fullScreenMode = (FullScreenMode)GetValue();
         }
 
         public override string GetDisplayValue()

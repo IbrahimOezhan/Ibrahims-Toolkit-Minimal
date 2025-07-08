@@ -7,7 +7,7 @@ namespace IbrahKit
         public override void ApplyChanges()
         {
             base.ApplyChanges();
-            QualitySettings.globalTextureMipmapLimit = (int)value;
+            QualitySettings.globalTextureMipmapLimit = (int)GetValue();
         }
     }
 }

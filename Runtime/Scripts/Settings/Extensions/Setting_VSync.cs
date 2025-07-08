@@ -7,7 +7,7 @@ namespace IbrahKit
         public override void ApplyChanges()
         {
             base.ApplyChanges();
-            QualitySettings.vSyncCount = (int)value;
+            QualitySettings.vSyncCount = (int)GetValue();
         }
     }
 

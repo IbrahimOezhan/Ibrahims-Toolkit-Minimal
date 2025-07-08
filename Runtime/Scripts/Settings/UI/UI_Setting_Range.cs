@@ -47,12 +47,12 @@ namespace IbrahKit
             {
                 if (sub != null)
                 {
-                    sub.SetInteractable((setting.GetValue() > setting.GetMinMax().x) || setting.GetLoop());
+                    sub.SetInteractable((setting.GetValue() > setting.GetValueRange().x) || setting.GetLoop());
                 }
 
                 if (add != null)
                 {
-                    add.SetInteractable((setting.GetValue() < setting.GetMinMax().y) || setting.GetLoop());
+                    add.SetInteractable((setting.GetValue() < setting.GetValueRange().y) || setting.GetLoop());
                 }
             }
         }
