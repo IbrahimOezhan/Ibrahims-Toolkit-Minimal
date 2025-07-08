@@ -71,30 +71,42 @@ namespace IbrahKit
             rect.offsetMax = Vector2.zero; // Right, Top
         }
 
-        public static void SortGameObjects(List<GameObject> list)
+        public static void SortGameObjects(Transform parent)
         {
-            if (list == null)
+            List<GameObject> children = new();
+
+            foreach(Transform child in parent)
+            {
+                children.Add(child.gameObject);
+            }
+
+            SortGameObjects(children);
+        }
+
+        public static void SortGameObjects(List<GameObject> children)
+        {
+            if (children == null)
             {
                 Debug.LogWarning("List is null");
 
                 return;
             }
 
-            if (list.Count == 0)
+            if (children.Count == 0)
             {
                 Debug.LogWarning("List is empty");
 
                 return;
             }
 
-            list.Sort((GameObject one, GameObject two) =>
+            children.Sort((GameObject one, GameObject two) =>
             {
                 return one.name.CompareTo(two.name);
             });
 
-            for (int i = 0; i < list.Count; i++)
+            for (int i = 0; i < children.Count; i++)
             {
-                list[i].transform.SetSiblingIndex(i);
+                children[i].transform.SetSiblingIndex(i);
             }
         }
     }
