@@ -139,6 +139,11 @@ namespace IbrahKit
             return value;
         }
 
+        public string[] GetKeys()
+        {
+            return keys;
+        }
+
         public bool GetLoop()
         {
             return loop;
