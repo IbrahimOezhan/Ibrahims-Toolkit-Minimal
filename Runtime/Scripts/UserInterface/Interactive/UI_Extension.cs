@@ -24,7 +24,7 @@ namespace IbrahKit
         {
             if (uiInteractive == null)
             {
-                if(!TryGetComponent(out uiInteractive))
+                if (!TryGetComponent(out uiInteractive))
                 {
                     return;
                 }

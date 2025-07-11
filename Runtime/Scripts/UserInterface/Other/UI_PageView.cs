@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,7 +8,7 @@ namespace IbrahKit
         private int currentPageIndex;
         private int amountPerPage;
         private int maxPageIndex;
-        private UnityEvent<int> OnPageChanged;
+        private UnityEvent<int> OnPageChanged = new();
 
         [SerializeField] private UI_Selectable left;
         [SerializeField] private UI_Selectable right;
@@ -82,7 +81,7 @@ namespace IbrahKit
 
         public void UpdateUI()
         {
-            if(pageText == null)
+            if (pageText == null)
             {
                 Debug.LogWarning($"{nameof(pageText)} is null");
             }
@@ -100,7 +99,7 @@ namespace IbrahKit
                 left.gameObject.SetActive(currentPageIndex != 0);
             }
 
-            if(right == null)
+            if (right == null)
             {
                 Debug.LogWarning($"{nameof(right)} is null");
             }

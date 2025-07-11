@@ -6,7 +6,7 @@ namespace IbrahKit
     {
         public void OnPointerDown(PointerEventData eventData)
         {
-            if(UI_Manager.Exists(out UI_Manager um,true))
+            if (UI_Manager.Exists(out UI_Manager um, true))
             {
                 um.OnUIClick();
             }

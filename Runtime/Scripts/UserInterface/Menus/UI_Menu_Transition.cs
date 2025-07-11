@@ -13,7 +13,7 @@ namespace IbrahKit
 
         public (UI_Menu_Basic, FadeMode, float) GetData()
         {
-            return (menu, mode,fadeTime);
+            return (menu, mode, fadeTime);
         }
     }
 }

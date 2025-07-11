@@ -31,7 +31,7 @@ namespace IbrahKit
 
         public static UI_Manager Instance;
 
-        public static bool Exists(out UI_Manager manager, bool throwWarningIfDoesnt)
+        public static bool Exists(out UI_Manager manager, bool throwWarningIfDoesnt = true)
         {
             manager = Instance;
 

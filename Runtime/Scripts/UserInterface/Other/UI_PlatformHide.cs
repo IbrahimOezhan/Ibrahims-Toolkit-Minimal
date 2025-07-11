@@ -9,7 +9,7 @@ namespace IbrahKit
 
         private void Awake()
         {
-            if(hide == null)
+            if (hide == null)
             {
                 Debug.LogWarning($"{nameof(hide)} is null");
             }

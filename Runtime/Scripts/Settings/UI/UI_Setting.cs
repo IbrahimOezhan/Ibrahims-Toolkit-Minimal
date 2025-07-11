@@ -13,50 +13,80 @@ namespace IbrahKit
     /// </summary>
     public class UI_Setting : MonoBehaviour
     {
-        protected Setting setting;
-
-        private bool initialized = false;
-        
-        private bool subscribed;
-
-        [BoxGroup("Setting"), SerializeField]
+        [TabGroup("Setting")]
+        [SerializeField, LabelText("Setting Type")]
         protected SettingsType settingType;
 
-        [BoxGroup("Setting"), SerializeField]
+        [TabGroup("Setting")]
+        [SerializeField, LabelText("Interface Type")]
         private SettingsInterfaceType interfaceType;
 
-        [BoxGroup("Setting"), ShowIf(nameof(interfaceType), SettingsInterfaceType.KEY), Dropdown(Settings_Manager.KEY), SerializeField]
+        [TabGroup("Setting")]
+        [ShowIf(nameof(interfaceType), SettingsInterfaceType.KEY)]
+        [Dropdown("Settings_Manager.KEY")]
+        [SerializeField, LabelText("Setting Key")]
         private string settingKey;
 
-        [BoxGroup("Setting"), ShowIf(nameof(interfaceType), SettingsInterfaceType.LOCALREFERENCE), SerializeField]
+        [TabGroup("Setting")]
+        [ShowIf(nameof(interfaceType), SettingsInterfaceType.LOCALREFERENCE)]
+        [SerializeField, LabelText("Local Reference")]
         protected Setting_Container localReference;
 
-        [BoxGroup("Setting"), ShowIf(nameof(interfaceType), SettingsInterfaceType.LOCAL), SerializeField, OnValueChanged(nameof(OnValueChanged)), ValueDropdown(nameof(GetAllTypesDropdownFormat))]
+        [TabGroup("Setting")]
+        [ShowIf(nameof(interfaceType), SettingsInterfaceType.LOCAL)]
+        [SerializeField, OnValueChanged(nameof(OnValueChanged))]
+        [ValueDropdown(nameof(GetAllTypesDropdownFormat))]
+        [LabelText("Extension")]
         private string extension = "None";
 
-        [BoxGroup("Setting"), ShowIf(nameof(interfaceType), SettingsInterfaceType.LOCAL), SerializeField, SerializeReference]
+        [TabGroup("Setting")]
+        [ShowIf(nameof(interfaceType), SettingsInterfaceType.LOCAL)]
+        [SerializeField, SerializeReference, LabelText("Local Setting")]
         protected Setting localSetting;
 
-        [BoxGroup("UI"), SerializeField]
+        [TabGroup("UI")]
+        [SerializeField, LabelText("Title")]
         protected UI_Text_Setter_Legacy title;
 
-        [BoxGroup("UI"), SerializeField]
+        [TabGroup("UI")]
+        [SerializeField, LabelText("Description")]
         protected UI_Text_Setter_Legacy description;
 
-        [BoxGroup("UI"), SerializeField]
+        [TabGroup("UI")]
+        [SerializeField, LabelText("Value")]
         protected UI_Text_Setter_Legacy value;
+
+        [TabGroup("Runtime")]
+        [SerializeField, ReadOnly, LabelText("Initialized")]
+        protected bool initialized = false;
+
+        [TabGroup("Runtime")]
+        [SerializeField, ReadOnly, LabelText("Subscribed")]
+        private bool subscribed;
+
+        [TabGroup("Runtime")]
+        [SerializeField, ReadOnly, LabelText("Setting")]
+        protected Setting setting;
 
         protected virtual void OnEnable()
         {
-            if (Initialize()) UpdateUI();
+            if (!initialized)
+            {
+                Debug.LogWarning("Initialization failed");
+                return;
+            }
+
+            UpdateUI();
         }
 
         private void OnDestroy()
         {
-            if (Localization_Manager.Instance) Localization_Manager.Instance.OnLanguageChanged -= UpdateUI;
+            if (Localization_Manager.Exists(out Localization_Manager lm,true))
+            {
+                lm.OnLanguageChanged -= UpdateUI;
+            }
         }
 
-        //Invoked by ODIN
         private void OnValueChanged()
         {
             List<Type> types = Type_Utilities.GetAllTypes(typeof(Setting)).ToList();
@@ -71,32 +101,52 @@ namespace IbrahKit
             extension = "None";
         }
 
-        //Invoked by ODIN
-        private IEnumerable GetAllTypesDropdownFormat() { return Type_Utilities.GetAllTypesDropdownFormat(typeof(Setting)); }
-
         public void Setup(string settingKey)
         {
             this.settingKey = settingKey;
+
+            Setup();
         }
 
         public void Setup(Setting_Container setting)
         {
             this.setting = setting.GetSetting();
+
+            Setup();
+        }
+
+        public virtual void Setup()
+        {
+            Initialize();
+
+            if (!initialized)
+            {
+                Debug.LogWarning("Initialization failed");
+                return;
+            }
+
+            UpdateUI();
         }
 
         public virtual void ChangeValue(float _value)
         {
             setting.SetValue(setting.GetValue() + _value);
+
             setting.ApplyChanges();
+
             UpdateUI();
         }
 
         public virtual void UpdateUI()
         {
-            if (Initialize())
+            if (!initialized) Initialize();
+            if (!initialized)
             {
-                value.SetText(setting.GetDisplayValue());
+                Debug.LogWarning("Initialization failed");
+                return;
             }
+
+            value.SetText(setting.GetDisplayValue());
         }
 
         public Setting GetSetting()
@@ -109,10 +159,25 @@ namespace IbrahKit
             return settingType;
         }
 
+        private IEnumerable GetAllTypesDropdownFormat()
+        {
+            return Type_Utilities.GetAllTypesDropdownFormat(typeof(Setting));
+        }
+
         public virtual bool Initialize()
         {
-            if (initialized) return true;
-            
+            if (initialized)
+            {
+                Debug.LogWarning("Already initialized");
+                return true;
+            }
+
+            if(value == null)
+            {
+                Debug.LogWarning($"{nameof(value)} is null");
+                return false;
+            }
+
             switch (interfaceType)
             {
                 case SettingsInterfaceType.LOCALREFERENCE:
@@ -128,6 +193,7 @@ namespace IbrahKit
 
             if (setting == null)
             {
+                Debug.LogWarning($"{nameof(setting)} is null");
                 return false;
             }
 
@@ -138,16 +204,21 @@ namespace IbrahKit
                 Localization_Manager.Instance.OnLanguageChanged += UpdateUI;
                 subscribed = true;
             }
+            else
+            {
+                Debug.LogWarning($"Already subscribed to {nameof(Localization_Manager)}");
+            }
 
             Setting_Local_Json settingLocal = setting.GetLocal();
 
             if (settingLocal == null)
             {
-                Debug.LogWarning("Local json is null");
+                Debug.LogWarning($"{nameof(settingLocal)} is null");
                 return false;
             }
 
             bool titleEmpty = String_Utilities.IsEmpty(settingLocal.title);
+
             bool titleNull = title == null;
 
             if (titleEmpty)
@@ -171,7 +242,9 @@ namespace IbrahKit
             }
 
             initialized = true;
-            
+
+            Debug.LogWarning("Ínitialized successfully");
+
             return true;
         }
     }

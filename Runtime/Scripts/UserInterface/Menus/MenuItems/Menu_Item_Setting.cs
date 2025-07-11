@@ -33,6 +33,7 @@ namespace IbrahKit
             switch (settingType)
             {
                 case SettingsInterfaceType.KEY:
+                    Debug.Log(settingsKey);
                     settingInstance.Setup(settingsKey);
                     break;
                 case SettingsInterfaceType.LOCALREFERENCE:

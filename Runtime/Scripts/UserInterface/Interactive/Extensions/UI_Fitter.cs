@@ -17,7 +17,7 @@ namespace IbrahKit
 
         protected override void Init()
         {
-            if(rect == null && !TryGetComponent(out  rect))
+            if (rect == null && !TryGetComponent(out rect))
             {
                 return;
             }

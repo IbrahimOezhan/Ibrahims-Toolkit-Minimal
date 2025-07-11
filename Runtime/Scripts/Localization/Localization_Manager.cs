@@ -340,7 +340,21 @@ namespace IbrahKit
         {
             bool exists = Instance != null && Instance.gameObject != null;
 
-            if(throwWarning && !exists)
+            if (throwWarning && !exists)
+            {
+                Debug.LogWarning($"{nameof(Localization_Manager)} does not exist");
+            }
+
+            return exists;
+        }
+
+        public static bool Exists(out Localization_Manager manager,bool throwWarning = true)
+        {
+            manager = Instance;
+
+            bool exists = Instance != null && Instance.gameObject != null;
+
+            if (throwWarning && !exists)
             {
                 Debug.LogWarning($"{nameof(Localization_Manager)} does not exist");
             }

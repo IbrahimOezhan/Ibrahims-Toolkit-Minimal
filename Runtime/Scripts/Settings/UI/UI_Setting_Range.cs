@@ -8,15 +8,13 @@ namespace IbrahKit
         [BoxGroup("UI"), SerializeField] private UI_Selectable sub;
         [BoxGroup("UI"), SerializeField] private UI_Selectable add;
 
-        protected override void OnEnable()
+        public override bool Initialize()
         {
-            base.OnEnable();
+            if (initialized) return true;
 
-            if (setting == null)
-            {
-                Debug.LogWarning("Setting is null");
-                return;
-            }
+            bool result = base.Initialize();
+
+            if (!result) return false;
 
             if (sub != null)
             {
@@ -37,23 +35,29 @@ namespace IbrahKit
             {
                 Debug.LogWarning("Add Selectable is null");
             }
+
+            return true;
         }
 
         public override void UpdateUI()
         {
             base.UpdateUI();
 
-            if (setting != null)
+            if (!initialized) Initialize();
+            if (!initialized)
             {
-                if (sub != null)
-                {
-                    sub.SetInteractable((setting.GetValue() > setting.GetValueRange().x) || setting.GetLoop());
-                }
+                Debug.LogWarning("Initialization failed");
+                return;
+            }
 
-                if (add != null)
-                {
-                    add.SetInteractable((setting.GetValue() < setting.GetValueRange().y) || setting.GetLoop());
-                }
+            if (sub != null)
+            {
+                sub.SetInteractable((setting.GetValue() > setting.GetValueRange().x) || setting.GetLoop());
+            }
+
+            if (add != null)
+            {
+                add.SetInteractable((setting.GetValue() < setting.GetValueRange().y) || setting.GetLoop());
             }
         }
     }

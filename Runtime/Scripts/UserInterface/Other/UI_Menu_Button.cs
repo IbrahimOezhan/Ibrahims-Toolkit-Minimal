@@ -25,7 +25,7 @@ namespace IbrahKit
                 Debug.LogError($"Neither {nameof(localization)} nor {textSetter} have been found");
             }
 
-            if(selec == null)
+            if (selec == null)
             {
                 Debug.LogWarning($"{nameof(selec)} is null. Passing new unity event");
                 return new();

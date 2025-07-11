@@ -75,7 +75,7 @@ namespace IbrahKit
         {
             List<GameObject> children = new();
 
-            foreach(Transform child in parent)
+            foreach (Transform child in parent)
             {
                 children.Add(child.gameObject);
             }

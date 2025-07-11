@@ -109,7 +109,7 @@ namespace IbrahKit
                 return false;
             }
 
-            setting = settings.Select(x => x).ToList().Find(x => x.GetKey().Equals(_key));
+            setting = settings.Find(x => x.GetKey().Equals(_key));
 
             if (setting == null)
             {

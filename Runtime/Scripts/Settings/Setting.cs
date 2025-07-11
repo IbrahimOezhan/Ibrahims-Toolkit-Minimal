@@ -1,5 +1,6 @@
 using Sirenix.OdinInspector;
 using System;
+using System.Text.Json;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -38,7 +39,7 @@ namespace IbrahKit
             {
                 SetValue(GetDefault());
             }
-            
+
             ApplyChanges();
 
             init = true;
@@ -92,7 +93,11 @@ namespace IbrahKit
 
         public Setting_Local_Json GetLocal()
         {
-            return JsonUtility.FromJson<Setting_Local_Json>(Localization_Manager.Instance.GetLocalizedString(settingsKey));
+            JsonSerializerOptions options = new JsonSerializerOptions();
+            options.IncludeFields = true;
+            Setting_Local_Json json = JsonSerializer.Deserialize<Setting_Local_Json>(Localization_Manager.Instance.GetLocalizedString(settingsKey), options);
+
+            return json;
         }
 
         public virtual Vector2 GetValueRange()

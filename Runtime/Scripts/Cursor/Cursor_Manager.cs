@@ -100,6 +100,11 @@ namespace IbrahKit
         {
             preCursorState = cursorState;
 
+            if(input == null)
+            {
+                return false;
+            }
+
             Vector2 mousePos = input.Map.MousePos.ReadValue<Vector2>();
 
             found = false;
