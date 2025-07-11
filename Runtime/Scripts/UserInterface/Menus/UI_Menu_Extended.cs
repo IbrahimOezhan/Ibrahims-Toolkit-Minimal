@@ -11,6 +11,8 @@ namespace IbrahKit
     /// </summary>
     public partial class UI_Menu_Extended : UI_Menu_Basic
     {
+        private const string SENDMESSAGE = "OnMenuLoaded";
+
         [TabGroup("Title"), Tooltip("Localization component for the menu title.")]
         [SerializeField]
         private UI_Localization title;
@@ -109,7 +111,7 @@ namespace IbrahKit
 
             MenuUpdate();
 
-            SendMessage("OnMenuLoaded", null, SendMessageOptions.DontRequireReceiver);
+            SendMessage(SENDMESSAGE, null, SendMessageOptions.DontRequireReceiver);
 
             yield return null;
 

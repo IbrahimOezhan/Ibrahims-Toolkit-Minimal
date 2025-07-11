@@ -9,7 +9,14 @@ namespace IbrahKit
 
         private void Awake()
         {
-            if (hide.Contains(Application.platform)) gameObject.SetActive(false);
+            if(hide == null)
+            {
+                Debug.LogWarning($"{nameof(hide)} is null");
+            }
+            else
+            {
+                if (hide.Contains(Application.platform)) gameObject.SetActive(false);
+            }
         }
 
         public virtual bool HideCustom()

@@ -8,8 +8,8 @@ namespace IbrahKit
     {
         [SerializeField] private Menu_Change_Type changeType;
 
-        [ShowIf("changeType", Menu_Change_Type.REFERENCE), SerializeField] private UI_Menu_Basic menuReference;
-        [ShowIf("changeType", Menu_Change_Type.TRANSITION), SerializeField] private int transitionReference = -1;
+        [ShowIf(nameof(changeType), Menu_Change_Type.REFERENCE), SerializeField] private UI_Menu_Basic menuReference;
+        [ShowIf(nameof(changeType), Menu_Change_Type.TRANSITION), SerializeField] private int transitionReference = -1;
 
         public override void Spawn(RectTransform parent, UI_Menu_Extended menu)
         {

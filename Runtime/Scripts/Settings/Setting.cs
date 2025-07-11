@@ -15,7 +15,7 @@ namespace IbrahKit
     {
         private bool init;
 
-        [BoxGroup("Base"), SerializeField, Dropdown("Localization")] private string settingsKey;
+        [BoxGroup("Base"), SerializeField, Dropdown(Localization_Manager.KEY)] private string settingsKey;
 
         [BoxGroup("Value"), SerializeField] private float defaultValue;
         [BoxGroup("Value"), SerializeField] private float value;
@@ -24,10 +24,10 @@ namespace IbrahKit
         [BoxGroup("ValueRange"), SerializeField] private Vector2 valueRange;
 
         [BoxGroup("Display"), SerializeField] private DisplayMode displayMode;
-        [BoxGroup("Display"), Dropdown("Localization"), SerializeField, ShowIf("displayMode", DisplayMode.KEY)] private string[] keys;
+        [BoxGroup("Display"), Dropdown(Localization_Manager.KEY), SerializeField, ShowIf(nameof(displayMode), DisplayMode.KEY)] private string[] keys;
 
         [BoxGroup("Other Properties"), SerializeField] private SettingsType type;
-        [BoxGroup("Other Properties"), SerializeField, ShowIf("type", SettingsType.RANGE)] private float steps;
+        [BoxGroup("Other Properties"), SerializeField, ShowIf(nameof(type), SettingsType.RANGE)] private float steps;
         [BoxGroup("Other Properties"), SerializeField] private UnityEvent OnValueChange;
 
         public virtual void Init(string initialValue)

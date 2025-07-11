@@ -6,7 +6,7 @@ namespace IbrahKit
     public class UI_Dots : MonoBehaviour
     {
         private string dots = "";
-        private const float waitInterval = 0.5f;
+        private const float initialDelay = 0.5f;
 
         [SerializeField] private float delay;
         [SerializeField] private UI_Localization dotsText;
@@ -25,7 +25,7 @@ namespace IbrahKit
         {
             if (dotsText != null)
             {
-                yield return new WaitForSeconds(waitInterval);
+                yield return new WaitForSeconds(initialDelay);
 
                 while (true)
                 {
@@ -36,7 +36,7 @@ namespace IbrahKit
             }
             else
             {
-                Debug.LogWarning("UI Localization reference is null");
+                Debug.LogWarning($"{nameof(dotsText)} is null");
             }
         }
     }

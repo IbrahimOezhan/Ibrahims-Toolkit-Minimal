@@ -6,27 +6,26 @@ namespace IbrahKit
     [System.Serializable]
     public class UI_Fitter_Config
     {
+        [SerializeField] private float margin;
+
+        [SerializeField] private List<PlatformBasedMargin> marginOverride = new();
+
         public UI_Fitter_Config(float margin)
         {
             this.margin = margin;
         }
 
-        [SerializeField] private float margin;
-
-        [SerializeField] private List<PlatformBasedMargin> marginOverride = new();
-
         public float GetMargin()
         {
-            if (marginOverride != null)
+            if (marginOverride == null)
             {
-                for (int i = 0; i < marginOverride.Count; i++)
-                {
-                    if (marginOverride[i].IsPlatform()) return marginOverride[i].margin;
-                }
+                Debug.LogWarning($"{nameof(marginOverride)} is null");
+                return margin;
             }
-            else
+
+            for (int i = 0; i < marginOverride.Count; i++)
             {
-                Debug.LogWarning("Margin override list is null");
+                if (marginOverride[i].IsPlatform()) return marginOverride[i].margin;
             }
 
             return margin;

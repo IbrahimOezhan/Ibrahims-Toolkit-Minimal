@@ -9,10 +9,10 @@ namespace IbrahKit
     {
         [SerializeField] private SettingsInterfaceType settingType;
 
-        [ShowIf("settingType", SettingsInterfaceType.LOCAL), SerializeField]
+        [ShowIf(nameof(settingType), SettingsInterfaceType.LOCAL), SerializeField]
         private Setting_Container reference;
 
-        [ShowIf("settingType", SettingsInterfaceType.KEY), Dropdown("Settings"), SerializeField]
+        [ShowIf(nameof(settingType), SettingsInterfaceType.KEY), Dropdown(Settings_Manager.KEY), SerializeField]
         private string settingsKey;
 
         public override void Spawn(RectTransform parent, UI_Menu_Extended menu)

@@ -10,7 +10,7 @@ namespace IbrahKit
     [Serializable]
     public class Setting_Container : MonoBehaviour
     {
-        [SerializeField, OnValueChanged("OnValueChanged"), ValueDropdown("GetAllTypesDropdownFormat")]
+        [SerializeField, OnValueChanged(nameof(OnValueChanged)), ValueDropdown(nameof(GetAllTypesDropdownFormat))]
         private string selectSetting = "None";
 
         [SerializeField, SerializeReference]

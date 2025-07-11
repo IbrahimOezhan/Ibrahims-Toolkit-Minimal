@@ -10,19 +10,18 @@ namespace IbrahKit
 
         protected override void Init()
         {
-            if (text == null)
+            if (text == null && !TryGetComponent(out text))
             {
-                if (!TryGetComponent(out text))
-                {
-                    return;
-                }
+                return;
             }
+
             base.Init();
         }
 
         public override void Execute()
         {
             if (!init) Init();
+            if (!init) return;
 
             Text _text = GetText();
             UI_Styling_Config _style = GetResolvedStyle(_text.fontSize, text.color);
@@ -37,7 +36,7 @@ namespace IbrahKit
 
         public Text GetText()
         {
-            return text != null ? text : GetComponent<Text>();
+            return text;
         }
     }
 }

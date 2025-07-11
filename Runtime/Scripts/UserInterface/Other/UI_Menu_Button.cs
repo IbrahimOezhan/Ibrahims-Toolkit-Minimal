@@ -22,7 +22,13 @@ namespace IbrahKit
             }
             else
             {
-                Debug.LogError("Neither localization or text setter component found");
+                Debug.LogError($"Neither {nameof(localization)} nor {textSetter} have been found");
+            }
+
+            if(selec == null)
+            {
+                Debug.LogWarning($"{nameof(selec)} is null. Passing new unity event");
+                return new();
             }
 
             return selec.OnClickEvent;

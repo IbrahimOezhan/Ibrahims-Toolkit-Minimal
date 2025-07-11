@@ -9,7 +9,9 @@ namespace IbrahKit
 {
     public class UI_Interactive : UI_Base, IMenuUpdate
     {
-        [SerializeField, OnValueChanged("OnValueChanged"), ValueDropdown("GetAllSubtypes")] private string extension = "None";
+        private const string NONE = "None";
+
+        [SerializeField, OnValueChanged(nameof(OnValueChanged)), ValueDropdown(nameof(GetAllSubtypes))] private string extension = NONE;
 
         [SerializeField, ReadOnly] private List<UI_Extension> extensions = new();
 
@@ -36,7 +38,7 @@ namespace IbrahKit
                 }
             }
 
-            extension = "None";
+            extension = NONE;
         }
 
         private void SortList()

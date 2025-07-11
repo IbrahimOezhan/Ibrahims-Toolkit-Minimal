@@ -17,7 +17,11 @@ namespace IbrahKit
 
         protected override void Init()
         {
-            rect = GetComponent<RectTransform>();
+            if(rect == null && !TryGetComponent(out  rect))
+            {
+                return;
+            }
+
             base.Init();
         }
 
@@ -31,7 +35,6 @@ namespace IbrahKit
         {
             return max == 0 ? Mathf.Infinity : max;
         }
-
 
         protected UI_Fitter_Config GetConfig()
         {

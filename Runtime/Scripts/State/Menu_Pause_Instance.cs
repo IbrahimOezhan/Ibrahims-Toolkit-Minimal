@@ -9,7 +9,7 @@ namespace IbrahKit
         private UI_Input input;
         private string stateBeforePause;
 
-        [SerializeField, Dropdown("States")] private string pausedState;
+        [SerializeField, Dropdown(State_Manager.KEY)] private string pausedState;
         [SerializeField] private List<AllowPause> allowPause = new();
         [SerializeField] private UI_Menu_Basic Menu;
 
@@ -43,9 +43,9 @@ namespace IbrahKit
         {
             string currentState = State_Manager.Instance.GetCurrentState();
 
-            AllowPause allow = allowPause.Find(x => x.state == currentState);
+            AllowPause allow = allowPause.Find(x => x.IsState(currentState));
 
-            if (allow.allow)
+            if (allow.Allow())
             {
                 bool _paused = !paused;
 
@@ -71,8 +71,18 @@ namespace IbrahKit
         [Serializable]
         private class AllowPause
         {
-            public bool allow;
-            [Dropdown("States")] public string state;
+            [SerializeField] private bool allow;
+            [Dropdown(State_Manager.KEY)][SerializeField] private string state;
+
+            public bool Allow()
+            {
+                return allow;
+            }
+
+            public bool IsState(string state)
+            {
+                return state.Equals(state);
+            }
         }
     }
 }

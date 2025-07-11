@@ -13,7 +13,7 @@ namespace IbrahKit
 
         [SerializeField] private bool layoutSpecific;
 
-        [ShowIf("layoutSpecific"), SerializeField, Dropdown("UILayouts")] private List<string> showOnLayouts;
+        [ShowIf(nameof(layoutSpecific)), SerializeField, Dropdown(UI_Manager.UILAYOUTKEY)] private List<string> showOnLayouts;
 
         public GameObject Spawn(RectTransform parent, UI_Menu_Extended menu)
         {

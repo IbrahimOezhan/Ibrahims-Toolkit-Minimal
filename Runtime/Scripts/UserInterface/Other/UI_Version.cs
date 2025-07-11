@@ -10,6 +10,7 @@ namespace IbrahKit
         {
             if (localization == null && !TryGetComponent(out localization))
             {
+                Debug.LogWarning($"No component of type {nameof(UI_Localization)} attached to the game object");
                 return;
             }
 

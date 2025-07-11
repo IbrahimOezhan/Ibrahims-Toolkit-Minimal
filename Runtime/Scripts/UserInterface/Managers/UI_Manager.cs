@@ -11,6 +11,8 @@ namespace IbrahKit
     [DefaultExecutionOrder(Execution_Order.ui)]
     public class UI_Manager : Manager_Base
     {
+        public const string UILAYOUTKEY = "UILayouts";
+
         private bool hidden;
 
         [SerializeField] private UI_Fitter_Config_SO defaultConfig;
@@ -18,7 +20,7 @@ namespace IbrahKit
         [SerializeField] private UI_Styling_Config_SO defaultUIStyle;
         [SerializeField] private KeyMap keyMap;
 
-        [SerializeField, Dropdown("UILayouts")] private List<string> activeLayouts;
+        [SerializeField, Dropdown(UILAYOUTKEY)] private List<string> activeLayouts;
 
         [SerializeField] private List<UI_Menu_Basic> activeMenus = new();
 
@@ -28,6 +30,17 @@ namespace IbrahKit
         public Action<UI_Menu_Basic, StateMode> OnCustomTR;
 
         public static UI_Manager Instance;
+
+        public static bool Exists(out UI_Manager manager, bool throwWarningIfDoesnt)
+        {
+            manager = Instance;
+
+            bool exists = Instance != null && Instance.gameObject != null;
+
+            if (!exists && throwWarningIfDoesnt) Debug.LogWarning($"{nameof(UI_Manager)} doesnt exist");
+
+            return exists;
+        }
 
         private void Awake()
         {

@@ -8,6 +8,8 @@ namespace IbrahKit
     [DefaultExecutionOrder(Execution_Order.state)]
     public class State_Manager : Manager_Base
     {
+        public const string KEY = "States";
+
         [FoldoutGroup("States"), SerializeField, ReadOnly] private int currentState = 0;
         [FoldoutGroup("States"), SerializeField] private List<string> states = new();
 
@@ -26,7 +28,7 @@ namespace IbrahKit
 
         private void OnValidate()
         {
-            String_Utilities.CreateDropdown(states, "States");
+            String_Utilities.CreateDropdown(states, KEY);
         }
 
         public void SetCurrentState(string newState)

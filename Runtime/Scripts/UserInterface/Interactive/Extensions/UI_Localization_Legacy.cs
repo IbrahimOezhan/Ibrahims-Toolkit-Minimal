@@ -11,15 +11,17 @@ namespace IbrahKit
 
         protected override void Init()
         {
-            if (text == null) text = GetComponent<Text>();
+            if (text == null && !TryGetComponent(out text))
+            {
+                return;
+            }
             base.Init();
         }
 
         public override void Execute()
         {
-            base.Execute();
-
             if (!init) Init();
+            if (!init) return;
 
             (Text text, Localization_Manager manager) = GetText();
 

@@ -6,6 +6,8 @@ namespace IbrahKit
     [AddComponentMenu("")]
     public abstract class UI_Extension : MonoBehaviour
     {
+        private UI_Interactive uiInteractive;
+
         protected bool init;
 
         protected virtual void Awake()
@@ -20,6 +22,14 @@ namespace IbrahKit
 
         protected virtual void Init()
         {
+            if (uiInteractive == null)
+            {
+                if(!TryGetComponent(out uiInteractive))
+                {
+                    return;
+                }
+            }
+
             init = true;
         }
 
@@ -30,7 +40,10 @@ namespace IbrahKit
 
         public void UpdateUI()
         {
-            GetComponent<UI_Interactive>().UpdateUI();
+            if (!init) Init();
+            if (!init) return;
+
+            uiInteractive.UpdateUI();
         }
 
         public virtual int GetOrder()

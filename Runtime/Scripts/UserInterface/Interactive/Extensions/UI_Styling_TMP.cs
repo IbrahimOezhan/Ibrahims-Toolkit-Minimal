@@ -9,12 +9,9 @@ namespace IbrahKit
 
         protected override void Init()
         {
-            if (text == null)
+            if (text == null && !TryGetComponent(out text))
             {
-                if (!TryGetComponent(out text))
-                {
-                    return;
-                }
+                return;
             }
 
             base.Init();
@@ -23,6 +20,7 @@ namespace IbrahKit
         public override void Execute()
         {
             if (!init) Init();
+            if (!init) return;
 
             TextMeshProUGUI _text = GetText();
 
@@ -38,7 +36,7 @@ namespace IbrahKit
 
         public TextMeshProUGUI GetText()
         {
-            return text != null ? text : GetComponent<TextMeshProUGUI>();
+            return text;
         }
     }
 }

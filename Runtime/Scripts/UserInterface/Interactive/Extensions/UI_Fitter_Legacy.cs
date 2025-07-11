@@ -9,15 +9,17 @@ public class UI_Fitter_Legacy : UI_Fitter
 
     protected override void Init()
     {
-        if (text == null) text = GetComponent<Text>();
+        if (text == null && !TryGetComponent(out text))
+        {
+            return;
+        }
         base.Init();
     }
 
     public override void Execute()
     {
-        base.Execute();
-
         if (!init) Init();
+        if (!init) return;
 
         (Text text, RectTransform rect, UI_Fitter_Config config) = (GetText(), GetRect(), GetConfig());
 

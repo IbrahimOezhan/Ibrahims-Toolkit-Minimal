@@ -25,16 +25,16 @@ namespace IbrahKit
         [BoxGroup("Setting"), SerializeField]
         private SettingsInterfaceType interfaceType;
 
-        [BoxGroup("Setting"), ShowIf("interfaceType", SettingsInterfaceType.KEY), Dropdown("Settings"), SerializeField]
+        [BoxGroup("Setting"), ShowIf(nameof(interfaceType), SettingsInterfaceType.KEY), Dropdown(Settings_Manager.KEY), SerializeField]
         private string settingKey;
 
-        [BoxGroup("Setting"), ShowIf("interfaceType", SettingsInterfaceType.LOCALREFERENCE), SerializeField]
+        [BoxGroup("Setting"), ShowIf(nameof(interfaceType), SettingsInterfaceType.LOCALREFERENCE), SerializeField]
         protected Setting_Container localReference;
 
-        [BoxGroup("Setting"), ShowIf("interfaceType", SettingsInterfaceType.LOCAL), SerializeField, OnValueChanged("OnValueChanged"), ValueDropdown("GetAllTypesDropdownFormat")]
+        [BoxGroup("Setting"), ShowIf(nameof(interfaceType), SettingsInterfaceType.LOCAL), SerializeField, OnValueChanged(nameof(OnValueChanged)), ValueDropdown(nameof(GetAllTypesDropdownFormat))]
         private string extension = "None";
 
-        [BoxGroup("Setting"), ShowIf("interfaceType", SettingsInterfaceType.LOCAL), SerializeField, SerializeReference]
+        [BoxGroup("Setting"), ShowIf(nameof(interfaceType), SettingsInterfaceType.LOCAL), SerializeField, SerializeReference]
         protected Setting localSetting;
 
         [BoxGroup("UI"), SerializeField]

@@ -37,9 +37,9 @@ namespace IbrahKit
         protected UI_Menu_Basic overrideBackMenu;
 
         [TabGroup("Transitions", order: 1), SerializeField, Tooltip("Available transitions from this menu")]
-        private List<MenuTransition> transitions;
+        private List<UI_Menu_Transition> transitions;
 
-        public static Action<MenuTransition, UI_Menu_Basic> OnMenuTransition;
+        public static Action<UI_Menu_Transition, UI_Menu_Basic> OnMenuTransition;
 
         protected virtual void Awake()
         {
@@ -216,8 +216,12 @@ namespace IbrahKit
 
         public void MenuTransition(int _index)
         {
-            MenuTransition transition = transitions[_index];
-            UI_Manager.Instance.Transition(this, transition.menu, transition.mode, transition.fadeTime);
+            UI_Menu_Transition transition = transitions[_index];
+
+            (UI_Menu_Basic menu, FadeMode mode, float time) = transition.GetData();
+
+            UI_Manager.Instance.Transition(this, menu, mode, time);
+
             OnMenuTransition?.Invoke(transition, this);
         }
 

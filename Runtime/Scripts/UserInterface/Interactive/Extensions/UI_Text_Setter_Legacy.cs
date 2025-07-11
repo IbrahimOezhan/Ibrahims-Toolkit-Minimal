@@ -9,12 +9,9 @@ namespace IbrahKit
 
         protected override void Init()
         {
-            if (text == null)
+            if (text == null && !TryGetComponent(out text))
             {
-                if (!TryGetComponent(out text))
-                {
-                    return;
-                }
+                return;
             }
 
             base.Init();
@@ -23,6 +20,7 @@ namespace IbrahKit
         public override void SetText(string text)
         {
             if (!init) Init();
+            if (!init) return;
 
             this.text.text = text;
 

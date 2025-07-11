@@ -8,7 +8,7 @@ public class UI_Layout_Config : ScriptableObject
 {
     private static UI_Layout_Config active;
 
-    [SerializeField, OnValueChanged("OnValueChanged")] private List<string> layouts = new();
+    [SerializeField, OnValueChanged(nameof(OnValueChanged))] private List<string> layouts = new();
 
     private void OnValueChanged()
     {
@@ -16,9 +16,12 @@ public class UI_Layout_Config : ScriptableObject
 
         if (active == this)
         {
-            List<string> list = new List<string>(layouts);
-            list.Add("None");
-            String_Utilities.CreateDropdown(list, "UILayouts");
+            List<string> list = new(layouts)
+            {
+                "None"
+            };
+
+            String_Utilities.CreateDropdown(list, UI_Manager.UILAYOUTKEY);
         }
     }
 

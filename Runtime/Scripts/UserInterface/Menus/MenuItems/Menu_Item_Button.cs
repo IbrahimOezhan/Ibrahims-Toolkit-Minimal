@@ -10,8 +10,8 @@ namespace IbrahKit
         protected string value;
 
         [SerializeField] private LocalType localType = LocalType.LOCALIZE;
-        [SerializeField, Dropdown("Localization"), ShowIf("localType", LocalType.LOCALIZE)] private string localizationKey;
-        [SerializeField, ShowIf("localType", LocalType.STATIC)] private string staticText;
+        [SerializeField, Dropdown(Localization_Manager.KEY), ShowIf(nameof(localType), LocalType.LOCALIZE)] private string localizationKey;
+        [SerializeField, ShowIf(nameof(localType), LocalType.STATIC)] private string staticText;
 
         public override void Spawn(RectTransform parent, UI_Menu_Extended menu)
         {

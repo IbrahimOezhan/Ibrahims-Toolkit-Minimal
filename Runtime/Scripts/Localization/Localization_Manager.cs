@@ -13,6 +13,7 @@ namespace IbrahKit
     public class Localization_Manager : Manager_Base
     {
         public const string KEY = "Localization";
+        public const string SYS = "SysLanguage";
         private const string langSettKey = "language";
         private const string langDropdownKey = "Language";
         private const string saveDataKey = "LocalizationManager";
