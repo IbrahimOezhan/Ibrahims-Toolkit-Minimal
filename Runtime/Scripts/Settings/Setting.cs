@@ -38,6 +38,7 @@ namespace IbrahKit
             {
                 SetValue(GetDefault());
             }
+            
             ApplyChanges();
 
             init = true;

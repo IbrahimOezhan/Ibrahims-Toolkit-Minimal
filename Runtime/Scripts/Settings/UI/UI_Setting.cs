@@ -15,6 +15,8 @@ namespace IbrahKit
     {
         protected Setting setting;
 
+        private bool initialized = false;
+        
         private bool subscribed;
 
         [BoxGroup("Setting"), SerializeField]
@@ -109,6 +111,8 @@ namespace IbrahKit
 
         public virtual bool Initialize()
         {
+            if (initialized) return true;
+            
             switch (interfaceType)
             {
                 case SettingsInterfaceType.LOCALREFERENCE:
@@ -166,6 +170,8 @@ namespace IbrahKit
                 description.SetText(settingLocal.description);
             }
 
+            initialized = true;
+            
             return true;
         }
     }
