@@ -3,42 +3,45 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using Debug = IbrahKit.Debug;
 
-[CreateAssetMenu(fileName = "NewUnlockable", menuName = "ScriptableObjects/Unlockable")]
-public class Unlockable : ScriptableObject
+namespace IbrahKit
 {
-    [TabGroup("Localization")]
-    [Dropdown(Localization_Manager.KEY)]
-    [SerializeField] protected string key;
-
-    [SerializeField] private Unlockable[] unlockOnUnlock;
-
-    public virtual void Unlock()
+    [CreateAssetMenu(fileName = "NewUnlockable", menuName = "ScriptableObjects/Unlockable")]
+    public class Unlockable : ScriptableObject
     {
-        if (IsUnlocked()) return;
+        [TabGroup("Localization")]
+        [Dropdown(Localization_Manager.KEY)]
+        [SerializeField] protected string key;
 
-        if (unlockOnUnlock != null)
+        [SerializeField] private Unlockable[] unlockOnUnlock;
+
+        public virtual void Unlock()
         {
-            for (int i = 0; i < unlockOnUnlock.Length; i++)
+            if (IsUnlocked()) return;
+
+            if (unlockOnUnlock != null)
             {
-                if (unlockOnUnlock[i] == null)
+                for (int i = 0; i < unlockOnUnlock.Length; i++)
                 {
-                    Debug.LogWarning(nameof(unlockOnUnlock) + " contains null values");
-                    continue;
+                    if (unlockOnUnlock[i] == null)
+                    {
+                        Debug.LogWarning(nameof(unlockOnUnlock) + " contains null values");
+                        continue;
+                    }
+                    unlockOnUnlock[i].Unlock();
                 }
-                unlockOnUnlock[i].Unlock();
             }
+
+            Unlockables_Manager.Instance.Unlock(this);
         }
 
-        Unlockables_Manager.Instance.Unlock(this);
-    }
+        public bool IsUnlocked()
+        {
+            return Unlockables_Manager.Instance.IsUnlocked(key);
+        }
 
-    public bool IsUnlocked()
-    {
-        return Unlockables_Manager.Instance.IsUnlocked(key);
-    }
-
-    public string GetKey()
-    {
-        return key;
+        public string GetKey()
+        {
+            return key;
+        }
     }
 }
