@@ -56,5 +56,12 @@ namespace IbrahKit
         {
             return states[currentState];
         }
+
+        public bool CompareState(string state)
+        {
+            if(currentState >= states.Count ) return false;
+
+            return states[currentState].Equals(state);
+        }
     }
 }
