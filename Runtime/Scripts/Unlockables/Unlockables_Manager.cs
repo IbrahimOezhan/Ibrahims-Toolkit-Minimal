@@ -1,5 +1,4 @@
 using IbrahKit;
-using QFSW.QC;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
