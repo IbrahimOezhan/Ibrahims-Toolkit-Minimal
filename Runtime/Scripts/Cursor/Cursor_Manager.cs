@@ -100,7 +100,7 @@ namespace IbrahKit
         {
             preCursorState = cursorState;
 
-            if(input == null)
+            if (input == null)
             {
                 return false;
             }

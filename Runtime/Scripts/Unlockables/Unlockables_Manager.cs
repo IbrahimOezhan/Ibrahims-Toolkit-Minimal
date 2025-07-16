@@ -1,14 +1,12 @@
-using IbrahKit;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using UnityEngine;
-using Debug = IbrahKit.Debug;
 
 namespace IbrahKit
 {
-    [DefaultExecutionOrder(-1)]
+    [DefaultExecutionOrder(Execution_Order.unlock)]
     public class Unlockables_Manager : MonoBehaviour
     {
         private const string saveDataName = "Unlockables";

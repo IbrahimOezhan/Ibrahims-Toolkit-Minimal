@@ -59,7 +59,7 @@ namespace IbrahKit
 
         public bool CompareState(string state)
         {
-            if(currentState >= states.Count ) return false;
+            if (currentState >= states.Count) return false;
 
             return states[currentState].Equals(state);
         }

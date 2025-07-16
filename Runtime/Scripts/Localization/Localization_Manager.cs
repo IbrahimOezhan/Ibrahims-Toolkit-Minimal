@@ -348,7 +348,7 @@ namespace IbrahKit
             return exists;
         }
 
-        public static bool Exists(out Localization_Manager manager,bool throwWarning = true)
+        public static bool Exists(out Localization_Manager manager, bool throwWarning = true)
         {
             manager = Instance;
 

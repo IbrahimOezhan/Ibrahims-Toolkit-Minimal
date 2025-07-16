@@ -81,7 +81,7 @@ namespace IbrahKit
 
         private void OnDestroy()
         {
-            if (Localization_Manager.Exists(out Localization_Manager lm,true))
+            if (Localization_Manager.Exists(out Localization_Manager lm, true))
             {
                 lm.OnLanguageChanged -= UpdateUI;
             }
@@ -172,7 +172,7 @@ namespace IbrahKit
                 return true;
             }
 
-            if(value == null)
+            if (value == null)
             {
                 Debug.LogWarning($"{nameof(value)} is null");
                 return false;
